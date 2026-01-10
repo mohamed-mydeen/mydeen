@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { User, Mail, MapPin, Calendar } from 'lucide-react';
-import mydeen from './assets/mydeen.pdf';
+import mydeen from 'mydeen.pdf';
 
 const About: React.FC = () => {
   const contentRef = useRef<HTMLDivElement>(null);

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { User, Mail, MapPin, Calendar } from 'lucide-react';
-import mohamedmydeen from './assets/mohamedmydeen.pdf';
+import mohamedmydeen from './assets/mohamedmydeen.pdf.pdf';
 
 const About: React.FC = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -95,7 +95,7 @@ const About: React.FC = () => {
             
             <div className="mt-8 ml-5">
               <a
-                  href="/mohamedmydeen.pdf"
+                  href="/mohamedmydeen.pdf.pdf"
                   download="Mohamed_Mydeen_resume.pdf"
                   className="px-6 py-3 bg-emerald-600 text-white rounded-lg shadow-lg hover:bg-emerald-700 transition-colors duration-300 inline-block"
                 >

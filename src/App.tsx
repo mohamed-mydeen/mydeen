@@ -22,6 +22,7 @@ function App() {
         <Education />
         <Contact />
         <Footer />
+        <Chatbot/>
       </div>
     </ThemeProvider>
   );

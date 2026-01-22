@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
           <p className="text-slate-300 text-sm text-center ">
           
 
-            &copy; {currentYear} Mohamed Mydeen All rights reserved.
+            &copy; {currentYear} Mohamed Mydeen Version: 3.12.02
           </p>
           
         </div>

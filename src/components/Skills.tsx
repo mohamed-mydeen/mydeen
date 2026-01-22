@@ -28,23 +28,23 @@ const Skills = () => {
   const skillCategories = [
     {
       title: 'Programming Languages',
-      skills: ['Java', 'Python', 'C', 'JavaScript']
+      skills: ['Java', 'C', 'Python', 'JavaScript']
     },
     {
       title: 'Web Technologies',
       skills: ['HTML', 'CSS', 'JavaScript', 'React.js']
     },
     {
-      title: 'Frameworks & APIs',
-      skills: ['Spring Boot', 'REST APIs', 'Microservices']
+      title: 'Backend & Frameworks',
+      skills: ['Spring Boot', 'REST APIs', 'Node.js','Boostrap']
     },
     {
       title: 'Databases',
-      skills: ['SQL', 'MongoDB', 'MySQL']
+      skills: ['PostgreSQl', 'MongoDB', 'MySQL']
     },
     {
       title: 'Tools & Platforms',
-      skills: ['Git', 'Streamlit', 'Python', 'API Integration']
+      skills: ['Git','Postman','vs code']
     },
     {
       title: 'Soft Skills',
@@ -177,46 +177,17 @@ const Skills = () => {
                 </div>
 
                 {/* Terminal Footer */}
-                <div className="mt-4 pt-4 border-t border-green-500/20">
-                  <span className="text-xs text-green-500/60 font-mono">
-                    root@skills:~${' '}
-                  </span>
-                </div>
+               
               </div>
             </div>
           ))}
         </div>
 
         {/* Stats Section - Hacker Style */}
-        <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
-          {[
-            { value: '12+', label: 'Technical Skills', icon: '⚡' },
-            { value: '6', label: 'Categories', icon: '📦' },
-            { value: '2', label: 'Internships', icon: '🔐' }
-          ].map((stat, index) => (
-            <div 
-              key={index} 
-              className="bg-black/60 backdrop-blur-xl border border-green-500/30 hover:border-green-500/70 rounded-lg p-6 text-center transition-all duration-500 hover:shadow-[0_0_20px_rgba(0,255,150,0.3)]"
-            >
-              <div className="mb-2 text-2xl">{stat.icon}</div>
-              <p className="text-4xl font-bold text-green-400 font-mono mb-2 glow-text">
-                {stat.value}
-              </p>
-              <p className="text-green-300 font-mono text-sm">{'>'} {stat.label}</p>
-            </div>
-          ))}
-        </div>
+       
 
         {/* Footer Command */}
-        <div className={`text-center mt-20 transition-all duration-1000 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        }`}>
-          <p className="text-green-500/60 font-mono text-sm hacker-text">
-            {'> SYSTEM READY >'} <span className="animate-pulse">_</span>
-          </p>
-        </div>
+        
       </div>
     </section>
   );

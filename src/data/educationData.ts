@@ -28,7 +28,7 @@ export const educationData: EducationType[] = [
     ]
   },
   {
-    period: "2024-2025",
+    period: "1 Month",
     title: "Fullstack Developement Intern",
     organization: "IPCS global TVL.",
     description: "Working on developing and maintaining web applications using Python, Streamlit, and MySQL. Collaborating with cross-functional teams to deliver high-quality products.",
@@ -40,7 +40,7 @@ export const educationData: EducationType[] = [
     ]
   },
   {
-    period: "Present",
+    period: "2 Month",
     title: "Fullstack Developement Intern",
     organization: "Asta Solution",
     description: "Working on developing and maintaining web applications using Java Springboot,Reactjs,nodejs and CSS, and MySQL. Collaborating with cross-functional teams to deliver high-quality products.",

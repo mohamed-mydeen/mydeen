@@ -233,7 +233,7 @@ ${formData.message}`;
               ) : (
                 <>
                   <Send size={18} />
-                  Send via WhatsApp
+                  Send
                 </>
               )}
             </button>

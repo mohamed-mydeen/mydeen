@@ -122,7 +122,7 @@ const Projects = () => {
     : projectsData.filter(p => p.category === selectedCategory);
 
   return (
-    <section ref={projectsRef} className="relative min-h-screen py-24 bg-black overflow-hidden">
+    <section ref={projectsRef} className="relative pt-12 pb-12 bg-black overflow-hidden">
       {/* Hacker Screen Background */}
       <div className="fixed inset-0 pointer-events-none">
         {/* Grid Pattern */}
@@ -285,7 +285,7 @@ const Projects = () => {
         </div>
 
         {/* Footer Command */}
-        <div className={`text-center mt-20 transition-all duration-1000 ${
+        <div className={`text-center mt-12 transition-all duration-1000 ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}>
           <p className="text-green-500/60 font-mono text-sm hacker-text">

@@ -1,96 +1,129 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Moon, Sun } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  const navLinks = [
+    { name: 'Home', href: '#home', id: 'home' },
+    { name: 'About', href: '#about', id: 'about' },
+    { name: 'Education', href: '#education', id: 'education' },
+    { name: 'Contact', href: '#contact', id: 'contact' },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 30);
+
+      // Active section tracking
+      const sections = navLinks.map(l => document.getElementById(l.id)).filter(Boolean);
+      let current = 'home';
+      sections.forEach((section) => {
+        if (section) {
+          const top = section.getBoundingClientRect().top;
+          if (top <= 120) current = section.id;
+        }
+      });
+      setActiveSection(current);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Education', href: '#education' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
   const scrollToSection = (href: string) => {
     setIsOpen(false);
     const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        scrolled
+          ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-slate-200/50 dark:border-white/5 py-3'
+          : 'bg-transparent py-5'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
-                <span className="text-slate-800 dark:text-white">Mohamed's Portfolio</span>
-              </p>
-            </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between relative">
+          {/* Clean Logo - Hides on mobile when menu opens */}
+          <button 
+            onClick={() => scrollToSection('#home')}
+            className={`flex items-center gap-1 group transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              isOpen ? 'max-w-0 opacity-0 overflow-hidden' : 'max-w-[200px] opacity-100'
+            } md:max-w-none md:w-auto md:opacity-100 md:overflow-visible`}
+          >
+            <span className="font-bold text-xl text-slate-900 dark:text-white tracking-tight">
+              Mydeen
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 group-hover:bg-emerald-500 transition-colors" />
+          </button>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <button
+                key={link.name}
+                onClick={() => scrollToSection(link.href)}
+                className={`text-sm font-medium transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 ${
+                  activeSection === link.id 
+                    ? 'text-indigo-600 dark:text-indigo-400' 
+                    : 'text-slate-600 dark:text-slate-300'
+                }`}
+              >
+                {link.name}
+              </button>
+            ))}
           </div>
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              {navLinks.map((link) => (
-                <button
-                  key={link.name}
-                  onClick={() => scrollToSection(link.href)}
-                  className="px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                >
-                  {link.name}
-                </button>
-              ))}
-              <ThemeToggle />
-            </div>
+
+          {/* Mobile Sliding Nav (Horizontal within navbar) */}
+          <div 
+            className={`md:hidden flex items-center overflow-x-auto whitespace-nowrap transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] scrollbar-none ${
+              isOpen ? 'flex-1 translate-x-0 mr-4' : 'w-0 -translate-x-8 overflow-hidden'
+            }`}
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            <style>{`
+              .scrollbar-none::-webkit-scrollbar { display: none; }
+            `}</style>
+            {navLinks.map((link, idx) => (
+              <button
+                key={link.name}
+                onClick={() => scrollToSection(link.href)}
+                className={`text-sm font-medium px-3 py-1 transition-all duration-500 ease-out transform ${
+                  isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+                } ${
+                  activeSection === link.id
+                    ? 'text-indigo-600 dark:text-indigo-400'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-indigo-500'
+                }`}
+                style={{ transitionDelay: isOpen ? `${idx * 150}ms` : '0ms' }}
+              >
+                {link.name}
+              </button>
+            ))}
           </div>
-          <div className="flex md:hidden">
+
+          {/* Right side (Desktop) */}
+          <div className="hidden md:flex items-center gap-4">
+            <div className="w-px h-5 bg-slate-200 dark:bg-slate-700" />
+            <ThemeToggle />
+          </div>
+
+          {/* Mobile right (Toggle + Hamburger) */}
+          <div className="flex md:hidden items-center gap-2 sm:gap-3 flex-shrink-0">
             <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="ml-2 inline-flex items-center justify-center p-2 rounded-md text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none"
-              aria-expanded="false"
+              className="text-slate-700 dark:text-slate-300 p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
             >
-              <span className="sr-only">Open main menu</span>
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-slate-900 shadow-lg">
-          {navLinks.map((link) => (
-            <button
-              key={link.name}
-              onClick={() => scrollToSection(link.href)}
-              className="block px-3 py-2 rounded-md text-base font-medium text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800 w-full text-left"
-            >
-              {link.name}
-            </button>
-          ))}
         </div>
       </div>
     </nav>

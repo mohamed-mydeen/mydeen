@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Send } from 'lucide-react';
+import {
+  Send, Phone, Mail, MapPin, Github, Linkedin, MessageCircle,
+  CheckCircle, Timer, Loader2, Sparkles, Globe
+} from 'lucide-react';
 
 interface FormState {
   name: string;
@@ -16,230 +19,232 @@ interface FormErrors {
 }
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState<FormState>({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-  
+  const [formData, setFormData] = useState<FormState>({ name: '', email: '', subject: '', message: '' });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value
-    }));
-    
+    setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined
-      }));
+      setErrors(prev => ({ ...prev, [name]: undefined }));
     }
   };
-  
+
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-    
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
-    }
-    
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
-    
-    if (!formData.subject.trim()) {
-      newErrors.subject = 'Subject is required';
-    }
-    
-    if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
-    } else if (formData.message.length < 10) {
-      newErrors.message = 'Message must be at least 10 characters';
-    }
-    
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Enter a valid email';
+    if (!formData.subject.trim()) newErrors.subject = 'Subject is required';
+    if (!formData.message.trim()) newErrors.message = 'Message is required';
+    else if (formData.message.length < 10) newErrors.message = 'At least 10 characters';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
+
   const handleSubmit = () => {
-    if (validateForm()) {
-      setIsSubmitting(true);
-      
-      // Format message for WhatsApp
-      const whatsappMessage = `New Contact Message 🚀
-Name: ${formData.name}
-Email: ${formData.email}
-Subject: ${formData.subject}
-Message:
-${formData.message}`;
-      
-      // URL encode the message
-      const encodedMessage = encodeURIComponent(whatsappMessage);
-      
-      // WhatsApp Click-to-Chat URL
-      const whatsappUrl = `https://wa.me/919344990461?text=${encodedMessage}`;
-      
-      // Simulate form processing delay
-      setTimeout(() => {
-        // Open WhatsApp
-        window.open(whatsappUrl, '_blank');
-        
-        setIsSubmitting(false);
-        setSubmitSuccess(true);
-        
-        // Reset form
-        setFormData({
-          name: '',
-          email: '',
-          subject: '',
-          message: ''
-        });
-        
-        // Reset success message after 5 seconds
-        setTimeout(() => {
-          setSubmitSuccess(false);
-        }, 5000);
-      }, 800);
-    }
+    if (!validateForm()) return;
+    setIsSubmitting(true);
+    const msg = `New Contact Message 🚀\nName: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\nMessage:\n${formData.message}`;
+    setTimeout(() => {
+      window.open(`https://wa.me/919344990461?text=${encodeURIComponent(msg)}`, '_blank');
+      setIsSubmitting(false);
+      setSubmitSuccess(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      setTimeout(() => setSubmitSuccess(false), 6000);
+    }, 800);
   };
-  
+
+  const inputClass = (field: keyof FormErrors) =>
+    `w-full px-4 py-3.5 rounded-xl border text-sm font-medium transition-all duration-300
+    bg-white/80 dark:bg-slate-900/40 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+    focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/50
+    ${errors[field]
+      ? 'border-red-400 dark:border-red-500/50 ring-2 ring-red-500/10'
+      : 'border-slate-200 dark:border-white/5 hover:border-indigo-300 dark:hover:border-indigo-500/30'
+    }`;
+
   return (
-    <section className="py-20 bg-white dark:bg-slate-900">
-      <div className="container mx-auto px-4 max-w-2xl">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-slate-800 dark:text-white mb-4">
-            Get In <span className="text-emerald-600 dark:text-emerald-400">Touch</span>
+    <section id="contact" className="pt-12 pb-20 bg-white dark:bg-[#0a0a0f] relative overflow-hidden transition-colors duration-500">
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-500/5 dark:bg-emerald-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl relative z-10">
+        
+        {/* Modern Header Design */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 mb-6">
+            <Sparkles size={14} className="text-indigo-600 dark:text-indigo-400" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-700 dark:text-indigo-400">Available for Work</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 font-['Space_Grotesk'] tracking-tight">
+            Let's Start a <span className="text-indigo-600 dark:text-indigo-400">Conversation</span>
           </h2>
-          <div className="w-20 h-1 bg-emerald-600 dark:bg-emerald-400 mx-auto mb-6"></div>
-          <p className="text-slate-600 dark:text-slate-300">
-            Send me a message via WhatsApp or email
-          </p>
+          <div className="w-16 h-1.5 bg-indigo-600 dark:bg-indigo-500 rounded-full mx-auto" />
         </div>
 
-        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-8 rounded-xl shadow-lg">
-          {submitSuccess && (
-            <div className="mb-6 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg text-emerald-700 dark:text-emerald-300">
-              ✓ Message sent! WhatsApp is opening on your device.
-            </div>
-          )}
+        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
           
-          <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border ${
-                    errors.name ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'
-                  } focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-white`}
-                  placeholder="Your Name"
-                />
-                {errors.name && (
-                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.name}</p>
-                )}
-              </div>
+          {/* Left Column: Contact Sidebar */}
+          <div className="lg:col-span-4 space-y-6">
+            
+            {/* Quick Contact Card */}
+            <div className="glass-card p-8 border border-slate-200 dark:border-white/5 rounded-3xl bg-white/50 dark:bg-slate-900/30 backdrop-blur-xl group hover:shadow-2xl hover:shadow-indigo-500/5 transition-all duration-500">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 font-['Space_Grotesk']">
+                Contact Details
+              </h3>
               
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border ${
-                    errors.email ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'
-                  } focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-white`}
-                  placeholder="Your Email"
-                />
-                {errors.email && (
-                  <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.email}</p>
-                )}
+              <div className="space-y-6">
+                {[
+                  { icon: <Mail size={18} />, label: 'Email Me', value: 'mohamedmydeen.sd@gmail.com', href: 'mailto:mohamedmydeen.sd@gmail.com', color: 'text-indigo-500' },
+                  { icon: <Phone size={18} />, label: 'Call Me', value: '+91 93449 90461', href: 'tel:+919344990461', color: 'text-violet-500' },
+                  { icon: <Globe size={18} />, label: 'Location', value: 'Tamil Nadu, India', color: 'text-emerald-500' }
+                ].map((item, i) => (
+                  <div key={i} className="group/item">
+                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">{item.label}</p>
+                    {item.href ? (
+                      <a href={item.href} className="flex items-center gap-3 text-slate-700 dark:text-slate-200 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
+                        <div className={`w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center justify-center ${item.color} group-hover/item:scale-110 transition-transform`}>
+                          {item.icon}
+                        </div>
+                        <span className="text-sm font-medium truncate">{item.value}</span>
+                      </a>
+                    ) : (
+                      <div className="flex items-center gap-3 text-slate-700 dark:text-slate-200">
+                        <div className={`w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center justify-center ${item.color}`}>
+                          {item.icon}
+                        </div>
+                        <span className="text-sm font-medium">{item.value}</span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Social Links Sub-Panel */}
+              <div className="mt-10 pt-8 border-t border-slate-200 dark:border-white/5">
+                <div className="flex gap-3">
+                  {[
+                    { icon: <Github size={18} />, href: 'https://github.com/mohamed-mydeen' },
+                    { icon: <Linkedin size={18} />, href: 'https://linkedin.com/in/mohamed-mydeen4262' }
+                  ].map((s, i) => (
+                    <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" 
+                      className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-indigo-500 hover:text-white transition-all shadow-sm">
+                      {s.icon}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
-            
-            <div className="mb-6">
-              <label htmlFor="subject" className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-2">
-                Subject
-              </label>
-              <input
-                type="text"
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg border ${
-                  errors.subject ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'
-                } focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-white`}
-                placeholder="Subject"
-              />
-              {errors.subject && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.subject}</p>
-              )}
+
+          
+          <div className="lg:col-span-8">
+            <div className="glass-card p-8 sm:p-10 border border-slate-200 dark:border-white/5 rounded-[2rem] bg-white dark:bg-slate-900/40 shadow-2xl relative">
+              <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk']">
+                  Send a Message
+                </h3>
+                {submitSuccess && (
+                  <div className="flex items-center gap-2 px-3 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full border border-emerald-100 dark:border-emerald-500/20">
+                    <CheckCircle size={14} /> Sent Successfully
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 ml-1">Full Name</label>
+                    <input
+                      type="text" name="name"
+                      value={formData.name} onChange={handleChange}
+                      className={inputClass('name')}
+                      placeholder="Enter your name"
+                    />
+                    {errors.name && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.name}</p>}
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 ml-1">Email Address</label>
+                    <input
+                      type="email" name="email"
+                      value={formData.email} onChange={handleChange}
+                      className={inputClass('email')}
+                      placeholder="hello@example.com"
+                    />
+                    {errors.email && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.email}</p>}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 ml-1">Subject</label>
+                  <input
+                    type="text" name="subject"
+                    value={formData.subject} onChange={handleChange}
+                    className={inputClass('subject')}
+                    placeholder="What's this about?"
+                  />
+                  {errors.subject && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.subject}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 ml-1">Message</label>
+                  <textarea
+                    name="message"
+                    value={formData.message} onChange={handleChange}
+                    rows={4}
+                    className={inputClass('message')}
+                    placeholder="Tell me more about your project..."
+                  />
+                  {errors.message && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.message}</p>}
+                </div>
+
+                <div className="pt-4">
+                  <button
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
+                    className="group relative w-full overflow-hidden rounded-2xl bg-slate-900 dark:bg-white px-8 py-4 font-bold text-white dark:text-slate-900 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {/* Animated Gradient Background */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-[length:200%_auto] opacity-0 transition-opacity duration-300 group-hover:opacity-100 animate-gradient text-white" />
+                    
+                    <div className="relative flex items-center justify-center gap-3">
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 size={20} className="animate-spin" />
+                          <span>Initializing WhatsApp...</span>
+                        </>
+                      ) : (
+                        <>
+                          <MessageCircle size={20} />
+                          <span>Submit via WhatsApp</span>
+                          <Send size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                        </>
+                      )}
+                    </div>
+                  </button>
+                  <p className="text-center text-[10px] text-slate-400 mt-4 font-medium uppercase tracking-widest">
+                    Direct response within 24 hours
+                  </p>
+                </div>
+              </div>
             </div>
-            
-            <div className="mb-6">
-              <label htmlFor="message" className="block text-sm font-medium text-slate-700 dark:text-slate-400 mb-2">
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={5}
-                className={`w-full px-4 py-3 rounded-lg border ${
-                  errors.message ? 'border-red-500' : 'border-slate-300 dark:border-slate-600'
-                } focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white dark:bg-slate-700 text-slate-900 dark:text-white`}
-                placeholder="Your Message"
-              ></textarea>
-              {errors.message && (
-                <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.message}</p>
-              )}
-            </div>
-            
-            <button
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              className={`w-full px-6 py-3 bg-emerald-600 text-white rounded-lg shadow-lg hover:bg-emerald-700 transition-colors duration-300 flex items-center justify-center gap-2 font-medium ${
-                isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-              }`}
-            >
-              {isSubmitting ? (
-                <>
-                  <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Preparing Message...
-                </>
-              ) : (
-                <>
-                  <Send size={18} />
-                  Send
-                </>
-              )}
-            </button>
           </div>
         </div>
       </div>
+      
+      <style>{`
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-gradient {
+          animation: gradient 3s linear infinite;
+        }
+      `}</style>
     </section>
   );
 };

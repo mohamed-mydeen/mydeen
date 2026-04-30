@@ -57,7 +57,7 @@ const Skills = () => {
   ];
 
   return (
-    <section ref={skillsRef} className="relative min-h-screen py-24 bg-black overflow-hidden">
+    <section ref={skillsRef} className="relative pt-8 pb-8 bg-black overflow-hidden">
       {/* Hacker Screen Background */}
       <div className="fixed inset-0 pointer-events-none">
         {/* Grid Pattern */}
@@ -104,27 +104,27 @@ const Skills = () => {
         }
       `}</style>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 max-w-6xl">
         {/* Header - Hacker Style */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-12">
           <div className={`transition-all duration-1000 transform ${
             isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
           }`}>
-            <div className="inline-block mb-4">
-              <span className="text-green-400 text-xl font-mono hacker-text">{'> SKILLS.EXE'}</span>
+            <div className="inline-block mb-2">
+              <span className="text-green-400 text-sm sm:text-base font-mono hacker-text">{'> SKILLS.EXE'}</span>
             </div>
-            <h2 className="text-6xl md:text-7xl font-bold text-green-400 glow-text font-mono mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-green-400 glow-text font-mono mb-3">
               TECHNICAL ARSENAL
             </h2>
-            <div className="h-1 w-32 bg-gradient-to-r from-green-400 to-cyan-400 mx-auto mb-8 opacity-70"></div>
-            <p className="text-green-300 text-lg font-mono max-w-3xl mx-auto opacity-80">
+            <div className="h-0.5 w-24 bg-gradient-to-r from-green-400 to-cyan-400 mx-auto mb-4 opacity-70"></div>
+            <p className="text-green-300 text-sm sm:text-base font-mono max-w-2xl mx-auto opacity-80">
               {'<'} Initializing skill database {'>'} 
             </p>
           </div>
         </div>
 
         {/* 3 Column Grid - Hacker Terminal Style */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {skillCategories.map((category, index) => (
             <div
               key={index}
@@ -146,27 +146,25 @@ const Skills = () => {
                 </div>
 
                 {/* Skills or Descriptions */}
-                <div className="space-y-3">
+                <div className={category.skills ? "flex flex-wrap gap-2" : "space-y-2"}>
                   {category.skills ? (
                     category.skills.map((skill, skillIndex) => (
-                      <div
+                      <span
                         key={skillIndex}
-                        className={`transition-all duration-300 ${
-                          isVisible ? 'opacity-100' : 'opacity-0'
+                        className={`inline-block bg-green-500/10 hover:bg-green-500/20 text-green-300 hover:text-green-400 px-3 py-1.5 rounded border border-green-500/30 hover:border-green-500/60 text-xs sm:text-sm font-mono transition-all duration-300 hover:shadow-[0_0_10px_rgba(0,255,150,0.3)] ${
+                          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                         }`}
                         style={{ transitionDelay: `${(index * 80) + (skillIndex * 40)}ms` }}
                       >
-                        <span className="inline-block bg-green-500/10 hover:bg-green-500/20 text-green-300 hover:text-green-400 px-4 py-2 rounded border border-green-500/30 hover:border-green-500/60 text-sm font-mono transition-all duration-300 mr-2 mb-2 hover:shadow-[0_0_10px_rgba(0,255,150,0.3)]">
-                          {'>'} {skill}
-                        </span>
-                      </div>
+                        {'>'} {skill}
+                      </span>
                     ))
                   ) : (
                     category.descriptions.map((desc, descIndex) => (
                       <div
                         key={descIndex}
-                        className={`bg-green-500/5 border-l-2 border-green-500/50 rounded px-4 py-3 text-green-300 text-sm font-mono transition-all duration-300 hover:bg-green-500/10 hover:border-green-500/70 hover:shadow-[0_0_10px_rgba(0,255,150,0.2)] ${
-                          isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+                        className={`bg-green-500/5 border-l-2 border-green-500/50 rounded px-3 py-2 text-green-300 text-xs sm:text-sm font-mono transition-all duration-300 hover:bg-green-500/10 hover:border-green-500/70 hover:shadow-[0_0_10px_rgba(0,255,150,0.2)] ${
+                          isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
                         }`}
                         style={{ transitionDelay: `${(index * 80) + (descIndex * 40)}ms` }}
                       >

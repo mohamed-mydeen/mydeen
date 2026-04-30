@@ -1,114 +1,325 @@
-import React, { useEffect, useRef } from 'react';
-import { educationData } from '../data/educationData';
+import React, { useEffect, useRef, useState } from 'react';
+import { GraduationCap, Briefcase, Award, BookOpen, ExternalLink, X } from 'lucide-react';
 
 const Education: React.FC = () => {
-  const timelineRef = useRef<HTMLDivElement>(null);
-  
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [showCerts, setShowCerts] = useState(false);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fadeInUp');
-            
-            const timelineItems = entry.target.querySelectorAll('.timeline-item');
-            timelineItems.forEach((element, index) => {
+            entry.target.querySelectorAll('[data-animate]').forEach((el, i) => {
               setTimeout(() => {
-                (element as HTMLElement).style.transform = 'translateY(0)';
-                (element as HTMLElement).style.opacity = '1';
-              }, index * 200);
+                (el as HTMLElement).style.opacity = '1';
+                (el as HTMLElement).style.transform = 'translateY(0)';
+              }, i * 150);
             });
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.05 }
     );
-
-    if (timelineRef.current) {
-      observer.observe(timelineRef.current);
-    }
-
-    return () => {
-      if (timelineRef.current) {
-        observer.unobserve(timelineRef.current);
-      }
-    };
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => { if (sectionRef.current) observer.unobserve(sectionRef.current); };
   }, []);
 
+  const education = [
+    {
+      period: '2023 – 2027',
+      title: 'BTech in Computer Science & Business Systems',
+      org: 'Francis Xavier Engineering College, Tamil Nadu',
+      grade: 'CGPA: 7.81',
+      desc: 'Pursuing a comprehensive CS degree with focus on software engineering, algorithms, AI, and database systems. Active in coding clubs and hackathons.',
+      highlights: ['Data Structures & Algorithms', 'Database Management Systems', 'AI & Machine Learning', 'Web Technologies'],
+    },
+    {
+      period: '2021 – 2023',
+      title: 'Higher Secondary Certificate (HSC)',
+      org: 'Time Matric Higher Secondary School',
+      grade: 'Percentage: 83.17%',
+      desc: 'Completed 12th grade with Computer Science major. Recognized as Best Student (2022–2023) for academic excellence.',
+      highlights: ['Computer Science', 'Mathematics', 'Best Student Award 2022–2023'],
+    },
+  ];
+
+  const internships = [
+    {
+      period: 'Jun – Jul 2024 (2 Months)',
+      title: 'Full Stack Developer Intern',
+      org: 'Asta Systech Pvt. Ltd, India',
+      desc: 'Completed a full-stack internship developing a CRUD-based application using Java Spring Boot and React.js with RESTful API integration.',
+      highlights: [
+        'Built CRUD-based full-stack web application',
+        'Implemented RESTful APIs with Spring Boot',
+        'Integrated MySQL database with JPA/Hibernate',
+        'Collaborated with cross-functional teams',
+      ],
+      tech: ['Java', 'Spring Boot', 'React.js', 'MySQL', 'REST API'],
+    },
+    {
+      period: '2024 (1 Month)',
+      title: 'Full Stack Developer Intern',
+      org: 'IPCS Global TVL, India',
+      desc: 'Developed and deployed a web application using Python, Streamlit, and MySQL. Focused on data-driven features and responsive UI.',
+      highlights: [
+        'Developed a software product from scratch',
+        'Built data-driven web application with Streamlit',
+        'Managed MySQL databases and queries',
+      ],
+      tech: ['Python', 'Streamlit', 'MySQL', 'HTML', 'CSS'],
+    },
+    {
+      period: 'Remote (1 Month)',
+      title: 'Software Developer Intern',
+      org: 'Skill Software Inc, USA',
+      desc: 'Migrated legacy Selenium automation suites to Playwright (Python), improving test execution speed and reliability across internal project pipelines.',
+      highlights: [
+        'Migrated Selenium → Playwright (Python)',
+        'Improved test execution speed & reliability',
+        'Managed AWS cloud deployment workflows',
+        'Handled cloud resource configuration',
+      ],
+      tech: ['Python', 'Playwright', 'Selenium', 'AWS'],
+    },
+  ];
+
+  const certifications = [
+    { name: 'Internet of Things – IIT Kharagpur', platform: 'NPTEL', score: '80%' },
+    { name: 'Java Essentials', platform: 'LinkedIn Learning', score: null },
+    { name: 'Git Essential Training', platform: 'LinkedIn Learning', score: null },
+    { name: 'Web Development and C Programming', platform: 'Udemy', score: null },
+    { name: 'Python', platform: 'Cisco Networking Academy', score: null },
+  ];
+
   return (
-    <section id="education" className="py-20 bg-slate-100 dark:bg-slate-800">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4">
-            Education & <span className="text-emerald-600 dark:text-emerald-400">Experience</span>
-          </h2>
-          <div className="w-20 h-1 bg-emerald-600 dark:bg-emerald-400 mx-auto mb-8"></div>
-          <p className="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-            My academic background and professional journey that have shaped my skills and knowledge.
+    <section
+      id="education"
+      ref={sectionRef}
+      className="pt-8 pb-8 sm:pb-12 bg-white dark:bg-[#0a0a0f] relative overflow-hidden"
+    >
+      {/* Decorative */}
+      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.1), transparent 70%)' }} />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+
+        {/* Header */}
+        <div
+          data-animate
+          className="mb-16 opacity-0 translate-y-8 transition-all duration-700"
+          style={{ transitionProperty: 'opacity, transform' }}
+        >
+          <div className="section-tag"><BookOpen size={12} /> Education & Experience</div>
+          <h2 className="section-title">My Journey</h2>
+          <div className="section-underline" />
+          <p className="text-slate-500 dark:text-slate-400 mt-4 max-w-2xl">
+            Academic background, internship experience, and certifications that have shaped my technical expertise.
           </p>
         </div>
 
-        <div 
-          ref={timelineRef}
-          className="relative max-w-3xl mx-auto opacity-0 transition-opacity duration-1000"
-        >
-          {/* Timeline line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-emerald-200 dark:bg-emerald-800"></div>
-          
-          {educationData.map((item, index) => (
-            <div
-              key={index}
-              className={`timeline-item relative mb-12 opacity-0 transform translate-y-8 transition-all duration-500 ${
-                index % 2 === 0 ? 'text-right' : 'text-left'
-              }`}
-            >
-              {/* Content container */}
-              <div
-                className={`relative ${
-                  index % 2 === 0 ? 'mr-12 md:mr-0 md:pr-12' : 'ml-12 md:ml-0 md:pl-12'
-                } md:w-1/2 ${index % 2 === 0 ? 'md:left-0' : 'md:left-1/2'}`}
-              >
-                {/* Date badge */}
-                <div className="absolute top-0 bg-emerald-600 text-white text-sm font-semibold py-1 px-3 rounded-full shadow-md">
-                  {item.period}
+        {/* Education Timeline */}
+        <div className="mb-16">
+          <h3 className="flex items-center gap-2 text-xl font-bold text-slate-800 dark:text-white mb-8 font-['Space_Grotesk']">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-violet-500/30">
+              <GraduationCap size={16} />
+            </div>
+            Education
+          </h3>
+
+          <div className="relative pl-12">
+            <div className="timeline-line" />
+            <div className="space-y-8">
+              {education.map((item, i) => (
+                <div
+                  key={i}
+                  data-animate
+                  className="relative opacity-0 translate-y-8 transition-all duration-700"
+                  style={{ transitionProperty: 'opacity, transform' }}
+                >
+                  {/* Timeline dot */}
+                  <div className="timeline-dot" style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}>
+                    <GraduationCap size={16} className="text-white" />
+                  </div>
+
+                  <div className="glass-card p-6 ml-4">
+                    {/* Header row */}
+                    <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                      <div>
+                        <span className="badge badge-edu mb-2">🎓 {item.period}</span>
+                        <h4 className="text-lg font-bold text-slate-800 dark:text-white font-['Space_Grotesk']">
+                          {item.title}
+                        </h4>
+                        <p className="text-indigo-500 dark:text-indigo-400 font-medium text-sm mt-0.5">
+                          {item.org}
+                        </p>
+                      </div>
+                      <div className="bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-xl px-3 py-1.5 text-center flex-shrink-0">
+                        <p className="text-emerald-700 dark:text-emerald-400 font-bold text-sm">{item.grade}</p>
+                      </div>
+                    </div>
+
+                    <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                      {item.desc}
+                    </p>
+
+                    {item.highlights && (
+                      <div className="flex flex-wrap gap-2">
+                        {item.highlights.map((h) => (
+                          <span key={h} className="text-xs px-2.5 py-1 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-100 dark:border-violet-500/20">
+                            {h}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                
-                {/* Card */}
-                <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg p-6 mt-8">
-                  <div className="flex items-center mb-4 mt-4">
-                    
-                    <div>
-                      <h3 className="text-xl font-bold text-slate-800 dark:text-white">
-                        {item.title}
-                      </h3>
-                      <p className="text-emerald-600 dark:text-emerald-400 font-medium">
-                        {item.organization}
-                      </p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Internship Timeline */}
+        <div className="mb-16">
+          <h3 className="flex items-center gap-2 text-xl font-bold text-slate-800 dark:text-white mb-8 font-['Space_Grotesk']">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/30">
+              <Briefcase size={16} />
+            </div>
+            Internship Experience
+          </h3>
+
+          <div className="relative pl-12">
+            <div className="timeline-line" style={{ background: 'linear-gradient(to bottom, #10b981, #3b82f6)' }} />
+            <div className="space-y-8">
+              {internships.map((item, i) => (
+                <div
+                  key={i}
+                  data-animate
+                  className="relative opacity-0 translate-y-8 transition-all duration-700"
+                  style={{ transitionProperty: 'opacity, transform' }}
+                >
+                  {/* Timeline dot */}
+                  <div className="timeline-dot" style={{ background: 'linear-gradient(135deg, #10b981, #3b82f6)' }}>
+                    <Briefcase size={16} className="text-white" />
+                  </div>
+
+                  <div className="glass-card p-6 ml-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                      <div>
+                        <span className="badge badge-intern mb-2">💼 {item.period}</span>
+                        <h4 className="text-lg font-bold text-slate-800 dark:text-white font-['Space_Grotesk']">
+                          {item.title}
+                        </h4>
+                        <p className="text-emerald-600 dark:text-emerald-400 font-medium text-sm mt-0.5">
+                          {item.org}
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                      {item.desc}
+                    </p>
+
+                    <ul className="space-y-1.5 mb-4">
+                      {item.highlights.map((h) => (
+                        <li key={h} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="flex flex-wrap gap-2">
+                      {item.tech.map((t) => (
+                        <span key={t} className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/8">
+                          {t}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                  <p className="text-slate-600 dark:text-slate-300">
-                    {item.description}
-                  </p>
-                  {item.achievements && (
-                    <div className="mt-4">
-                      <p className="font-semibold text-slate-800 dark:text-white mb-2">Key Achievements:</p>
-                      <ul className="list-disc list-inside space-y-1 text-slate-600 dark:text-slate-300">
-                        {item.achievements.map((achievement, i) => (
-                          <li key={i}>{achievement}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Certifications */}
+        <div>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <h3 className="flex items-center gap-2 text-xl font-bold text-slate-800 dark:text-white font-['Space_Grotesk']">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white shadow-lg shadow-amber-500/30">
+                <Award size={16} />
+              </div>
+              Certifications
+            </h3>
+            
+            <button
+              onClick={() => setShowCerts(true)}
+              className="btn-primary"
+            >
+              <Award size={16} />
+              View All Certifications
+            </button>
+          </div>
+
+          {/* Modal Popup */}
+          {showCerts && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-[fadeIn_0.3s_ease-out]" onClick={() => setShowCerts(false)}>
+              <style>{`
+                @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+                @keyframes popupModal { 
+                  0% { opacity: 0; transform: scale(0.95) translateY(20px); } 
+                  100% { opacity: 1; transform: scale(1) translateY(0); } 
+                }
+              `}</style>
+              <div className="glass-card w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-2xl relative animate-[popupModal_0.5s_cubic-bezier(0.16,1,0.3,1)]" onClick={e => e.stopPropagation()}>
+                <div className="sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-6 py-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between z-10">
+                  <h3 className="text-lg font-bold text-slate-800 dark:text-white font-['Space_Grotesk']">
+                    My Certifications
+                  </h3>
+                  <button 
+                    onClick={() => setShowCerts(false)}
+                    className="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                  >
+                    <X size={20} />
+                  </button>
                 </div>
                 
-                {/* Timeline dot */}
-                <div className="absolute top-3 w-5 h-5 rounded-full bg-emerald-600 border-4 border-white dark:border-slate-800 shadow">
-                  <div className="absolute inset-0 rounded-full bg-emerald-600 animate-ping opacity-50"></div>
+                <div className="p-2 sm:p-4">
+                  <div className="divide-y divide-slate-200 dark:divide-white/5">
+                    {certifications.map((cert, i) => (
+                      <div
+                        key={i}
+                        className="p-4 flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-white/5 group transition-colors rounded-xl"
+                      >
+                        <div className="flex items-center gap-4 min-w-0">
+                          <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 flex-shrink-0 group-hover:text-amber-500 group-hover:bg-amber-50 dark:group-hover:bg-amber-500/10 transition-colors">
+                            <Award size={18} />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-semibold text-sm sm:text-base text-slate-800 dark:text-white truncate">
+                              {cert.name}
+                            </p>
+                            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                              {cert.platform}
+                            </p>
+                          </div>
+                        </div>
+                        {cert.score && (
+                          <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2.5 py-1 rounded-md flex-shrink-0">
+                            {cert.score}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
+          )}
         </div>
+
       </div>
     </section>
   );

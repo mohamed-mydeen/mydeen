@@ -132,13 +132,10 @@ const Hero: React.FC = () => {
           {/* Right — Profile Image (Professional clean style) */}
           <div className="flex-1 flex justify-center lg:justify-end w-full max-w-lg mx-auto">
             <div className="relative">
-              {/* Subtle background decoration */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-emerald-500/20 rounded-2xl transform rotate-3 scale-105" />
-              
               <img
                 src="/my%20photo.png"
                 alt="Mohamed Mydeen"
-                className="relative rounded-2xl shadow-2xl w-full max-w-sm h-[350px] md:h-[400px] lg:h-[450px] object-cover object-center border border-slate-200 dark:border-white/10"
+                className="relative rounded-2xl w-full max-w-sm h-[350px] md:h-[400px] lg:h-[450px] object-cover object-center"
               />
             </div>
           </div>

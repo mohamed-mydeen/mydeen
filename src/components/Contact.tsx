@@ -140,7 +140,9 @@ const Contact: React.FC = () => {
               </div>
             </div>
 
-          
+          </div>
+
+          {/* Right Column: Premium Form Card */}
           <div className="lg:col-span-8">
             <div className="glass-card p-8 sm:p-10 border border-slate-200 dark:border-white/5 rounded-[2rem] bg-white dark:bg-slate-900/40 shadow-2xl relative">
               <div className="mb-10 flex flex-wrap items-center justify-between gap-4">

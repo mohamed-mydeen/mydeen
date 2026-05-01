@@ -44,7 +44,7 @@ const Skills = () => {
     },
     {
       title: 'Tools & Platforms',
-      skills: ['Git','Postman','vs code','Docker','mysql workbench']
+      skills: ['Git','Postman','vs code','Docker','mysql workbench  ']
     },
     {
       title: 'Soft Skills',

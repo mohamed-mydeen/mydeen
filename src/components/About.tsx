@@ -43,12 +43,9 @@ const About: React.FC = () => {
         {/* Section header */}
         <div
           data-animate
-          className="mb-16 opacity-0 translate-y-8 transition-all duration-700"
+          className="mb-12 md:mb-16 opacity-0 translate-y-8 transition-all duration-700"
           style={{ transitionProperty: 'opacity, transform' }}
         >
-          <div className="section-tag">
-            <User size={12} /> About Me
-          </div>
           <h2 className="section-title">Who I Am</h2>
           <div className="section-underline" />
         </div>

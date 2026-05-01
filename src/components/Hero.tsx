@@ -56,9 +56,9 @@ const Hero: React.FC = () => {
     <section
       id="home"
       ref={heroRef}
-      className="relative overflow-hidden bg-white dark:bg-[#0a0a0f] pt-28 pb-8 sm:pt-32 sm:pb-12"
+      className="relative overflow-hidden bg-white dark:bg-[#0a0a0f] min-h-screen flex items-center pt-20 pb-12"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-10 py-10 lg:py-0">
         <div
           className={`flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-16 transition-all duration-1000 ${
             visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -126,7 +126,8 @@ const Hero: React.FC = () => {
               <img
                 src="/my%20photo.png"
                 alt="Mohamed Mydeen"
-                className="relative rounded-3xl shadow-2xl w-full max-w-[280px] sm:max-w-sm h-[300px] sm:h-[400px] lg:h-[450px] object-cover object-center transition-transform duration-500 group-hover:-translate-y-2 border-4 border-white dark:border-slate-800"
+                className="relative rounded-[2rem] shadow-2xl w-full max-w-[280px] sm:max-w-sm h-[300px] sm:h-[400px] lg:h-[450px] object-cover object-center transition-transform duration-500 group-hover:-translate-y-2 border-4 border-white dark:border-white shadow-indigo-500/10"
+                style={{ filter: 'none', mixBlendMode: 'normal', imageRendering: 'auto' }}
               />
             </div>
           </div>

@@ -82,50 +82,51 @@ const Hero: React.FC = () => {
             </div>
 
             {/* Quote */}
-            <blockquote className="relative mb-10">
+            <blockquote className="relative mb-8 lg:mb-10 px-4 lg:px-0">
               <div className="hidden lg:block absolute -left-5 top-1 bottom-1 w-1 bg-gradient-to-b from-indigo-500/40 to-transparent rounded-full" />
-              <p className="text-slate-500 dark:text-slate-400 italic text-base md:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 font-light text-center lg:text-left">
+              <p className="text-slate-500 dark:text-slate-400 italic text-sm md:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0 font-light text-center lg:text-left">
                 "Whoever travels a path in search of knowledge, GOD will make easy for him a path to Paradise."
               </p>
             </blockquote>
 
             {/* Actions & Social Links */}
-            <div className="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
+            <div className="flex flex-col items-center lg:items-start gap-8">
               <a
                 href="/mydeen_resume.pdf"
                 download="Mohamed_Mydeen_Resume.pdf"
-                className="btn-secondary"
+                className="btn-secondary w-fit px-8 py-3 shadow-lg shadow-indigo-500/10"
               >
                 <Download size={18} />
                 Download Resume
               </a>
               
-              <div className="w-12 h-px bg-slate-200 dark:bg-slate-800 hidden sm:block" />
-
-              <div className="flex gap-4">
-                <a href="https://github.com/mohamed-mydeen" target="_blank" rel="noopener noreferrer" className="social-btn" title="GitHub">
-                  <Github size={18} />
-                </a>
-                <a href="https://linkedin.com/in/mohamed-mydeen4262" target="_blank" rel="noopener noreferrer" className="social-btn" title="LinkedIn">
-                  <Linkedin size={18} />
-                </a>
-                <a href="mailto:mohamedmydeen.sd@gmail.com" className="social-btn" title="Email">
-                  <Mail size={18} />
-                </a>
-                <a href="https://wa.me/919344990461" target="_blank" rel="noopener noreferrer" className="social-btn" title="WhatsApp">
-                  <MessageCircle size={18} />
-                </a>
+              <div className="flex items-center gap-4">
+                <div className="w-8 h-px bg-slate-200 dark:bg-slate-800 hidden lg:block" />
+                <div className="flex gap-4">
+                  <a href="https://github.com/mohamed-mydeen" target="_blank" rel="noopener noreferrer" className="social-btn" title="GitHub">
+                    <Github size={18} />
+                  </a>
+                  <a href="https://linkedin.com/in/mohamed-mydeen4262" target="_blank" rel="noopener noreferrer" className="social-btn" title="LinkedIn">
+                    <Linkedin size={18} />
+                  </a>
+                  <a href="mailto:mohamedmydeen.sd@gmail.com" className="social-btn" title="Email">
+                    <Mail size={18} />
+                  </a>
+                  <a href="https://wa.me/919344990461" target="_blank" rel="noopener noreferrer" className="social-btn" title="WhatsApp">
+                    <MessageCircle size={18} />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Right — Profile Image (Clean Style) */}
+          {/* Right — Profile Image */}
           <div className="flex-1 flex justify-center lg:justify-end w-full max-w-lg mx-auto">
             <div className="relative group">
               <img
                 src="/my%20photo.png"
                 alt="Mohamed Mydeen"
-                className="relative rounded-2xl shadow-2xl w-full max-w-sm h-[350px] md:h-[400px] lg:h-[450px] object-cover object-center transition-transform duration-500 group-hover:-translate-y-2"
+                className="relative rounded-3xl shadow-2xl w-full max-w-[280px] sm:max-w-sm h-[300px] sm:h-[400px] lg:h-[450px] object-cover object-center transition-transform duration-500 group-hover:-translate-y-2 border-4 border-white dark:border-slate-800"
               />
             </div>
           </div>

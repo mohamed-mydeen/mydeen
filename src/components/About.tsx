@@ -61,11 +61,11 @@ const About: React.FC = () => {
             className="opacity-0 translate-y-8 transition-all duration-700"
             style={{ transitionProperty: 'opacity, transform' }}
           >
-            <div className="glass-card p-6 sm:p-8 border border-slate-200 dark:border-white/5 rounded-2xl bg-white/80 dark:bg-slate-900/50 shadow-sm">
+            <div className="p-6 sm:p-8 border border-slate-300 dark:border-slate-700/80 rounded-2xl bg-white dark:bg-slate-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:shadow-none hover:border-indigo-300 dark:hover:border-indigo-500/50 transition-colors duration-300">
               <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed text-justify">
                 Hi! I'm <strong className="text-indigo-600 dark:text-indigo-400 font-semibold">Mohamed Mydeen Shahabudeen M</strong>, 
                 a passionate full-stack developer dedicated to building scalable and efficient web applications. 
-                With a strong foundation in <span className="text-violet-600 dark:text-violet-400 font-medium">Java, Spring Boot, React.js,</span> and <span className="text-emerald-600 dark:text-emerald-400 font-medium">MongoDB</span>, 
+                With a strong foundation in <span className="text-indigo-600 dark:text-indigo-400 font-medium">MERN Stack</span> (MongoDB, Express, React, Node.js) and <span className="text-violet-600 dark:text-violet-400 font-medium">Java Spring Boot</span>, 
                 I specialize in turning complex problems into elegant, user-friendly solutions. 
                 <br /><br />
                 I am currently pursuing a BTech in Computer Science & Business Systems at <strong className="text-slate-800 dark:text-white">Francis Xavier Engineering College</strong>, 

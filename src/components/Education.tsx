@@ -3,9 +3,14 @@ import { GraduationCap, Briefcase, Award, BookOpen, ExternalLink, X } from 'luci
 
 const Education: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const eduTimelineRef = useRef<HTMLDivElement>(null);
+  const internTimelineRef = useRef<HTMLDivElement>(null);
   const [showCerts, setShowCerts] = useState(false);
+  const [eduScrollProgress, setEduScrollProgress] = useState(0);
+  const [internScrollProgress, setInternScrollProgress] = useState(0);
 
   useEffect(() => {
+    // Reveal animation observer
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -22,7 +27,35 @@ const Education: React.FC = () => {
       { threshold: 0.05 }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => { if (sectionRef.current) observer.unobserve(sectionRef.current); };
+
+    // Scroll progress logic for timelines
+    const handleScroll = () => {
+      const calculateProgress = (ref: React.RefObject<HTMLDivElement>) => {
+        if (!ref.current) return 0;
+        const rect = ref.current.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        // Start filling when top of timeline reaches 60% of viewport
+        const startTrigger = viewportHeight * 0.6;
+        
+        const scrolledPast = startTrigger - rect.top;
+        const totalHeight = rect.height;
+        
+        if (scrolledPast < 0) return 0;
+        if (scrolledPast > totalHeight) return 100;
+        return (scrolledPast / totalHeight) * 100;
+      };
+
+      setEduScrollProgress(calculateProgress(eduTimelineRef));
+      setInternScrollProgress(calculateProgress(internTimelineRef));
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => {
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const education = [
@@ -120,54 +153,64 @@ const Education: React.FC = () => {
         </div>
 
         {/* Education Timeline */}
-        <div className="mb-16">
-          <h3 className="flex items-center gap-2 text-xl font-bold text-slate-800 dark:text-white mb-8 font-['Space_Grotesk']">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-violet-500/30">
-              <GraduationCap size={16} />
+        <div className="mb-20">
+          <h3 className="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-10 font-['Space_Grotesk'] tracking-tight">
+            <div className="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-500/20 flex items-center justify-center text-violet-600 dark:text-violet-400">
+              <GraduationCap size={20} />
             </div>
             Education
           </h3>
 
-          <div className="relative pl-12">
-            <div className="timeline-line" />
-            <div className="space-y-8">
+          <div ref={eduTimelineRef} className="relative border-l-2 border-transparent ml-5 md:ml-6">
+            {/* Background Line */}
+            <div className="absolute left-[-2px] top-2 bottom-0 w-[2px] bg-violet-100 dark:bg-violet-500/20 rounded-full" />
+            
+            {/* Animated Fill Line */}
+            <div 
+              className="absolute left-[-2px] top-2 w-[2px] bg-violet-500 rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_rgba(139,92,246,0.8)] z-0" 
+              style={{ height: `${eduScrollProgress}%`, maxHeight: 'calc(100% - 8px)' }} 
+            />
+
+            <div className="space-y-10">
               {education.map((item, i) => (
                 <div
                   key={i}
                   data-animate
-                  className="relative opacity-0 translate-y-8 transition-all duration-700"
+                  className="relative pl-8 md:pl-12 opacity-0 translate-y-8 transition-all duration-700"
                   style={{ transitionProperty: 'opacity, transform' }}
                 >
                   {/* Timeline dot */}
-                  <div className="timeline-dot" style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }}>
-                    <GraduationCap size={16} className="text-white" />
+                  <div className="absolute left-[-21px] top-2 w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center shadow-[0_0_0_6px_white] dark:shadow-[0_0_0_6px_#0a0a0f] z-10">
+                    <GraduationCap size={18} className="text-white" />
                   </div>
 
-                  <div className="glass-card p-6 ml-4">
-                    {/* Header row */}
-                    <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
-                      <div>
-                        <span className="badge badge-edu mb-2">🎓 {item.period}</span>
-                        <h4 className="text-lg font-bold text-slate-800 dark:text-white font-['Space_Grotesk']">
-                          {item.title}
-                        </h4>
-                        <p className="text-indigo-500 dark:text-indigo-400 font-medium text-sm mt-0.5">
-                          {item.org}
-                        </p>
-                      </div>
-                      <div className="bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-xl px-3 py-1.5 text-center flex-shrink-0">
-                        <p className="text-emerald-700 dark:text-emerald-400 font-bold text-sm">{item.grade}</p>
-                      </div>
+                  <div className="bg-white dark:bg-slate-900/50 rounded-3xl p-6 md:p-8 shadow-[0_2px_20px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] border border-slate-100 dark:border-slate-800/60 hover:shadow-lg transition-shadow duration-300">
+                    {/* Badge */}
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 text-sm font-semibold mb-4 border border-violet-100 dark:border-violet-500/20">
+                      <GraduationCap size={14} />
+                      {item.period}
+                    </div>
+                    
+                    <h4 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white font-['Space_Grotesk'] leading-snug mb-2">
+                      {item.title}
+                    </h4>
+                    
+                    <p className="text-indigo-600 dark:text-indigo-400 font-medium text-base mb-4">
+                      {item.org}
+                    </p>
+
+                    <div className="inline-block bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-lg px-3 py-1.5 mb-5">
+                      <p className="text-emerald-700 dark:text-emerald-400 font-bold text-sm">{item.grade}</p>
                     </div>
 
-                    <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                    <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base leading-relaxed mb-6">
                       {item.desc}
                     </p>
 
                     {item.highlights && (
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-2.5">
                         {item.highlights.map((h) => (
-                          <span key={h} className="text-xs px-2.5 py-1 rounded-lg bg-violet-50 dark:bg-violet-500/10 text-violet-700 dark:text-violet-300 border border-violet-100 dark:border-violet-500/20">
+                          <span key={h} className="text-xs md:text-sm px-3 py-1.5 rounded-xl bg-violet-50 dark:bg-violet-500/10 text-violet-700 dark:text-violet-300 font-medium border border-violet-100 dark:border-violet-500/20">
                             {h}
                           </span>
                         ))}
@@ -181,58 +224,67 @@ const Education: React.FC = () => {
         </div>
 
         {/* Internship Timeline */}
-        <div className="mb-16">
-          <h3 className="flex items-center gap-2 text-xl font-bold text-slate-800 dark:text-white mb-8 font-['Space_Grotesk']">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/30">
-              <Briefcase size={16} />
+        <div className="mb-20">
+          <h3 className="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-10 font-['Space_Grotesk'] tracking-tight">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+              <Briefcase size={20} />
             </div>
             Internship Experience
           </h3>
 
-          <div className="relative pl-12">
-            <div className="timeline-line" style={{ background: 'linear-gradient(to bottom, #10b981, #3b82f6)' }} />
-            <div className="space-y-8">
+          <div ref={internTimelineRef} className="relative border-l-2 border-transparent ml-5 md:ml-6">
+            {/* Background Line */}
+            <div className="absolute left-[-2px] top-2 bottom-0 w-[2px] bg-emerald-100 dark:bg-emerald-500/20 rounded-full" />
+            
+            {/* Animated Fill Line */}
+            <div 
+              className="absolute left-[-2px] top-2 w-[2px] bg-emerald-500 rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_rgba(16,185,129,0.8)] z-0" 
+              style={{ height: `${internScrollProgress}%`, maxHeight: 'calc(100% - 8px)' }} 
+            />
+
+            <div className="space-y-10">
               {internships.map((item, i) => (
                 <div
                   key={i}
                   data-animate
-                  className="relative opacity-0 translate-y-8 transition-all duration-700"
+                  className="relative pl-8 md:pl-12 opacity-0 translate-y-8 transition-all duration-700"
                   style={{ transitionProperty: 'opacity, transform' }}
                 >
                   {/* Timeline dot */}
-                  <div className="timeline-dot" style={{ background: 'linear-gradient(135deg, #10b981, #3b82f6)' }}>
-                    <Briefcase size={16} className="text-white" />
+                  <div className="absolute left-[-21px] top-2 w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_0_6px_white] dark:shadow-[0_0_0_6px_#0a0a0f] z-10">
+                    <Briefcase size={18} className="text-white" />
                   </div>
 
-                  <div className="glass-card p-6 ml-4">
-                    <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
-                      <div>
-                        <span className="badge badge-intern mb-2">💼 {item.period}</span>
-                        <h4 className="text-lg font-bold text-slate-800 dark:text-white font-['Space_Grotesk']">
-                          {item.title}
-                        </h4>
-                        <p className="text-emerald-600 dark:text-emerald-400 font-medium text-sm mt-0.5">
-                          {item.org}
-                        </p>
-                      </div>
+                  <div className="bg-white dark:bg-slate-900/50 rounded-3xl p-6 md:p-8 shadow-[0_2px_20px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] border border-slate-100 dark:border-slate-800/60 hover:shadow-lg transition-shadow duration-300">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-semibold mb-4 border border-emerald-100 dark:border-emerald-500/20">
+                      <Briefcase size={14} />
+                      {item.period}
                     </div>
+                    
+                    <h4 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white font-['Space_Grotesk'] leading-snug mb-2">
+                      {item.title}
+                    </h4>
+                    
+                    <p className="text-blue-600 dark:text-blue-400 font-medium text-base mb-5">
+                      {item.org}
+                    </p>
 
-                    <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                    <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base leading-relaxed mb-6">
                       {item.desc}
                     </p>
 
-                    <ul className="space-y-1.5 mb-4">
+                    <ul className="space-y-2.5 mb-6">
                       {item.highlights.map((h) => (
-                        <li key={h} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />
-                          {h}
+                        <li key={h} className="flex items-start gap-3 text-sm md:text-base text-slate-600 dark:text-slate-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 flex-shrink-0" />
+                          <span>{h}</span>
                         </li>
                       ))}
                     </ul>
 
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2.5">
                       {item.tech.map((t) => (
-                        <span key={t} className="text-xs px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-white/8">
+                        <span key={t} className="text-xs md:text-sm px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 font-medium border border-slate-200 dark:border-slate-700/50">
                           {t}
                         </span>
                       ))}

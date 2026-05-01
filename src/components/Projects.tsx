@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, Folder } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
-const Projects = () => {
+interface ProjectsProps {
+  limit?: number;
+}
+
+const Projects: React.FC<ProjectsProps> = ({ limit }) => {
   const projectsRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -29,6 +34,14 @@ const Projects = () => {
 
   const projectsData = [
     {
+      title: "Food Ordering PWA",
+      description: "A full-stack Progressive Web Application for food delivery. Built with a sophisticated AI-driven recommendation engine, secure authentication flows, real-time cart management, and a highly responsive, mobile-first user interface.",
+      category: "web",
+      technologies: ["React.js", "Node.js", "MongoDB", "Tailwind CSS", "PWA"],
+      github: "https://github.com/mohamed-mydeen/Food-order-app",
+      demo: "https://mpmhub.vercel.app/"
+    },
+    {
       title: "Deceptive Website Detection System",
       description: "Built an event-driven cybersecurity solution to detect seasonal fraudulent websites. Implemented URL analysis, SSL validation, domain age checks, and redirection detection techniques. Deployed an explainable risk-scoring system using Streamlit with real-time SQLite storage.",
       category: "Software",
@@ -36,27 +49,16 @@ const Projects = () => {
       github:"https://github.com/mohamed-mydeen/seasonal-deceptive-website-detector",
       demo: "https://seasonal-deceptive-website-detector.streamlit.app/"
     },
-    {
-      title: "YouTube Data Analytics Pipeline",
-      description: "Built an automated data pipeline to collect and analyze YouTube data using APIs and SQL. Visualized insights using Streamlit for interactive dashboard and real-time analytics with comprehensive metrics.",
+     {
+      title: "TNEA Cut-Off Checking Portal",
+      description: "Portal to check 12th TNEA Cut Off Mark with comprehensive college information and admission guidance.",
       category: "web",
-      technologies: ["Python", "APIs", "SQL", "Streamlit"],
-      
+      technologies: ["Python", "OpenCV", "Tkinter", "pandas"],
+      github: "https://github.com/M-Mohamed-Mydeen-Shahabudeen/TNEA-cutoff-checker",
+      demo: "https://tnea-cutoff-checker.vercel.app/"
     },
-    {
-      title: "CRUD-Based Full Stack Application",
-      description: "Developed a complete full-stack application with RESTful APIs and database integration. Implemented following layered architecture and SDLC practices with responsive UI design and secure backend.",
-      category: "web",
-      technologies: ["Java", "Spring Boot", "React.js", "MySQL"],
-      
-    },
-    {
-      title: "ML Data Preprocessing & Extraction",
-      description: "Completed a one-month internship in machine learning–based data preprocessing, delivering projects using OCR and Python. Hands-on experience in automated data extraction and interactive dashboard development with real-world datasets.",
-      category: "AI",
-      technologies: ["Python", "OCR", "Streamlit", "API Integration"],
-      
-    },
+    
+    
     {
       title: "Intelligent Business Card Data Extracter",
       description: "A comprehensive application that extracts business card data using advanced OCR technology with database management and real-time processing capabilities.",
@@ -98,21 +100,7 @@ const Projects = () => {
       technologies: ["Python", "OpenCV", "Tkinter", "pandas"],
       github: "https://github.com/M-Mohamed-Mydeen-Shahabudeen/Real-time-Face-Detection-and-Authentication-System-Using-OpenCV-"
     },
-    {
-      title: "TNEA Cut-Off Checking Portal",
-      description: "Portal to check 12th TNEA Cut Off Mark with comprehensive college information and admission guidance.",
-      category: "web",
-      technologies: ["Python", "OpenCV", "Tkinter", "pandas"],
-      github: "https://github.com/M-Mohamed-Mydeen-Shahabudeen/TNEA-cutoff-checker",
-      demo: "https://tnea-cutoff-checker.vercel.app/"
-    },
-    {
-      title: "Railway Complaint Portal",
-      description: "Web application allowing users to submit complaints and feedback for railway services with tracking and status updates.",
-      category: "web",
-      technologies: ["Flask", "MySQL", "HTML/CSS"],
-      github: "https://github.com/M-Mohamed-Mydeen-Shahabudeen/Railway-complains-and-feedback-Portal-using-Flask"
-    }
+   
   ];
 
   const categories = ['all', 'Software', 'AI', 'web'];
@@ -120,6 +108,8 @@ const Projects = () => {
   const filteredProjects = selectedCategory === 'all' 
     ? projectsData 
     : projectsData.filter(p => p.category === selectedCategory);
+
+  const displayedProjects = limit ? filteredProjects.slice(0, limit) : filteredProjects;
 
   return (
     <section ref={projectsRef} className="relative pt-12 pb-12 bg-black overflow-hidden">
@@ -174,6 +164,16 @@ const Projects = () => {
         <div className={`transition-all duration-1000 ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}>
+          {!limit && (
+            <div className="mb-6 flex justify-start">
+              <Link 
+                to="/" 
+                className="inline-flex items-center gap-2 px-4 py-2 bg-black/50 text-green-400 border border-green-500/30 hover:bg-green-500/10 hover:border-green-500/60 rounded font-mono transition-all duration-300"
+              >
+                <span className="text-lg">{'<'}</span> EXIT TO MAINFRAME
+              </Link>
+            </div>
+          )}
           <div className="text-center mb-12">
             <div className="inline-block mb-4">
               <span className="text-green-400 text-lg font-mono hacker-text">{'> PROJECTS.DB'}</span>
@@ -203,10 +203,10 @@ const Projects = () => {
 
           {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredProjects.map((project, index) => (
+            {displayedProjects.map((project, index) => (
               <div
                 key={index}
-                className={`relative transition-all duration-1000 transform ${
+                className={`h-full relative transition-all duration-1000 transform ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                 }`}
                 style={{ transitionDelay: `${index * 80}ms` }}
@@ -283,6 +283,19 @@ const Projects = () => {
             ))}
           </div>
         </div>
+
+        {/* View More Button */}
+        {limit && filteredProjects.length > limit && (
+          <div className={`mt-16 text-center transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <Link 
+              to="/projects" 
+              className="inline-flex items-center gap-2 px-6 py-3 bg-green-500/10 text-green-400 border border-green-500/50 hover:bg-green-500/20 hover:border-green-400 hover:shadow-[0_0_15px_rgba(0,255,150,0.4)] rounded-full font-mono transition-all duration-300"
+            >
+              <Folder size={18} />
+              <span>VIEW MORE PROJECTS</span>
+            </Link>
+          </div>
+        )}
 
         {/* Footer Command */}
         <div className={`text-center mt-12 transition-all duration-1000 ${

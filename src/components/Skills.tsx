@@ -32,19 +32,19 @@ const Skills = () => {
     },
     {
       title: 'Web Technologies',
-      skills: ['HTML', 'CSS', 'JavaScript', 'React.js']
+      skills: ['HTML', 'CSS', 'JavaScript', 'React.js','Bootstrap']
     },
     {
       title: 'Backend & Frameworks',
-      skills: ['Spring Boot', 'REST APIs', 'Node.js','Boostrap']
+      skills: ['Spring Boot', 'REST APIs', 'Node.js']
     },
     {
       title: 'Databases',
-      skills: ['PostgreSQl', 'MongoDB', 'MySQL']
+      skills: ['PostgreSQl', 'MongoDB', 'MySQL','TiDB']
     },
     {
       title: 'Tools & Platforms',
-      skills: ['Git','Postman','vs code']
+      skills: ['Git','Postman','vs code','Docker','mysql workbench']
     },
     {
       title: 'Soft Skills',
@@ -123,62 +123,49 @@ const Skills = () => {
           </div>
         </div>
 
-        {/* 3 Column Grid - Hacker Terminal Style */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skillCategories.map((category, index) => (
-            <div
-              key={index}
-              className={`relative transition-all duration-1000 transform ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-              style={{ transitionDelay: `${index * 80}ms` }}
-            >
-              {/* Terminal Border */}
-              <div className="absolute inset-0 bg-gradient-to-b from-green-500/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none"></div>
-              
-              <div className="bg-black/60 backdrop-blur-xl border border-green-500/30 hover:border-green-500/70 rounded-lg p-6 transition-all duration-500 hover:shadow-[0_0_20px_rgba(0,255,150,0.3)]">
-                {/* Terminal Header */}
-                <div className="flex items-center gap-2 mb-4 pb-4 border-b border-green-500/20">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <h3 className="text-xl font-bold text-green-400 font-mono tracking-wider">
-                    {category.title}
-                  </h3>
-                </div>
-
-                {/* Skills or Descriptions */}
-                <div className={category.skills ? "flex flex-wrap gap-2" : "space-y-2"}>
-                  {category.skills ? (
-                    category.skills.map((skill, skillIndex) => (
-                      <span
-                        key={skillIndex}
-                        className={`inline-block bg-green-500/10 hover:bg-green-500/20 text-green-300 hover:text-green-400 px-3 py-1.5 rounded border border-green-500/30 hover:border-green-500/60 text-xs sm:text-sm font-mono transition-all duration-300 hover:shadow-[0_0_10px_rgba(0,255,150,0.3)] ${
-                          isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                        }`}
-                        style={{ transitionDelay: `${(index * 80) + (skillIndex * 40)}ms` }}
-                      >
-                        {'>'} {skill}
-                      </span>
-                    ))
-                  ) : (
-                    category.descriptions.map((desc, descIndex) => (
-                      <div
-                        key={descIndex}
-                        className={`bg-green-500/5 border-l-2 border-green-500/50 rounded px-3 py-2 text-green-300 text-xs sm:text-sm font-mono transition-all duration-300 hover:bg-green-500/10 hover:border-green-500/70 hover:shadow-[0_0_10px_rgba(0,255,150,0.2)] ${
-                          isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
-                        }`}
-                        style={{ transitionDelay: `${(index * 80) + (descIndex * 40)}ms` }}
-                      >
-                        {desc}
-                      </div>
-                    ))
-                  )}
-                </div>
-
-                {/* Terminal Footer */}
-               
-              </div>
+        {/* JSON Terminal Style */}
+        <div className={`transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} max-w-4xl mx-auto`}>
+          <div className="bg-black/80 backdrop-blur-xl border border-green-500/30 rounded-xl overflow-hidden shadow-[0_0_30px_rgba(0,255,150,0.15)] group hover:border-green-500/50 transition-all duration-500">
+            
+            {/* Window Header */}
+            <div className="flex items-center gap-2 bg-green-500/10 px-4 py-3 border-b border-green-500/30">
+              <div className="w-3 h-3 rounded-full bg-red-500/80 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500/80 shadow-[0_0_5px_rgba(234,179,8,0.5)]"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500/80 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></div>
+              <span className="ml-4 text-xs font-mono text-green-400/70 tracking-wider">skills.json</span>
             </div>
-          ))}
+
+            {/* Editor Content */}
+            <div className="p-5 sm:p-8 overflow-x-auto">
+              <pre className="font-mono text-sm md:text-base leading-[2]">
+                <span className="text-purple-400 font-bold">const</span> <span className="text-blue-400 font-bold">mydeenSkills</span> <span className="text-slate-300">=</span> <span className="text-yellow-300">{'{'}</span>
+                {'\n'}
+                {skillCategories.map((cat, i) => (
+                  <React.Fragment key={i}>
+                    <span className="text-slate-500">{'  // '} {cat.title}</span>
+                    {'\n'}
+                    {'  '}<span className="text-cyan-400">"{cat.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}"</span><span className="text-slate-300">:</span> <span className="text-blue-300">{'['}</span>
+                    {'\n'}
+                    {'    '}
+                    <div className="inline-flex flex-wrap gap-x-2 pl-8 -ml-8">
+                      {(cat.skills || cat.descriptions || []).map((item, j, arr) => (
+                        <React.Fragment key={j}>
+                          <span className="text-green-400 transition-colors duration-300 hover:text-green-300 cursor-default">
+                            "{item.replace(/^>\s*/, '')}"
+                          </span>
+                          {j < arr.length - 1 && <span className="text-slate-400">, </span>}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                    {'\n'}
+                    {'  '}<span className="text-blue-300">{']'}</span>{i < skillCategories.length - 1 ? <span className="text-slate-400">,</span> : ''}
+                    {'\n\n'}
+                  </React.Fragment>
+                ))}
+                <span className="text-yellow-300">{'}'}</span><span className="text-slate-300">;</span>
+              </pre>
+            </div>
+          </div>
         </div>
 
         {/* Stats Section - Hacker Style */}

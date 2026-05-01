@@ -32,63 +32,79 @@ const Chatbot: React.FC = () => {
     () => [
       {
         keywords: ["hi", "hello", "hey", "hii", "hlo", "hai", "vanakkam"],
-        answer: "Hello! Welcome to my portfolio! How can I help you today? You can ask about my skills, projects, or education."
+        answer: "Hello! Welcome to my portfolio! How can I help you today? You can ask me about my skills, projects, education, or internship experience."
       },
       {
         keywords: ["assalamu alaikum", "assalamualaikum", "salam", "salaam"],
         answer: "Wa alaikum assalam 🤍😊 Welcome to my portfolio! Feel free to ask about my skills or projects."
       },
       {
-        keywords: ["school", "schooling"],
-        answer: "I completed my schooling at TIME Matric Higher Secondary School, Aaraikulam, Tirunelveli."
+        keywords: ["who are you", "about you", "introduce", "yourself", "name", "profile", "summary"],
+        answer: "I'm Mohamed Mydeen Shahabudeen M, an aspiring software developer currently pursuing my B.Tech in Computer Science and Business Systems. I'm passionate about building scalable, real-world full-stack web applications and continuously improving my skills!"
       },
       {
-        keywords: ["who are you", "about you", "introduce", "yourself", "name"],
-        answer: "I'm Mohamed Mydeen Shahabudeen M. I'm a passionate Full Stack Developer and Cybersecurity enthusiast building modern web apps."
+        keywords: ["objective", "career", "goal", "aim", "future"],
+        answer: "My career objective is to contribute to innovative and scalable software solutions in a dynamic organization while continuously learning and adapting to new technologies."
       },
       {
-        keywords: ["education", "college", "study", "btech", "course"],
-        answer: "I'm pursuing a BTech in Computer Science and Business Systems at Francis Xavier Engineering College, Vannerapettai."
+        keywords: ["skills", "tech stack", "technologies", "languages", "tools", "mern"],
+        answer: "My Technical Skills:\n• MERN Stack: MongoDB, Express.js, React.js, Node.js\n• Backend: Java, Spring Boot, REST APIs\n• Languages: Java, Python, C, JavaScript\n• Databases: SQL, MongoDB\n• Tools: Git, AWS, Streamlit"
+      },
+      {
+        keywords: ["frontend", "ui", "design"],
+        answer: "For Frontend development, I use HTML, CSS, and React.js to build clean, responsive, and modern user interfaces."
+      },
+      {
+        keywords: ["backend", "server", "api"],
+        answer: "For Backend development, I specialize in Java, Spring Boot, and building robust REST APIs."
+      },
+      {
+        keywords: ["strengths", "core", "soft skills", "personal"],
+        answer: "My Core Strengths include:\n• Problem Solving\n• Team Collaboration\n• Time Management\n• Adaptability"
+      },
+      {
+        keywords: ["education", "college", "study", "btech", "degree", "university", "cgpa"],
+        answer: "I am pursuing a B.Tech in Computer Science and Business Systems at Francis Xavier Engineering College (2023 – 2027) with a CGPA of 7.81."
+      },
+      {
+        keywords: ["school", "higher secondary", "12th", "hsc", "percentage", "schooling"],
+        answer: "I completed my Higher Secondary (Maths & Computer Science) at Time Matric Higher Secondary School with a percentage of 83.2%."
+      },
+      {
+        keywords: ["projects", "what projects", "your projects", "portfolio projects", "work"],
+        answer: "Here are some of my key projects:\n1. Seasonal Deceptive Website Detection System (Cybersecurity)\n2. YouTube Data Analytics and Warehousing (Data Pipeline)\n3. Food Ordering Progressive Web Application (Full-Stack PWA)\n\nAsk me about a specific project if you want to know more!"
+      },
+      {
+        keywords: ["deceptive", "website", "detection", "cybersecurity", "fraudulent", "seasonal", "fraud"],
+        answer: "My 'Seasonal Deceptive Website Detection System' is a cybersecurity solution that detects fraudulent websites during public events using URL analysis, SSL validation, and domain age verification. It features an explainable risk scoring system built with Streamlit."
+      },
+      {
+        keywords: ["youtube", "data", "analytics", "warehousing", "pipeline"],
+        answer: "My 'YouTube Data Analytics' project is a data pipeline built using APIs and SQL. I used Streamlit to analyze and visualize the YouTube data effectively."
+      },
+      {
+        keywords: ["food", "ordering", "pwa", "progressive web app", "restaurant"],
+        answer: "My 'Food Ordering PWA' is a full-stack Progressive Web Application featuring AI recommendations, Firebase notifications, JWT authentication, payment integration, and an admin dashboard."
+      },
+      {
+        keywords: ["internship", "experience", "intern", "company", "worked"],
+        answer: "I have two main internship experiences:\n1. Software Developer Intern: Worked on automation testing using Playwright (Python) and AWS deployments.\n2. Full Stack Developer Intern: Built CRUD applications using Java, Spring Boot, React.js, and SQL."
+      },
+      {
+        keywords: ["certifications", "certificates", "courses", "achievements", "certified"],
+        answer: "My Certifications:\n• NPTEL – Internet of Things (IIT Kharagpur) – 80%\n• LinkedIn Learning – Java Essentials & Git Essential Training\n• Cisco – Python\n• Udemy – Web Development & C Programming"
       },
       {
         keywords: ["where are you from", "hometown", "native", "place"],
         answer: "I'm from Melapalayam, Tirunelveli, Tamil Nadu."
       },
       {
-        keywords: ["age", "how old"],
-        answer: "I'm 20 years old."
+        keywords: ["resume", "cv", "biodata", "download resume"],
+        answer: "You can download my resume directly here: \n\n📄 [Download Mohamed's Resume](/mydeen_resume.pdf)\n\nIs there anything specific you'd like to know about my experience?"
       },
       {
-        keywords: ["skills", "tech stack", "technologies", "stack"],
-        answer: "My core tech stack:\n• Backend: Java, Spring Boot, REST APIs\n• Frontend: React, JS, HTML, CSS\n• Database: MySQL, MongoDB\n• Tools: Git, GitHub"
-      },
-      {
-        keywords: ["frontend", "ui", "design"],
-        answer: "For Frontend I use HTML, CSS, JavaScript, and React.js to build clean, responsive, and modern user interfaces."
-      },
-      {
-        keywords: ["backend", "server", "api"],
-        answer: "For Backend I specialize in Java Spring Boot for robust REST APIs, authentication, and secure database integrations."
-      },
-      {
-        keywords: ["projects", "what projects", "your projects", "portfolio projects"],
-        answer: "Some of my key projects:\n1. Seasonal Deceptive Website Detection (Cybersecurity)\n2. CRUD Full Stack App (Spring Boot + React)\n3. YouTube Data Analytics\n4. Smart Irrigation Management\n\nCheck out the Projects section for more!"
-      },
-      {
-        keywords: ["internship", "experience", "work", "worked"],
-        answer: "I interned at Asta Systech Pvt. Ltd, developing a CRUD full-stack application using Java, Spring Boot, React.js, and SQL."
-      },
-      {
-        keywords: ["career goal", "future", "goal", "aim", "dream"],
-        answer: "My long-term career goal is to become an AI Developer while mastering full-stack engineering."
-      },
-      {
-        keywords: ["linkedin", "profile", "connections"],
-        answer: "I have 500+ LinkedIn connections! You can find my profile link in the Contact section or Footer."
-      },
-      {
-        keywords: ["email", "mail", "contact", "reach", "message"],
-        answer: "You can email me at mohamedmydeen.sd@gmail.com, or use the contact form on this site to reach my WhatsApp directly!"
+        keywords: ["contact", "email", "reach", "hire", "phone", "whatsapp", "message"],
+        answer: "You can reach out to me via the Contact section, or email me directly at mohamedmydeen.sd@gmail.com! I'm always open to new opportunities."
       }
     ],
     []
@@ -96,11 +112,20 @@ const Chatbot: React.FC = () => {
 
   const getBotReply = (text: string): string => {
     const query = text.toLowerCase().trim();
-    for (const faq of faqs) {
+    
+    // Sort faqs by longest keyword first to match more specific phrases before general ones
+    const sortedFaqs = [...faqs].sort((a, b) => {
+      const maxA = Math.max(...a.keywords.map(k => k.length));
+      const maxB = Math.max(...b.keywords.map(k => k.length));
+      return maxB - maxA;
+    });
+
+    for (const faq of sortedFaqs) {
       for (const key of faq.keywords) {
         if (query.includes(key)) return faq.answer;
       }
     }
+    
     const fallbacks = [
       "That's an interesting question! I mostly know about Mohamed's Skills, Projects, and Experience. Want to hear about those?",
       "Good question! I'm still learning, but I can definitely tell you all about Mohamed's tech stack and education.",

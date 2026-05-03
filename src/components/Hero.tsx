@@ -73,6 +73,9 @@ const Hero: React.FC = () => {
                 Mydeen
               </span>
             </h1>
+            <p className="sr-only">
+              Mohamed Mydeen (Ukasha), Full Stack Developer from Tamil Nadu, India
+            </p>
 
             {/* Typing role */}
             <div className="h-10 flex items-center justify-center lg:justify-start mb-8">
@@ -125,7 +128,8 @@ const Hero: React.FC = () => {
             <div className="relative group">
               <img
                 src="/my%20photo.png"
-                alt="Mohamed Mydeen"
+                alt="Mohamed Mydeen (Ukasha) - Full Stack Developer from Tamil Nadu, India"
+                loading="lazy"
                 className="relative rounded-[2rem] shadow-2xl w-full max-w-[280px] sm:max-w-sm h-[300px] sm:h-[400px] lg:h-[450px] object-cover object-center transition-transform duration-500 group-hover:-translate-y-2 border-4 border-white dark:border-white shadow-indigo-500/10"
                 style={{ filter: 'none', mixBlendMode: 'normal', imageRendering: 'auto' }}
               />

@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import { ThemeProvider } from './context/ThemeContext';
 import Chatbot from './components/Chatbot';
 import GithubStats from './components/GithubStats';
+import FeaturedProducts from './components/FeaturedProducts';
 import ScrollProgress from './components/ScrollProgress';
 import { useLenis } from './hooks/useLenis';
 import { useReveal } from './hooks/useReveal';
@@ -41,6 +42,7 @@ function HomePage() {
       <About />
       <Projects limit={3} />
       <Skills/>
+      <FeaturedProducts />
       <Education />
       <GithubStats />
       <Contact />

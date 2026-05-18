@@ -57,7 +57,10 @@ const Skills = () => {
   ];
 
   return (
-    <section ref={skillsRef} className="relative pt-8 pb-8 bg-black overflow-hidden">
+    <section 
+      ref={skillsRef} 
+      className="relative pt-8 pb-16 sm:pb-20 bg-black overflow-hidden"
+    >
       {/* Hacker Screen Background */}
       <div className="fixed inset-0 pointer-events-none">
         {/* Grid Pattern */}

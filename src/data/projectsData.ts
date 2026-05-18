@@ -18,14 +18,7 @@ export const projectsData: ProjectType[] = [
     github: "https://github.com/M-Mohamed-Mydeen-Shahabudeen/Intelligent-Business-Card-Data-Extractor-and-Manager",
     
   },
-  {
-    title: "AI ChatBot",
-    description: "An application that uses machine learning to generate unique images based on text descriptions.",
-    image: "https://images.pexels.com/photos/8438923/pexels-photo-8438923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    category: "AI",
-    technologies: ["Python", "TensorFlow",  "Streamlit", "Gemini API"],
-    github: "https://github.com"
-  },
+  
   {
     title: "Symposium Website",
     description: "Mobile application to track workouts, nutrition, and fitness goals with customizable plans.",

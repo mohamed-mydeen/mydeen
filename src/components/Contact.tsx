@@ -191,7 +191,7 @@ const Contact: React.FC = () => {
                     {content}
                   </a>
                 ) : (
-                  <div key={i} className="px-2 py-1.5">{content}</div>
+                  <div key={i} className="px-2 py-1.5 -mx-2">{content}</div>
                 );
               })}
             </div>

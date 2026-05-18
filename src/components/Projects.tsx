@@ -8,10 +8,16 @@ interface ProjectsProps {
 
 const Projects: React.FC<ProjectsProps> = ({ limit }) => {
   const projectsRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+  // If limit is not passed, we are on the dedicated projects page, so show immediately
+  const [isVisible, setIsVisible] = useState(!limit);
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   useEffect(() => {
+    if (!limit) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -30,7 +36,7 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
         observer.unobserve(projectsRef.current);
       }
     };
-  }, []);
+  }, [limit]);
 
   const projectsData = [
     {
@@ -50,13 +56,14 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
       demo: "https://seasonal-deceptive-website-detector.streamlit.app/"
     },
      {
-      title: "TNEA Cut-Off Checking Portal",
-      description: "Portal to check 12th TNEA Cut Off Mark with comprehensive college information and admission guidance.",
-      category: "web",
-      technologies: ["Python", "OpenCV", "Tkinter", "pandas"],
-      github: "https://github.com/M-Mohamed-Mydeen-Shahabudeen/TNEA-cutoff-checker",
-      demo: "https://tnea-cutoff-checker.vercel.app/"
-    },
+    title: "Mydeen AI – Intelligent Conversational Platform",
+    description: "A premium full-stack conversational AI assistant similar to leading AI platforms. Supports real-time streaming conversations, contextual memory for natural follow-ups, live web-grounded search, image analysis, OCR document understanding, voice interaction, and an installable PWA experience.",
+    image: "https://images.pexels.com/photos/8438923/pexels-photo-8438923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    category: "AI",
+    technologies: ["React.js", "FastAPI", "Groq API", "Supabase", "PostgreSQL", "Tesseract OCR", "YOLOv8", "Web Search", "Web Speech API", "Tailwind CSS", "PWA"],
+    github: "https://github.com/mohamed-mydeen/mydeen",
+    demo: "https://mydeenai.vercel.app/"
+  },
     
     
     {
@@ -66,13 +73,7 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
       technologies: ["Python", "MySQL", "EasyOCR", "Streamlit"],
       github: "https://github.com/M-Mohamed-Mydeen-Shahabudeen/Intelligent-Business-Card-Data-Extractor-and-Manager"
     },
-    {
-      title: "AI ChatBot",
-      description: "An intelligent chatbot that uses machine learning to generate contextual responses using Gemini API with natural language processing capabilities.",
-      category: "AI",
-      technologies: ["Python", "TensorFlow", "Streamlit", "Gemini API"],
-      github: "https://github.com"
-    },
+    
     {
       title: "Symposium Website",
       description: "Mobile application to track workouts, nutrition, and fitness goals with customizable plans and real-time analytics dashboard.",

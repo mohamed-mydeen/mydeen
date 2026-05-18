@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, useRef } from "react";
+import React, { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { Send, X, MessageCircle, Trash2 } from "lucide-react";
 
 type Sender = "user" | "bot";
@@ -15,6 +15,64 @@ type FAQ = {
 
 const QUICK_ACTIONS = ["Skills", "Projects", "Education", "Contact"];
 
+// ── Optimized Memoized Sub-components to Prevent Key-stroke Render Thrashing ──
+
+const MessageItem = React.memo<{ msg: Message; isDark: boolean }>(({ msg, isDark }) => {
+  const userMsgBg = "bg-indigo-500 text-white shadow-md shadow-indigo-500/20";
+  const botMsgBg = isDark ? "bg-slate-800 text-slate-200" : "bg-slate-100 text-slate-700";
+
+  return (
+    <div className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} will-change-transform`}>
+      <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-[13px] leading-relaxed whitespace-pre-wrap ${
+        msg.sender === "user" ? `${userMsgBg} rounded-br-sm` : `${botMsgBg} rounded-bl-sm`
+      }`}>
+        {msg.text}
+      </div>
+    </div>
+  );
+});
+MessageItem.displayName = "MessageItem";
+
+const LoadingIndicator = React.memo<{ isDark: boolean }>(({ isDark }) => {
+  const botMsgBg = isDark ? "bg-slate-800 text-slate-200" : "bg-slate-100 text-slate-700";
+  return (
+    <div className="flex justify-start will-change-transform">
+      <div className={`${botMsgBg} rounded-2xl rounded-bl-sm px-4 py-3 flex gap-1.5 shadow-sm`}>
+        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
+        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
+        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }} />
+      </div>
+    </div>
+  );
+});
+LoadingIndicator.displayName = "LoadingIndicator";
+
+const QuickActions = React.memo<{
+  isDark: boolean;
+  onActionClick: (action: string) => void;
+}>(({ isDark, onActionClick }) => {
+  return (
+    <div className="px-4 pb-2 flex flex-wrap gap-2 will-change-transform">
+      {QUICK_ACTIONS.map((action) => (
+        <button
+          key={action}
+          onClick={() => onActionClick(action)}
+          className={`text-[11px] font-medium px-3 py-1.5 rounded-full border transition-colors cursor-pointer ${
+            isDark 
+              ? 'border-indigo-500/30 text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20' 
+              : 'border-indigo-200 text-indigo-600 bg-indigo-50 hover:bg-indigo-100'
+          }`}
+        >
+          {action}
+        </button>
+      ))}
+    </div>
+  );
+});
+QuickActions.displayName = "QuickActions";
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 const Chatbot: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
@@ -29,13 +87,20 @@ const Chatbot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const lenis = (window as any).lenis;
     if (open) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      if (lenis) lenis.stop();
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if (lenis) lenis.start();
     }
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if (lenis) lenis.start();
     };
   }, [open]);
 
@@ -121,10 +186,9 @@ const Chatbot: React.FC = () => {
     []
   );
 
-  const getBotReply = (text: string): string => {
+  const getBotReply = useCallback((text: string): string => {
     const query = text.toLowerCase().trim();
     
-    // Sort faqs by longest keyword first to match more specific phrases before general ones
     const sortedFaqs = [...faqs].sort((a, b) => {
       const maxA = Math.max(...a.keywords.map(k => k.length));
       const maxB = Math.max(...b.keywords.map(k => k.length));
@@ -144,14 +208,21 @@ const Chatbot: React.FC = () => {
       "Mohamed is always exploring new ideas like that! If you want to know more about his professional background, just ask about his Skills or Education."
     ];
     return fallbacks[Math.floor(Math.random() * fallbacks.length)];
-  };
+  }, [faqs]);
 
-  // Auto scroll to bottom
+  // Auto scroll to bottom optimized with requestAnimationFrame and instant jump on mobile
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const timer = requestAnimationFrame(() => {
+      const isMobile = window.innerWidth < 640;
+      messagesEndRef.current?.scrollIntoView({ 
+        behavior: isMobile ? "auto" : "smooth",
+        block: "nearest"
+      });
+    });
+    return () => cancelAnimationFrame(timer);
   }, [messages, loading]);
 
-  const handleSend = (text: string): void => {
+  const handleSend = useCallback((text: string): void => {
     const trimmed = text.trim();
     if (!trimmed || loading) return;
 
@@ -163,9 +234,9 @@ const Chatbot: React.FC = () => {
       setMessages(prev => [...prev, { sender: "bot", text: getBotReply(trimmed) }]);
       setLoading(false);
     }, 800);
-  };
+  }, [loading, getBotReply]);
 
-  const clearChat = (): void => {
+  const clearChat = useCallback((): void => {
     setMessages([
       {
         sender: "bot",
@@ -173,125 +244,105 @@ const Chatbot: React.FC = () => {
       }
     ]);
     setInput("");
-  };
+  }, []);
 
   // Theme styling based on internal dark mode state
   const isDark = darkMode;
-  const containerBg = isDark ? "bg-slate-900/95 border-white/10" : "bg-white/95 border-slate-200/50";
+  const containerBg = isDark 
+    ? "bg-slate-900 border-white/10 sm:bg-slate-900/95 sm:backdrop-blur-xl" 
+    : "bg-white border-slate-200/50 sm:bg-white/95 sm:backdrop-blur-xl";
   const headerBg = isDark ? "bg-slate-800" : "bg-slate-100";
   const textPrimary = isDark ? "text-white" : "text-slate-900";
   const textSecondary = isDark ? "text-slate-400" : "text-slate-500";
-  const userMsgBg = "bg-indigo-500 text-white shadow-md shadow-indigo-500/20";
-  const botMsgBg = isDark ? "bg-slate-800 text-slate-200" : "bg-slate-100 text-slate-700";
   const inputContainerBg = isDark ? "bg-slate-800/50 border-white/5" : "bg-white border-slate-200";
 
   return (
     <>
       {/* Floating button */}
-      {!open && (
-        <button
-          onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-indigo-500 text-white shadow-lg shadow-indigo-500/30 flex items-center justify-center hover:bg-indigo-600 hover:scale-105 transition-all duration-300 z-50 animate-bounce-slow"
-          aria-label="Open Chatbot"
-        >
-          <MessageCircle size={20} />
-        </button>
-      )}
+      <button
+        onClick={() => setOpen(true)}
+        style={{ transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
+        className={`fixed bottom-6 right-6 w-12 h-12 rounded-full bg-indigo-500 text-white shadow-lg shadow-indigo-500/30 flex items-center justify-center hover:bg-indigo-600 hover:scale-105 z-50 animate-bounce-slow will-change-transform ${
+          open 
+            ? "opacity-0 scale-75 pointer-events-none translate-y-4" 
+            : "opacity-100 scale-100 pointer-events-auto translate-y-0"
+        }`}
+        aria-label="Open Chatbot"
+      >
+        <MessageCircle size={20} />
+      </button>
 
       {/* Chat Window */}
-      {open && (
-        <div className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-[calc(100vw-32px)] sm:w-[350px] h-[500px] sm:h-[550px] backdrop-blur-xl ${containerBg} border rounded-2xl shadow-2xl overflow-hidden z-50 flex flex-col transition-colors duration-300`}>
-          {/* Header */}
-          <div className={`${headerBg} px-4 py-3 flex justify-between items-center border-b border-white/5`}>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-md">
-                <span className="text-white text-xs font-bold">MM</span>
-              </div>
-              <div className="min-w-0">
-                <h2 className={`text-sm font-semibold ${textPrimary}`}>MydeenBot</h2>
-                <div className="flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <p className={`text-[10px] ${textSecondary}`}>Online</p>
-                </div>
-              </div>
+      <div 
+        style={{ transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}
+        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-[calc(100vw-32px)] sm:w-[350px] h-[500px] sm:h-[550px] ${containerBg} border rounded-2xl shadow-2xl overflow-hidden z-50 flex flex-col will-change-transform ${
+          open 
+            ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" 
+            : "opacity-0 scale-95 translate-y-8 pointer-events-none"
+        }`}
+      >
+        {/* Header */}
+        <div className={`${headerBg} px-4 py-3 flex justify-between items-center border-b border-white/5`}>
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-md">
+              <span className="text-white text-xs font-bold">MM</span>
             </div>
-            <div className="flex gap-1">
-              <button onClick={clearChat} className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-200'}`} title="Clear Chat">
-                <Trash2 size={14} className={isDark ? "text-slate-300" : "text-slate-600"} />
-              </button>
-              <button onClick={() => setOpen(false)} className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-200'}`}>
-                <X size={16} className={isDark ? "text-slate-300" : "text-slate-600"} />
-              </button>
+            <div className="min-w-0">
+              <h2 className={`text-sm font-semibold ${textPrimary}`}>MydeenBot</h2>
+              <div className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <p className={`text-[10px] ${textSecondary}`}>Online</p>
+              </div>
             </div>
           </div>
-
-          {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4 scrollbar-thin">
-            {messages.map((msg, idx) => (
-              <div key={idx} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-[13px] leading-relaxed whitespace-pre-wrap ${
-                  msg.sender === "user" ? `${userMsgBg} rounded-br-sm` : `${botMsgBg} rounded-bl-sm`
-                }`}>
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-            {loading && (
-              <div className="flex justify-start">
-                <div className={`${botMsgBg} rounded-2xl rounded-bl-sm px-4 py-3 flex gap-1.5 shadow-sm`}>
-                  <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
-                  <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
-                  <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }} />
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Quick Actions / FAQs */}
-          {messages.length < 3 && !loading && (
-            <div className="px-4 pb-2 flex flex-wrap gap-2">
-              {QUICK_ACTIONS.map((action) => (
-                <button
-                  key={action}
-                  onClick={() => handleSend(action)}
-                  className={`text-[11px] font-medium px-3 py-1.5 rounded-full border transition-colors ${
-                    isDark 
-                      ? 'border-indigo-500/30 text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20' 
-                      : 'border-indigo-200 text-indigo-600 bg-indigo-50 hover:bg-indigo-100'
-                  }`}
-                >
-                  {action}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Input Area */}
-          <div className={`p-3 border-t ${inputContainerBg}`}>
-            <div className={`flex items-center gap-2 px-3 py-2 rounded-xl ${isDark ? 'bg-slate-900' : 'bg-slate-100'}`}>
-              <input
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && handleSend(input)}
-                placeholder="Type a message..."
-                className={`flex-1 outline-none text-sm bg-transparent ${textPrimary} placeholder-slate-400`}
-              />
-              <button
-                onClick={() => handleSend(input)}
-                disabled={!input.trim() || loading}
-                className={`p-1.5 rounded-lg transition-colors ${
-                  !input.trim() || loading 
-                    ? 'opacity-40 cursor-not-allowed text-slate-400' 
-                    : 'text-indigo-500 hover:bg-indigo-500/10'
-                }`}
-              >
-                <Send size={16} />
-              </button>
-            </div>
+          <div className="flex gap-1">
+            <button onClick={clearChat} className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-200'}`} title="Clear Chat">
+              <Trash2 size={14} className={isDark ? "text-slate-300" : "text-slate-600"} />
+            </button>
+            <button onClick={() => setOpen(false)} className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-200'}`}>
+              <X size={16} className={isDark ? "text-slate-300" : "text-slate-600"} />
+            </button>
           </div>
         </div>
-      )}
+
+        {/* Messages Area */}
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4 scrollbar-thin">
+          {messages.map((msg, idx) => (
+            <MessageItem key={idx} msg={msg} isDark={isDark} />
+          ))}
+          {loading && <LoadingIndicator isDark={isDark} />}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Quick Actions / FAQs */}
+        {messages.length < 3 && !loading && (
+          <QuickActions isDark={isDark} onActionClick={handleSend} />
+        )}
+
+        {/* Input Area */}
+        <div className={`p-3 border-t ${inputContainerBg}`}>
+          <div className={`flex items-center gap-2 px-3 py-2 rounded-xl ${isDark ? 'bg-slate-900' : 'bg-slate-100'}`}>
+            <input
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => e.key === "Enter" && handleSend(input)}
+              placeholder="Type a message..."
+              className={`flex-1 outline-none text-base sm:text-sm bg-transparent ${textPrimary} placeholder-slate-400`}
+            />
+            <button
+              onClick={() => handleSend(input)}
+              disabled={!input.trim() || loading}
+              className={`p-1.5 rounded-lg transition-colors ${
+                !input.trim() || loading 
+                  ? 'opacity-40 cursor-not-allowed text-slate-400' 
+                  : 'text-indigo-500 hover:bg-indigo-500/10'
+              }`}
+            >
+              <Send size={16} />
+            </button>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

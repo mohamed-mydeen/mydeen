@@ -14,6 +14,7 @@ export function useLenis() {
     });
 
     lenisRef.current = lenis;
+    (window as any).lenis = lenis;
 
     // RAF loop
     let rafId: number;
@@ -39,6 +40,9 @@ export function useLenis() {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      if ((window as any).lenis === lenis) {
+        (window as any).lenis = undefined;
+      }
       document.removeEventListener('click', handleAnchorClick);
     };
   }, []);

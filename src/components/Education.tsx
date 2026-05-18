@@ -10,13 +10,20 @@ const Education: React.FC = () => {
   const [internScrollProgress, setInternScrollProgress] = useState(0);
 
   useEffect(() => {
+    const lenis = (window as any).lenis;
     if (showCerts) {
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      if (lenis) lenis.stop();
     } else {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if (lenis) lenis.start();
     }
     return () => {
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if (lenis) lenis.start();
     };
   }, [showCerts]);
 
@@ -76,7 +83,7 @@ const Education: React.FC = () => {
       org: 'Francis Xavier Engineering College, Tamil Nadu',
       grade: 'CGPA: 7.81',
       desc: 'Pursuing a comprehensive CS degree with focus on software engineering, algorithms, AI, and database systems. Active in coding clubs and hackathons.',
-      highlights: ['Data Structures & Algorithms', 'Database Management Systems', 'AI & Machine Learning', 'Web Technologies'],
+      
     },
     {
       period: '2021 – 2023',
@@ -84,7 +91,7 @@ const Education: React.FC = () => {
       org: 'Time Matric Higher Secondary School',
       grade: 'Percentage: 83.17%',
       desc: 'Completed 12th grade with Computer Science major. Recognized as Best Student (2022–2023) for academic excellence.',
-      highlights: ['Computer Science', 'Mathematics', 'Best Student Award 2022–2023'],
+    
     },
   ];
 
@@ -141,39 +148,44 @@ const Education: React.FC = () => {
     switch (platform.toLowerCase()) {
       case 'nptel':
         return {
-          bg: 'bg-purple-50/60 dark:bg-purple-500/10',
-          text: 'text-purple-600 dark:text-purple-400',
-          border: 'border-purple-100/80 dark:border-purple-500/20',
-          glow: 'from-purple-500/5 to-indigo-500/5',
+          bg: 'bg-purple-500/10',
+          text: 'text-purple-400',
+          border: 'border-purple-500/20',
+          glow: 'from-purple-500/10 to-indigo-500/5',
+          indicator: 'bg-purple-400',
         };
       case 'linkedin learning':
         return {
-          bg: 'bg-blue-50/60 dark:bg-blue-500/10',
-          text: 'text-blue-600 dark:text-blue-400',
-          border: 'border-blue-100/80 dark:border-blue-500/20',
-          glow: 'from-blue-500/5 to-cyan-500/5',
+          bg: 'bg-blue-500/10',
+          text: 'text-blue-400',
+          border: 'border-blue-500/20',
+          glow: 'from-blue-500/10 to-cyan-500/5',
+          indicator: 'bg-blue-400',
         };
       case 'udemy':
         return {
-          bg: 'bg-rose-50/60 dark:bg-rose-500/10',
-          text: 'text-rose-600 dark:text-rose-400',
-          border: 'border-rose-100/80 dark:border-rose-500/20',
-          glow: 'from-rose-500/5 to-orange-500/5',
+          bg: 'bg-rose-500/10',
+          text: 'text-rose-400',
+          border: 'border-rose-500/20',
+          glow: 'from-rose-500/10 to-orange-500/5',
+          indicator: 'bg-rose-400',
         };
       case 'cisco networking academy':
       case 'cisco':
         return {
-          bg: 'bg-emerald-50/60 dark:bg-emerald-500/10',
-          text: 'text-emerald-600 dark:text-emerald-400',
-          border: 'border-emerald-100/80 dark:border-emerald-500/20',
-          glow: 'from-emerald-500/5 to-teal-500/5',
+          bg: 'bg-emerald-500/10',
+          text: 'text-emerald-400',
+          border: 'border-emerald-500/20',
+          glow: 'from-emerald-500/10 to-teal-500/5',
+          indicator: 'bg-emerald-400',
         };
       default:
         return {
-          bg: 'bg-slate-50/60 dark:bg-slate-800/60',
-          text: 'text-slate-600 dark:text-slate-400',
-          border: 'border-slate-100/80 dark:border-slate-800/40',
-          glow: 'from-slate-500/5 to-indigo-500/5',
+          bg: 'bg-slate-800/60',
+          text: 'text-slate-400',
+          border: 'border-slate-700/40',
+          glow: 'from-slate-500/10 to-indigo-500/5',
+          indicator: 'bg-slate-400',
         };
     }
   };
@@ -364,7 +376,7 @@ const Education: React.FC = () => {
           {/* Centered Premium MNC Button */}
           <button
             onClick={() => setShowCerts(true)}
-            className="group/btn inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-slate-50 border border-slate-200/80 rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-md transition-all duration-200 text-xs font-bold text-slate-700 dark:text-slate-800 whitespace-nowrap cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
+            className="group/btn inline-flex items-center gap-1.5 px-4 py-2 bg-white dark:bg-slate-900/60 hover:bg-slate-50 dark:hover:bg-slate-800/80 border border-slate-200/80 dark:border-slate-800 rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-md transition-all duration-200 text-xs font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
           >
             <Award size={13} className="text-amber-500" />
             <span>View Verified Credentials</span>
@@ -374,7 +386,7 @@ const Education: React.FC = () => {
           {/* Premium MNC-Standard Modal Popup */}
           {showCerts && (
             <div 
-              className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/40 backdrop-blur-md animate-[fadeIn_0.25s_ease-out]" 
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/65 backdrop-blur-xl animate-[fadeIn_0.25s_ease-out]" 
               onClick={() => setShowCerts(false)}
             >
               <style>{`
@@ -386,75 +398,74 @@ const Education: React.FC = () => {
               `}</style>
               
               <div 
-                className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl w-full max-w-xl max-h-[85vh] rounded-3xl border border-slate-100/50 dark:border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.12)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] relative animate-[popupModal_0.4s_cubic-bezier(0.16,1,0.3,1)] flex flex-col overflow-hidden" 
+                className="bg-[#090b11]/95 backdrop-blur-2xl w-full max-w-xl max-h-[85vh] rounded-3xl border border-slate-800/80 shadow-[0_24px_60px_rgba(0,0,0,0.85),_0_0_40px_rgba(139,92,246,0.15)] relative animate-[popupModal_0.4s_cubic-bezier(0.16,1,0.3,1)] flex flex-col overflow-hidden" 
                 onClick={e => e.stopPropagation()}
               >
                 {/* Modal Header */}
-                <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800/40 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/40">
+                <div className="px-6 py-5 border-b border-slate-800/60 flex items-center justify-between bg-slate-950/40">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-100/50 dark:border-amber-500/20">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 border border-amber-500/25">
                       <Award size={18} />
                     </div>
                     <div className="text-left">
-                      <h3 className="text-lg font-bold text-slate-800 dark:text-white font-['Space_Grotesk'] leading-none">
+                      <h3 className="text-lg font-bold text-white font-['Space_Grotesk'] leading-none">
                         Verified Credentials
                       </h3>
-                      <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1 font-medium">
+                      <p className="text-[10px] text-slate-400 mt-1.5 font-medium tracking-wide">
                         5 Qualifications Successfully Validated
                       </p>
                     </div>
                   </div>
                   <button 
                     onClick={() => setShowCerts(false)}
-                    className="p-1.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all duration-200"
+                    className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-all duration-200"
                   >
                     <X size={18} />
                   </button>
                 </div>
                 
                 {/* Scrollable Content */}
-                <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-5 scrollbar-none">
-                  <div className="divide-y divide-slate-100 dark:divide-slate-800/40">
-                    {certifications.map((cert, i) => {
-                      const styles = getPlatformStyles(cert.platform);
-                      return (
-                        <div
-                          key={i}
-                          className="py-3 px-3 flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/30 rounded-2xl transition-all duration-200 group text-left relative overflow-hidden"
-                        >
-                          {/* Very subtle hover gradient glow */}
-                          <div className={`absolute inset-0 bg-gradient-to-r ${styles.glow} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
+                <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-5 scrollbar-none space-y-2.5">
+                  {certifications.map((cert, i) => {
+                    const styles = getPlatformStyles(cert.platform);
+                    return (
+                      <div
+                        key={i}
+                        className="relative p-4 flex items-center justify-between gap-4 bg-slate-900/30 hover:bg-slate-900/70 border border-slate-800/40 hover:border-slate-700/60 rounded-2xl transition-all duration-300 group text-left overflow-hidden shadow-sm hover:shadow-md"
+                      >
+                        {/* Subtle hover gradient glow */}
+                        <div className={`absolute inset-0 bg-gradient-to-r ${styles.glow} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
 
-                          <div className="flex items-center gap-3.5 min-w-0 relative z-10">
-                            {/* Tiny elegant brand award badge */}
-                            <div className={`w-8.5 h-8.5 rounded-xl ${styles.bg} ${styles.text} flex items-center justify-center flex-shrink-0 border ${styles.border}`}>
-                              <Award size={15} className="group-hover:scale-110 transition-transform duration-300" />
-                            </div>
-                            
-                            <div className="min-w-0">
-                              <h4 className="font-bold text-slate-800 dark:text-white text-xs sm:text-sm leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
-                                {cert.name}
-                              </h4>
-                              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium mt-0.5 uppercase tracking-wide">
-                                {cert.platform}
-                              </p>
-                            </div>
+                        <div className="flex items-center gap-3.5 min-w-0 relative z-10">
+                          {/* Elegant brand award badge */}
+                          <div className={`w-9 h-9 rounded-xl ${styles.bg} ${styles.text} flex items-center justify-center flex-shrink-0 border ${styles.border} shadow-sm group-hover:scale-105 transition-transform duration-300`}>
+                            <Award size={16} className="group-hover:rotate-12 transition-transform duration-300" />
                           </div>
-
-                          <div className="flex items-center gap-2 flex-shrink-0 relative z-10">
-                            {cert.score && (
-                              <span className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100/50 dark:border-emerald-500/20 px-2 py-0.5 rounded-md">
-                                Score: {cert.score}
-                              </span>
-                            )}
-                            <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/30 px-2 py-0.5 rounded-md uppercase tracking-wide">
-                              Verified
-                            </span>
+                          
+                          <div className="min-w-0">
+                            <h4 className="font-bold text-slate-100 text-xs sm:text-sm leading-snug group-hover:text-white transition-colors duration-200">
+                              {cert.name}
+                            </h4>
+                            <p className="text-[10px] text-slate-400 font-semibold mt-1 uppercase tracking-wider flex items-center gap-1.5">
+                              <span className={`w-1.5 h-1.5 rounded-full ${styles.indicator}`} />
+                              {cert.platform}
+                            </p>
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
+
+                        <div className="flex items-center gap-2 flex-shrink-0 relative z-10">
+                          {cert.score && (
+                            <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded-md">
+                              Score: {cert.score}
+                            </span>
+                          )}
+                          <span className="text-[9px] font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-1 rounded-md uppercase tracking-wider">
+                            Verified
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>

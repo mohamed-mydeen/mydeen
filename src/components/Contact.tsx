@@ -103,19 +103,21 @@ const Contact: React.FC = () => {
     try {
       const options = { publicKey: EJS_PUBLIC_KEY };
 
-      // Send both emails in parallel
-      await Promise.all([
-        // 1️⃣ Notify YOU
-        emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, templateParams, options),
-        // 2️⃣ Auto-reply to VISITOR
-        emailjs.send(EJS_SERVICE_ID, EJS_AUTOREPLY_ID, templateParams, options),
-      ]);
+      // 1️⃣ Send the critical notification to YOU first
+      await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, templateParams, options);
+
+      // 2️⃣ Try sending the auto-reply to the visitor. If it fails, do NOT block the form success.
+      try {
+        await emailjs.send(EJS_SERVICE_ID, EJS_AUTOREPLY_ID, templateParams, options);
+      } catch (autoReplyErr) {
+        console.warn('Auto-reply failed to send, but notification was successful:', autoReplyErr);
+      }
 
       setSubmitSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (err) {
-      console.error('EmailJS error:', err);
+      console.error('Main notification email failed to send:', err);
       setSubmitError('Failed to send. Try WhatsApp below.');
       setTimeout(() => setSubmitError(null), 5000);
     } finally {

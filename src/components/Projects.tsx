@@ -208,8 +208,10 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
                 key={index}
                 className={`h-full relative transition-all duration-1000 transform ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
+                } card-3d`}
                 style={{ transitionDelay: `${index * 80}ms` }}
+                data-reveal
+                data-delay={String(index * 100)}
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-green-500/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none"></div>
                 

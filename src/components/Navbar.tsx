@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -110,13 +109,11 @@ const Navbar: React.FC = () => {
 
           {/* Right side (Desktop) */}
           <div className="hidden md:flex items-center gap-4">
-            <div className="w-px h-5 bg-slate-200 dark:bg-slate-700" />
-            <ThemeToggle />
+            {/* ThemeToggle option removed */}
           </div>
 
           {/* Mobile right (Toggle + Hamburger) */}
           <div className="flex md:hidden items-center gap-2 sm:gap-3 flex-shrink-0">
-            <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-slate-700 dark:text-slate-300 p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"

@@ -10,6 +10,10 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { ThemeProvider } from './context/ThemeContext';
 import Chatbot from './components/Chatbot';
+import GithubStats from './components/GithubStats';
+import ScrollProgress from './components/ScrollProgress';
+import { useLenis } from './hooks/useLenis';
+import { useReveal } from './hooks/useReveal';
 
 function ScrollToHash() {
   const { pathname, hash } = useLocation();
@@ -38,6 +42,7 @@ function HomePage() {
       <Projects limit={3} />
       <Skills/>
       <Education />
+      <GithubStats />
       <Contact />
       <Chatbot/>
     </>
@@ -52,24 +57,48 @@ function AllProjectsPage() {
   );
 }
 
+function AppInner() {
+  // Lenis smooth scroll
+  useLenis();
+  // Section reveal animations
+  useReveal('[data-reveal]');
+
+  useEffect(() => {
+    const preventCopy = (e: Event) => { e.preventDefault(); };
+    const preventCut = (e: Event) => { e.preventDefault(); };
+    document.addEventListener('copy', preventCopy);
+    document.addEventListener('cut', preventCut);
+    return () => {
+      document.removeEventListener('copy', preventCopy);
+      document.removeEventListener('cut', preventCut);
+    };
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 flex flex-col">
+      <ScrollProgress />
+      <Navbar />
+      <div className="flex-grow">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/projects" element={<AllProjectsPage />} />
+        </Routes>
+      </div>
+      <Footer />
+    </div>
+  );
+}
+
 function App() {
   return (
     <ThemeProvider>
       <Router>
         <ScrollToHash />
-        <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 flex flex-col">
-          <Navbar />
-          <div className="flex-grow">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/projects" element={<AllProjectsPage />} />
-            </Routes>
-          </div>
-          <Footer />
-        </div>
+        <AppInner />
       </Router>
     </ThemeProvider>
   );
 }
 
 export default App;
+

@@ -65,7 +65,7 @@ const Hero: React.FC = () => {
           }`}
         >
           {/* Left — Text Content */}
-          <div className="flex-1 text-center lg:text-left max-w-2xl">
+          <div className="flex-1 text-center lg:text-left max-w-2xl" data-reveal data-reveal-left>
             {/* Name */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-tight mb-3 font-['Space_Grotesk'] tracking-tight">
               Mohamed{' '}
@@ -74,7 +74,7 @@ const Hero: React.FC = () => {
               </span>
             </h1>
             <p className="sr-only">
-              Mohamed Mydeen (Ukasha), Full Stack Developer from Tamil Nadu, India
+              Mohamed Mydeen (Ukasha), Full Stack Developer from Tamil Nadu, India. Official Ukasha Website.
             </p>
 
             {/* Typing role */}
@@ -124,7 +124,7 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Right — Profile Image */}
-          <div className="flex-1 flex justify-center lg:justify-end w-full max-w-lg mx-auto">
+          <div className="flex-1 flex justify-center lg:justify-end w-full max-w-lg mx-auto" data-reveal data-reveal-right data-delay="200">
             <div className="relative group">
               <img
                 src="/my%20photo.png"

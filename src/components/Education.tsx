@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { GraduationCap, Briefcase, Award, BookOpen, ExternalLink, X } from 'lucide-react';
+import { GraduationCap, Briefcase, Award, BookOpen, ExternalLink, X, ArrowUpRight } from 'lucide-react';
 
 const Education: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -8,6 +8,17 @@ const Education: React.FC = () => {
   const [showCerts, setShowCerts] = useState(false);
   const [eduScrollProgress, setEduScrollProgress] = useState(0);
   const [internScrollProgress, setInternScrollProgress] = useState(0);
+
+  useEffect(() => {
+    if (showCerts) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showCerts]);
 
   useEffect(() => {
     // Reveal animation observer
@@ -79,6 +90,19 @@ const Education: React.FC = () => {
 
   const internships = [
     {
+      period: 'Remote (1 Month)',
+      title: 'Software Developer Intern',
+      org: 'Skill Software Inc, USA',
+      desc: 'Migrated legacy Selenium automation suites to Playwright (Python), improving test execution speed and reliability across internal project pipelines.',
+      highlights: [
+        'Migrated Selenium → Playwright (Python)',
+        'Improved test execution speed & reliability',
+        'Managed AWS cloud deployment workflows',
+        'Handled cloud resource configuration',
+      ],
+      tech: ['Python', 'Playwright', 'Selenium', 'AWS'],
+    },
+    {
       period: 'Jun – Jul 2024 (2 Months)',
       title: 'Full Stack Developer Intern',
       org: 'Asta Systech Pvt. Ltd, India',
@@ -103,19 +127,6 @@ const Education: React.FC = () => {
       ],
       tech: ['Python', 'Streamlit', 'MySQL', 'HTML', 'CSS'],
     },
-    {
-      period: 'Remote (1 Month)',
-      title: 'Software Developer Intern',
-      org: 'Skill Software Inc, USA',
-      desc: 'Migrated legacy Selenium automation suites to Playwright (Python), improving test execution speed and reliability across internal project pipelines.',
-      highlights: [
-        'Migrated Selenium → Playwright (Python)',
-        'Improved test execution speed & reliability',
-        'Managed AWS cloud deployment workflows',
-        'Handled cloud resource configuration',
-      ],
-      tech: ['Python', 'Playwright', 'Selenium', 'AWS'],
-    },
   ];
 
   const certifications = [
@@ -125,6 +136,47 @@ const Education: React.FC = () => {
     { name: 'Web Development and C Programming', platform: 'Udemy', score: null },
     { name: 'Python', platform: 'Cisco Networking Academy', score: null },
   ];
+
+  const getPlatformStyles = (platform: string) => {
+    switch (platform.toLowerCase()) {
+      case 'nptel':
+        return {
+          bg: 'bg-purple-50/60 dark:bg-purple-500/10',
+          text: 'text-purple-600 dark:text-purple-400',
+          border: 'border-purple-100/80 dark:border-purple-500/20',
+          glow: 'from-purple-500/5 to-indigo-500/5',
+        };
+      case 'linkedin learning':
+        return {
+          bg: 'bg-blue-50/60 dark:bg-blue-500/10',
+          text: 'text-blue-600 dark:text-blue-400',
+          border: 'border-blue-100/80 dark:border-blue-500/20',
+          glow: 'from-blue-500/5 to-cyan-500/5',
+        };
+      case 'udemy':
+        return {
+          bg: 'bg-rose-50/60 dark:bg-rose-500/10',
+          text: 'text-rose-600 dark:text-rose-400',
+          border: 'border-rose-100/80 dark:border-rose-500/20',
+          glow: 'from-rose-500/5 to-orange-500/5',
+        };
+      case 'cisco networking academy':
+      case 'cisco':
+        return {
+          bg: 'bg-emerald-50/60 dark:bg-emerald-500/10',
+          text: 'text-emerald-600 dark:text-emerald-400',
+          border: 'border-emerald-100/80 dark:border-emerald-500/20',
+          glow: 'from-emerald-500/5 to-teal-500/5',
+        };
+      default:
+        return {
+          bg: 'bg-slate-50/60 dark:bg-slate-800/60',
+          text: 'text-slate-600 dark:text-slate-400',
+          border: 'border-slate-100/80 dark:border-slate-800/40',
+          glow: 'from-slate-500/5 to-indigo-500/5',
+        };
+    }
+  };
 
   return (
     <section
@@ -296,75 +348,112 @@ const Education: React.FC = () => {
           </div>
         </div>
 
-        {/* Certifications */}
-        <div>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h3 className="flex items-center gap-2 text-xl font-bold text-slate-800 dark:text-white font-['Space_Grotesk']">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white shadow-lg shadow-amber-500/30">
-                <Award size={16} />
-              </div>
-              Certifications
-            </h3>
-            
-            <button
-              onClick={() => setShowCerts(true)}
-              className="btn-primary"
-            >
-              <Award size={16} />
-              View All Certifications
-            </button>
+        {/* Certifications Centered Compact Section */}
+        <div className="mt-16 pt-12 border-t border-slate-100 dark:border-slate-800/40 text-center">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-semibold uppercase tracking-wider mb-4 border border-amber-100/50 dark:border-amber-500/20">
+            <Award size={12} />
+            Professional Credentials
           </div>
+          <h3 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white font-['Space_Grotesk'] tracking-tight mb-3">
+            Certifications & Badges
+          </h3>
+          <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto text-sm mb-6 leading-relaxed">
+            Verified academic credentials, programming specializations, and professional course completions.
+          </p>
+          
+          {/* Centered Premium MNC Button */}
+          <button
+            onClick={() => setShowCerts(true)}
+            className="group/btn inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-slate-50 border border-slate-200/80 rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-md transition-all duration-200 text-xs font-bold text-slate-700 dark:text-slate-800 whitespace-nowrap cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
+          >
+            <Award size={13} className="text-amber-500" />
+            <span>View Verified Credentials</span>
+            <ArrowUpRight size={13} className="text-slate-400 group-hover/btn:text-slate-600 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200" />
+          </button>
 
-          {/* Modal Popup */}
+          {/* Premium MNC-Standard Modal Popup */}
           {showCerts && (
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-[fadeIn_0.3s_ease-out]" onClick={() => setShowCerts(false)}>
+            <div 
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/40 backdrop-blur-md animate-[fadeIn_0.25s_ease-out]" 
+              onClick={() => setShowCerts(false)}
+            >
               <style>{`
                 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
                 @keyframes popupModal { 
-                  0% { opacity: 0; transform: scale(0.95) translateY(20px); } 
+                  0% { opacity: 0; transform: scale(0.96) translateY(15px); } 
                   100% { opacity: 1; transform: scale(1) translateY(0); } 
                 }
               `}</style>
-              <div className="glass-card w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-2xl relative animate-[popupModal_0.5s_cubic-bezier(0.16,1,0.3,1)]" onClick={e => e.stopPropagation()}>
-                <div className="sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-6 py-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between z-10">
-                  <h3 className="text-lg font-bold text-slate-800 dark:text-white font-['Space_Grotesk']">
-                    My Certifications
-                  </h3>
+              
+              <div 
+                className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl w-full max-w-xl max-h-[85vh] rounded-3xl border border-slate-100/50 dark:border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.12)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.4)] relative animate-[popupModal_0.4s_cubic-bezier(0.16,1,0.3,1)] flex flex-col overflow-hidden" 
+                onClick={e => e.stopPropagation()}
+              >
+                {/* Modal Header */}
+                <div className="px-6 py-5 border-b border-slate-100 dark:border-slate-800/40 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/40">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-100/50 dark:border-amber-500/20">
+                      <Award size={18} />
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-lg font-bold text-slate-800 dark:text-white font-['Space_Grotesk'] leading-none">
+                        Verified Credentials
+                      </h3>
+                      <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1 font-medium">
+                        5 Qualifications Successfully Validated
+                      </p>
+                    </div>
+                  </div>
                   <button 
                     onClick={() => setShowCerts(false)}
-                    className="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-all duration-200"
                   >
-                    <X size={20} />
+                    <X size={18} />
                   </button>
                 </div>
                 
-                <div className="p-2 sm:p-4">
-                  <div className="divide-y divide-slate-200 dark:divide-white/5">
-                    {certifications.map((cert, i) => (
-                      <div
-                        key={i}
-                        className="p-4 flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-white/5 group transition-colors rounded-xl"
-                      >
-                        <div className="flex items-center gap-4 min-w-0">
-                          <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 flex-shrink-0 group-hover:text-amber-500 group-hover:bg-amber-50 dark:group-hover:bg-amber-500/10 transition-colors">
-                            <Award size={18} />
+                {/* Scrollable Content */}
+                <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-5 scrollbar-none">
+                  <div className="divide-y divide-slate-100 dark:divide-slate-800/40">
+                    {certifications.map((cert, i) => {
+                      const styles = getPlatformStyles(cert.platform);
+                      return (
+                        <div
+                          key={i}
+                          className="py-3 px-3 flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/30 rounded-2xl transition-all duration-200 group text-left relative overflow-hidden"
+                        >
+                          {/* Very subtle hover gradient glow */}
+                          <div className={`absolute inset-0 bg-gradient-to-r ${styles.glow} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
+
+                          <div className="flex items-center gap-3.5 min-w-0 relative z-10">
+                            {/* Tiny elegant brand award badge */}
+                            <div className={`w-8.5 h-8.5 rounded-xl ${styles.bg} ${styles.text} flex items-center justify-center flex-shrink-0 border ${styles.border}`}>
+                              <Award size={15} className="group-hover:scale-110 transition-transform duration-300" />
+                            </div>
+                            
+                            <div className="min-w-0">
+                              <h4 className="font-bold text-slate-800 dark:text-white text-xs sm:text-sm leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">
+                                {cert.name}
+                              </h4>
+                              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-medium mt-0.5 uppercase tracking-wide">
+                                {cert.platform}
+                              </p>
+                            </div>
                           </div>
-                          <div className="min-w-0">
-                            <p className="font-semibold text-sm sm:text-base text-slate-800 dark:text-white truncate">
-                              {cert.name}
-                            </p>
-                            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-                              {cert.platform}
-                            </p>
+
+                          <div className="flex items-center gap-2 flex-shrink-0 relative z-10">
+                            {cert.score && (
+                              <span className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100/50 dark:border-emerald-500/20 px-2 py-0.5 rounded-md">
+                                Score: {cert.score}
+                              </span>
+                            )}
+                            <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/30 px-2 py-0.5 rounded-md uppercase tracking-wide">
+                              Verified
+                            </span>
                           </div>
                         </div>
-                        {cert.score && (
-                          <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2.5 py-1 rounded-md flex-shrink-0">
-                            {cert.score}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </div>

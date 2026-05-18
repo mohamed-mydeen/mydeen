@@ -1,8 +1,22 @@
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import {
-  Send, Phone, Mail, MapPin, Github, Linkedin, MessageCircle,
-  CheckCircle, Timer, Loader2, Sparkles, Globe
+  Send, Mail, Phone, Github, Linkedin,
+  CheckCircle, Loader2, Sparkles, Globe, MessageCircle, ArrowUpRight, AlertCircle
 } from 'lucide-react';
+
+// ── EmailJS Configuration ──────────────────────────────────
+// 1. Create a free account at https://www.emailjs.com
+// 2. Add your Gmail as an Email Service  →  copy Service ID
+// 3. Create a template (use variables: {{from_name}}, {{from_email}}, {{subject}}, {{message}})
+//    →  copy Template ID
+// 4. Go to Account → copy Public Key
+// 5. Credentials are stored in .env file (never committed to git)
+const EJS_SERVICE_ID   = import.meta.env.VITE_EJS_SERVICE_ID  as string;
+const EJS_TEMPLATE_ID  = import.meta.env.VITE_EJS_TEMPLATE_ID as string;
+const EJS_AUTOREPLY_ID = import.meta.env.VITE_EJS_AUTOREPLY_ID as string;
+const EJS_PUBLIC_KEY   = import.meta.env.VITE_EJS_PUBLIC_KEY  as string;
+// ──────────────────────────────────────────────────────────
 
 interface FormState {
   name: string;
@@ -18,11 +32,41 @@ interface FormErrors {
   message?: string;
 }
 
+const CONTACT_INFO = [
+  {
+    icon: <Mail size={14} />,
+    label: 'Email',
+    value: 'mohamedmydeen.sd@gmail.com',
+    href: 'mailto:mohamedmydeen.sd@gmail.com',
+    color: 'bg-indigo-50 text-indigo-600 border-indigo-100/50',
+  },
+  {
+    icon: <Phone size={14} />,
+    value: '+91 93449 90461',
+    label: 'Phone',
+    href: 'tel:+919344990461',
+    color: 'bg-violet-50 text-violet-600 border-violet-100/50',
+  },
+  {
+    icon: <Globe size={14} />,
+    value: 'Tamil Nadu, India',
+    label: 'Location',
+    href: undefined,
+    color: 'bg-emerald-50 text-emerald-600 border-emerald-100/50',
+  },
+];
+
+const SOCIAL = [
+  { icon: <Github size={15} />, href: 'https://github.com/mohamed-mydeen', label: 'GitHub' },
+  { icon: <Linkedin size={15} />, href: 'https://linkedin.com/in/mohamed-mydeen4262', label: 'LinkedIn' },
+];
+
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState<FormState>({ name: '', email: '', subject: '', message: '' });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -34,218 +78,292 @@ const Contact: React.FC = () => {
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Enter a valid email';
-    if (!formData.subject.trim()) newErrors.subject = 'Subject is required';
-    if (!formData.message.trim()) newErrors.message = 'Message is required';
-    else if (formData.message.length < 10) newErrors.message = 'At least 10 characters';
+    if (!formData.name.trim()) newErrors.name = 'Required';
+    if (!formData.email.trim()) newErrors.email = 'Required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Invalid email';
+    if (!formData.subject.trim()) newErrors.subject = 'Required';
+    if (!formData.message.trim()) newErrors.message = 'Required';
+    else if (formData.message.length < 10) newErrors.message = 'Min 10 characters';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateForm()) return;
     setIsSubmitting(true);
-    const msg = `New Contact Message 🚀\nName: ${formData.name}\nEmail: ${formData.email}\nSubject: ${formData.subject}\nMessage:\n${formData.message}`;
-    setTimeout(() => {
-      window.open(`https://wa.me/919344990461?text=${encodeURIComponent(msg)}`, '_blank');
-      setIsSubmitting(false);
+    setSubmitError(null);
+
+    const templateParams = {
+      from_name:  formData.name,
+      from_email: formData.email,
+      subject:    formData.subject,
+      message:    formData.message,
+      reply_to:   formData.email,
+    };
+
+    try {
+      // Send both emails in parallel
+      await Promise.all([
+        // 1️⃣ Notify YOU
+        emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, templateParams, EJS_PUBLIC_KEY),
+        // 2️⃣ Auto-reply to VISITOR
+        emailjs.send(EJS_SERVICE_ID, EJS_AUTOREPLY_ID, templateParams, EJS_PUBLIC_KEY),
+      ]);
+
       setSubmitSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSubmitSuccess(false), 6000);
-    }, 800);
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      setSubmitError('Failed to send. Try WhatsApp below.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
+  const inputBase =
+    'w-full px-3 py-2.5 rounded-xl border text-sm font-medium bg-white dark:bg-slate-900/60 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all duration-200 outline-none focus:ring-2 focus:ring-indigo-500/25 focus:border-indigo-400 dark:focus:border-indigo-500/50';
   const inputClass = (field: keyof FormErrors) =>
-    `w-full px-4 py-3.5 rounded-xl border text-sm font-medium transition-all duration-300
-    bg-white/80 dark:bg-slate-900/40 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
-    focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500/50
-    ${errors[field]
-      ? 'border-red-400 dark:border-red-500/50 ring-2 ring-red-500/10'
-      : 'border-slate-200 dark:border-white/5 hover:border-indigo-300 dark:hover:border-indigo-500/30'
-    }`;
+    `${inputBase} ${errors[field]
+      ? 'border-red-400 ring-2 ring-red-400/20'
+      : 'border-slate-200 dark:border-white/8 hover:border-slate-300 dark:hover:border-white/15'}`;
 
   return (
-    <section id="contact" className="pt-12 pb-20 bg-white dark:bg-[#0a0a0f] relative overflow-hidden transition-colors duration-500">
-      {/* Dynamic Background Elements */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-500/5 dark:bg-emerald-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
+    <section
+      id="contact"
+      className="py-14 bg-white dark:bg-[#0a0a0f] relative overflow-hidden transition-colors duration-500"
+    >
+      {/* Subtle ambient blobs */}
+      <div className="absolute top-0 right-0 w-[360px] h-[360px] bg-indigo-500/5 dark:bg-indigo-500/8 rounded-full blur-[100px] -translate-y-1/3 translate-x-1/3 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[280px] h-[280px] bg-emerald-500/5 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/3 pointer-events-none" />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl relative z-10">
-        
-        {/* Modern Header Design */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 mb-6">
-            <Sparkles size={14} className="text-indigo-600 dark:text-indigo-400" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-700 dark:text-indigo-400">Available for Work</span>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl relative z-10">
+
+        {/* ── Section Header ── */}
+        <div className="text-center mb-10" data-reveal>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 mb-4">
+            <Sparkles size={11} className="text-indigo-600 dark:text-indigo-400" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-indigo-700 dark:text-indigo-400">Available for Work</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 font-['Space_Grotesk'] tracking-tight">
-            Let's Start a <span className="text-indigo-600 dark:text-indigo-400">Conversation</span>
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk'] tracking-tight mb-3">
+            Let's Build Something <span className="text-indigo-600 dark:text-indigo-400">Together</span>
           </h2>
-          <div className="w-16 h-1.5 bg-indigo-600 dark:bg-indigo-500 rounded-full mx-auto" />
+          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+            Open to internships, freelance projects, and full-time opportunities.
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8 items-stretch">
-          
-          {/* Left Column: Contact Sidebar */}
-          <div className="lg:col-span-4 space-y-6">
-            
-            {/* Quick Contact Card */}
-            <div className="glass-card p-8 border border-slate-200 dark:border-white/5 rounded-3xl bg-white/50 dark:bg-slate-900/30 backdrop-blur-xl group hover:shadow-2xl hover:shadow-indigo-500/5 transition-all duration-500">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2 font-['Space_Grotesk']">
-                Contact Details
-              </h3>
-              
-              <div className="space-y-6">
-                {[
-                  { icon: <Mail size={18} />, label: 'Email Me', value: 'mohamedmydeen.sd@gmail.com', href: 'mailto:mohamedmydeen.sd@gmail.com', color: 'text-indigo-500' },
-                  { icon: <Phone size={18} />, label: 'Call Me', value: '+91 93449 90461', href: 'tel:+919344990461', color: 'text-violet-500' },
-                  { icon: <Globe size={18} />, label: 'Location', value: 'Tamil Nadu, India', color: 'text-emerald-500' }
-                ].map((item, i) => (
-                  <div key={i} className="group/item">
-                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">{item.label}</p>
-                    {item.href ? (
-                      <a href={item.href} className="flex items-center gap-3 text-slate-700 dark:text-slate-200 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
-                        <div className={`w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center justify-center ${item.color} group-hover/item:scale-110 transition-transform`}>
-                          {item.icon}
-                        </div>
-                        <span className="text-sm font-medium truncate">{item.value}</span>
-                      </a>
-                    ) : (
-                      <div className="flex items-center gap-3 text-slate-700 dark:text-slate-200">
-                        <div className={`w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center justify-center ${item.color}`}>
-                          {item.icon}
-                        </div>
-                        <span className="text-sm font-medium">{item.value}</span>
-                      </div>
+        {/* ── Content Grid ── */}
+        <div className="grid lg:grid-cols-5 gap-6 items-start">
+
+          {/* Left: Contact Sidebar */}
+          <div
+            className="lg:col-span-2 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 rounded-2xl p-5 shadow-[0_2px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] transition-shadow duration-300 card-3d"
+            data-reveal data-reveal-left data-delay="100"
+          >
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4">
+              Direct Contact
+            </p>
+
+            {/* Contact rows */}
+            <div className="space-y-3 mb-5">
+              {CONTACT_INFO.map((item, i) => {
+                const content = (
+                  <div className="flex items-center gap-3 group/row">
+                    <div className={`w-7 h-7 rounded-lg border flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover/row:scale-105 ${item.color}`}>
+                      {item.icon}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[9px] text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-wider leading-none mb-0.5">{item.label}</p>
+                      <p className="text-xs font-semibold text-slate-700 dark:text-slate-200 truncate">{item.value}</p>
+                    </div>
+                    {item.href && (
+                      <ArrowUpRight size={12} className="ml-auto text-slate-300 dark:text-slate-600 group-hover/row:text-indigo-500 transition-colors duration-200 flex-shrink-0" />
                     )}
                   </div>
+                );
+                return item.href ? (
+                  <a key={i} href={item.href} className="block hover:bg-slate-50 dark:hover:bg-white/3 rounded-xl px-2 py-1.5 -mx-2 transition-colors duration-200">
+                    {content}
+                  </a>
+                ) : (
+                  <div key={i} className="px-2 py-1.5">{content}</div>
+                );
+              })}
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-slate-100 dark:border-white/5 pt-4">
+              <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-3">Socials</p>
+              <div className="flex gap-2">
+                {SOCIAL.map((s, i) => (
+                  <a
+                    key={i}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-indigo-500 hover:text-white hover:border-indigo-500 transition-all duration-200"
+                  >
+                    {s.icon}
+                  </a>
                 ))}
               </div>
-
-              {/* Social Links Sub-Panel */}
-              <div className="mt-10 pt-8 border-t border-slate-200 dark:border-white/5">
-                <div className="flex gap-3">
-                  {[
-                    { icon: <Github size={18} />, href: 'https://github.com/mohamed-mydeen' },
-                    { icon: <Linkedin size={18} />, href: 'https://linkedin.com/in/mohamed-mydeen4262' }
-                  ].map((s, i) => (
-                    <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" 
-                      className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-indigo-500 hover:text-white transition-all shadow-sm">
-                      {s.icon}
-                    </a>
-                  ))}
-                </div>
-              </div>
             </div>
 
+            {/* Availability badge */}
+            <div className="mt-5 flex items-center gap-2 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-xl px-3 py-2.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
+              <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400">Available · Responds within 24h</p>
+            </div>
           </div>
 
-          {/* Right Column: Premium Form Card */}
-          <div className="lg:col-span-8">
-            <div className="glass-card p-8 sm:p-10 border border-slate-200 dark:border-white/5 rounded-[2rem] bg-white dark:bg-slate-900/40 shadow-2xl relative">
-              <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk']">
-                  Send a Message
-                </h3>
-                {submitSuccess && (
-                  <div className="flex items-center gap-2 px-3 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full border border-emerald-100 dark:border-emerald-500/20">
-                    <CheckCircle size={14} /> Sent Successfully
-                  </div>
-                )}
+          {/* Right: Form */}
+          <div
+            className="lg:col-span-3 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 rounded-2xl p-5 sm:p-6 shadow-[0_2px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] transition-shadow duration-300 card-3d"
+            data-reveal data-reveal-right data-delay="200"
+          >
+            {/* Form header */}
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h3 className="text-base font-bold text-slate-900 dark:text-white font-['Space_Grotesk']">Send a Message</h3>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">Fill the form below — I'll get back ASAP.</p>
               </div>
-
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 ml-1">Full Name</label>
-                    <input
-                      type="text" name="name"
-                      value={formData.name} onChange={handleChange}
-                      className={inputClass('name')}
-                      placeholder="Enter your name"
-                    />
-                    {errors.name && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.name}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-slate-500 dark:text-slate-400 ml-1">Email Address</label>
-                    <input
-                      type="email" name="email"
-                      value={formData.email} onChange={handleChange}
-                      className={inputClass('email')}
-                      placeholder="hello@example.com"
-                    />
-                    {errors.email && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.email}</p>}
-                  </div>
+              {submitSuccess && (
+                <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold rounded-full border border-emerald-100 dark:border-emerald-500/20 flex-shrink-0">
+                  <CheckCircle size={11} />
+                  <span>Sent!</span>
                 </div>
+              )}
+            </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 ml-1">Subject</label>
+            {/* Form Fields */}
+            <div className="space-y-3.5">
+              {/* Row: Name + Email */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 ml-0.5">
+                    Full Name
+                  </label>
                   <input
-                    type="text" name="subject"
-                    value={formData.subject} onChange={handleChange}
-                    className={inputClass('subject')}
-                    placeholder="What's this about?"
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={inputClass('name')}
+                    placeholder="Your name"
+                    autoComplete="name"
                   />
-                  {errors.subject && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.subject}</p>}
+                  {errors.name && <p className="text-[9px] text-red-500 font-bold mt-1 ml-0.5">{errors.name}</p>}
                 </div>
-
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 ml-1">Message</label>
-                  <textarea
-                    name="message"
-                    value={formData.message} onChange={handleChange}
-                    rows={4}
-                    className={inputClass('message')}
-                    placeholder="Tell me more about your project..."
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 ml-0.5">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={inputClass('email')}
+                    placeholder="you@example.com"
+                    autoComplete="email"
                   />
-                  {errors.message && <p className="text-[10px] text-red-500 font-bold ml-1">{errors.message}</p>}
+                  {errors.email && <p className="text-[9px] text-red-500 font-bold mt-1 ml-0.5">{errors.email}</p>}
                 </div>
+              </div>
 
-                <div className="pt-4">
-                  <button
-                    onClick={handleSubmit}
-                    disabled={isSubmitting}
-                    className="group relative w-full overflow-hidden rounded-2xl bg-slate-900 dark:bg-white px-8 py-4 font-bold text-white dark:text-slate-900 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
-                  >
-                    {/* Animated Gradient Background */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-[length:200%_auto] opacity-0 transition-opacity duration-300 group-hover:opacity-100 animate-gradient text-white" />
-                    
-                    <div className="relative flex items-center justify-center gap-3">
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 size={20} className="animate-spin" />
-                          <span>Initializing WhatsApp...</span>
-                        </>
-                      ) : (
-                        <>
-                          <MessageCircle size={20} />
-                          <span>Submit via WhatsApp</span>
-                          <Send size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                        </>
-                      )}
-                    </div>
-                  </button>
-                  <p className="text-center text-[10px] text-slate-400 mt-4 font-medium uppercase tracking-widest">
-                    Direct response within 24 hours
-                  </p>
+              {/* Subject */}
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 ml-0.5">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  className={inputClass('subject')}
+                  placeholder="What's this about?"
+                />
+                {errors.subject && <p className="text-[9px] text-red-500 font-bold mt-1 ml-0.5">{errors.subject}</p>}
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 ml-0.5">
+                  Message
+                </label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={3}
+                  className={`${inputClass('message')} resize-none`}
+                  placeholder="Share your project idea or opportunity..."
+                />
+                {errors.message && <p className="text-[9px] text-red-500 font-bold mt-1 ml-0.5">{errors.message}</p>}
+              </div>
+
+              {/* Submit Button */}
+              <button
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="group relative w-full overflow-hidden rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm px-5 py-3 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_20px_rgba(99,102,241,0.25)]"
+              >
+                {/* Gradient shimmer on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-[length:200%_auto] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient" />
+
+                <div className="relative flex items-center justify-center gap-2">
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 size={15} className="animate-spin" />
+                      <span>Sending...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Mail size={15} />
+                      <span>Send Email</span>
+                      <Send size={13} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </>
+                  )}
                 </div>
+              </button>
+
+              {/* Error Message */}
+              {submitError && (
+                <div className="flex items-center gap-2 text-[11px] text-red-500 font-semibold bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 rounded-lg px-3 py-2">
+                  <AlertCircle size={13} />
+                  {submitError}
+                </div>
+              )}
+
+              {/* Secondary WhatsApp fallback */}
+              <div className="flex items-center justify-center gap-2 mt-1">
+                <span className="text-[10px] text-slate-400">Or reach out directly via</span>
+                <a
+                  href={`https://wa.me/919344990461`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 transition-colors"
+                >
+                  <MessageCircle size={11} />
+                  WhatsApp
+                </a>
               </div>
             </div>
           </div>
+
         </div>
       </div>
-      
+
       <style>{`
         @keyframes gradient {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
-        .animate-gradient {
-          animation: gradient 3s linear infinite;
-        }
+        .animate-gradient { animation: gradient 3s linear infinite; }
       `}</style>
     </section>
   );

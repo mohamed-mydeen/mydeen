@@ -107,7 +107,7 @@ const Skills = () => {
       <div className="container mx-auto px-4 relative z-10 max-w-6xl">
         {/* Header - Hacker Style */}
         <div className="text-center mb-12">
-          <div className={`transition-all duration-1000 transform ${
+          <div data-reveal className={`transition-all duration-1000 transform ${
             isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
           }`}>
             <div className="inline-block mb-2">

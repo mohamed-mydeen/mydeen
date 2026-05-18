@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
-import { Send, X, MessageCircle, Moon, Sun, Trash2 } from "lucide-react";
+import { Send, X, MessageCircle, Trash2 } from "lucide-react";
 
 type Sender = "user" | "bot";
 
@@ -19,7 +19,7 @@ const Chatbot: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [darkMode, setDarkMode] = useState<boolean>(true); // Default to dark for premium look
+  const [darkMode, setDarkMode] = useState<boolean>(false); // Default to light mode to match the portfolio lock
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: "bot",
@@ -27,6 +27,17 @@ const Chatbot: React.FC = () => {
     }
   ]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
 
   const faqs: FAQ[] = useMemo(
     () => [
@@ -205,9 +216,6 @@ const Chatbot: React.FC = () => {
               </div>
             </div>
             <div className="flex gap-1">
-              <button onClick={() => setDarkMode(!isDark)} className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-200'}`} title="Toggle Theme">
-                {isDark ? <Sun size={14} className="text-slate-300" /> : <Moon size={14} className="text-slate-600" />}
-              </button>
               <button onClick={clearChat} className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-200'}`} title="Clear Chat">
                 <Trash2 size={14} className={isDark ? "text-slate-300" : "text-slate-600"} />
               </button>
@@ -218,7 +226,7 @@ const Chatbot: React.FC = () => {
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-thin">
+          <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4 scrollbar-thin">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-[13px] leading-relaxed whitespace-pre-wrap ${

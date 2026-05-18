@@ -11,11 +11,11 @@ import {
 // 3. Create a template (use variables: {{from_name}}, {{from_email}}, {{subject}}, {{message}})
 //    →  copy Template ID
 // 4. Go to Account → copy Public Key
-// 5. Credentials are stored in .env file (never committed to git)
-const EJS_SERVICE_ID   = import.meta.env.VITE_EJS_SERVICE_ID  as string;
-const EJS_TEMPLATE_ID  = import.meta.env.VITE_EJS_TEMPLATE_ID as string;
-const EJS_AUTOREPLY_ID = import.meta.env.VITE_EJS_AUTOREPLY_ID as string;
-const EJS_PUBLIC_KEY   = import.meta.env.VITE_EJS_PUBLIC_KEY  as string;
+// 5. Credentials with robust hardcoded fallbacks so it works out-of-the-box on both local and production
+const EJS_SERVICE_ID   = (import.meta.env.VITE_EJS_SERVICE_ID  as string) || 'service_aveslul';
+const EJS_TEMPLATE_ID  = (import.meta.env.VITE_EJS_TEMPLATE_ID as string) || 'template_rtifeix';
+const EJS_AUTOREPLY_ID = (import.meta.env.VITE_EJS_AUTOREPLY_ID as string) || 'template_62nz397';
+const EJS_PUBLIC_KEY   = (import.meta.env.VITE_EJS_PUBLIC_KEY  as string) || 'QCZofzW70x9iVLTjq';
 // ──────────────────────────────────────────────────────────
 
 interface FormState {
@@ -100,22 +100,24 @@ const Contact: React.FC = () => {
       message:    formData.message,
       reply_to:   formData.email,
     };
-
     try {
+      const options = { publicKey: EJS_PUBLIC_KEY };
+
       // Send both emails in parallel
       await Promise.all([
         // 1️⃣ Notify YOU
-        emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, templateParams, EJS_PUBLIC_KEY),
+        emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, templateParams, options),
         // 2️⃣ Auto-reply to VISITOR
-        emailjs.send(EJS_SERVICE_ID, EJS_AUTOREPLY_ID, templateParams, EJS_PUBLIC_KEY),
+        emailjs.send(EJS_SERVICE_ID, EJS_AUTOREPLY_ID, templateParams, options),
       ]);
 
       setSubmitSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
-      setTimeout(() => setSubmitSuccess(false), 6000);
+      setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (err) {
       console.error('EmailJS error:', err);
       setSubmitError('Failed to send. Try WhatsApp below.');
+      setTimeout(() => setSubmitError(null), 5000);
     } finally {
       setIsSubmitting(false);
     }
@@ -307,23 +309,45 @@ const Contact: React.FC = () => {
 
               {/* Submit Button */}
               <button
+                type="button"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="group relative w-full overflow-hidden rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm px-5 py-3 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_20px_rgba(99,102,241,0.25)]"
+                className={`group relative w-full overflow-hidden rounded-xl font-bold text-sm px-5 py-3 transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed cursor-pointer z-10
+                  ${submitSuccess
+                    ? 'bg-emerald-600 dark:bg-emerald-500 text-white shadow-[0_4px_12px_rgba(16,185,129,0.25)]'
+                    : submitError
+                    ? 'bg-rose-600 dark:bg-rose-500 text-white shadow-[0_4px_12px_rgba(244,63,94,0.25)]'
+                    : isSubmitting
+                    ? 'bg-slate-800 dark:bg-slate-700 text-white/80'
+                    : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_20px_rgba(99,102,241,0.25)]'
+                  }
+                `}
               >
-                {/* Gradient shimmer on hover */}
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-[length:200%_auto] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient" />
+                {/* Gradient shimmer on hover (Only in default state) */}
+                {!isSubmitting && !submitSuccess && !submitError && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-[length:200%_auto] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient pointer-events-none" />
+                )}
 
-                <div className="relative flex items-center justify-center gap-2">
-                  {isSubmitting ? (
+                <div className="relative flex items-center justify-center gap-2 pointer-events-none">
+                  {submitSuccess ? (
+                    <div className="flex items-center gap-2 animate-scaleUp">
+                      <CheckCircle size={15} />
+                      <span>Message Sent Successfully!</span>
+                    </div>
+                  ) : submitError ? (
+                    <div className="flex items-center gap-2 animate-shake">
+                      <AlertCircle size={15} />
+                      <span>Failed to Send. Retry?</span>
+                    </div>
+                  ) : isSubmitting ? (
                     <>
                       <Loader2 size={15} className="animate-spin" />
-                      <span>Sending...</span>
+                      <span>Sending Message...</span>
                     </>
                   ) : (
                     <>
                       <Mail size={15} />
-                      <span>Send Email</span>
+                      <span>Send Message</span>
                       <Send size={13} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </>
                   )}
@@ -363,7 +387,19 @@ const Contact: React.FC = () => {
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
+        @keyframes scaleUp {
+          0% { transform: scale(0.95); opacity: 0; }
+          70% { transform: scale(1.02); opacity: 0.9; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          20%, 60% { transform: translateX(-4px); }
+          40%, 80% { transform: translateX(4px); }
+        }
         .animate-gradient { animation: gradient 3s linear infinite; }
+        .animate-scaleUp { animation: scaleUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        .animate-shake { animation: shake 0.4s ease-in-out; }
       `}</style>
     </section>
   );

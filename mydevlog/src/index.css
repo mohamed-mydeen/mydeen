@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base Reset ───────────────────────────────────────────── */
+@layer base {
+  :root {
+    --nav-height: 64px;
+    --reading-width: 720px;
+    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: auto; /* Lenis handles smooth scroll */
+  }
+
+  body {
+    @apply bg-white text-slate-900 font-sans;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body {
+    @apply bg-ink-950 text-slate-100;
+  }
+
+  ::selection {
+    @apply bg-indigo-100 text-indigo-900;
+  }
+
+  .dark ::selection {
+    @apply bg-indigo-900/50 text-indigo-100;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full; }
+  .dark ::-webkit-scrollbar-thumb { @apply bg-slate-700; }
+}
+
+/* ── Utility Classes ──────────────────────────────────────── */
+@layer utilities {
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20;
+  }
+  .dark .glass {
+    @apply bg-ink-900/60 border-white/10;
+  }
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-lg border border-slate-200/60 shadow-[0_4px_24px_rgba(0,0,0,0.04)];
+  }
+  .dark .glass-card {
+    @apply bg-ink-900/70 border-white/10;
+  }
+  .text-gradient {
+    @apply bg-gradient-to-br from-slate-900 via-slate-800 to-slate-600 bg-clip-text text-transparent;
+  }
+  .dark .text-gradient {
+    @apply from-white via-slate-200 to-slate-400;
+  }
+  .reading-width { max-width: var(--reading-width); }
+  .noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+}
+
+/* ── Prose overrides ──────────────────────────────────────── */
+.prose h2 { @apply font-display font-bold tracking-tight text-2xl mt-12 mb-4; }
+.prose h3 { @apply font-display font-semibold text-xl mt-8 mb-3; }
+.prose pre { @apply rounded-xl border border-slate-200 dark:border-white/10 text-sm; }
+.prose code:not(pre code) {
+  @apply bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300 px-1.5 py-0.5 rounded-md text-[0.875em] font-mono;
+}
+.prose blockquote {
+  @apply border-l-4 border-indigo-400 bg-indigo-50/60 dark:bg-indigo-950/20 px-6 py-1 rounded-r-xl not-italic;
+}
+.prose blockquote p { @apply text-slate-700 dark:text-slate-300; }
+
+/* ── Reading Progress Bar ─────────────────────────────────── */
+.reading-progress-bar {
+  @apply fixed top-0 left-0 h-0.5 bg-gradient-to-r from-indigo-500 to-violet-500 z-50;
+  transform-origin: left center;
+  transition: width 0.1s linear;
+}
+
+/* ── Command Palette ──────────────────────────────────────── */
+.cmd-overlay {
+  @apply fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-start justify-center pt-[20vh];
+}
+
+/* ── Skeleton Loader ──────────────────────────────────────── */
+.skeleton {
+  @apply bg-gradient-to-r from-slate-100 via-slate-50 to-slate-100 dark:from-ink-800 dark:via-ink-700 dark:to-ink-800;
+  background-size: 1000px 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+/* ── Card Hover Effects ───────────────────────────────────── */
+.article-card {
+  @apply transition-all duration-300 ease-out;
+}
+.article-card:hover {
+  @apply -translate-y-1 shadow-[0_20px_40px_rgba(0,0,0,0.08)];
+}
+.dark .article-card:hover {
+  @apply shadow-[0_20px_40px_rgba(0,0,0,0.3)];
+}

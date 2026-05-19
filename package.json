@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm install --prefix mydevlog && npm run build --prefix mydevlog && cp -R mydevlog/dist ./dist",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

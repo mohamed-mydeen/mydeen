@@ -88,7 +88,8 @@ const Contact: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!validateForm()) return;
     setIsSubmitting(true);
     setSubmitError(null);
@@ -116,10 +117,12 @@ const Contact: React.FC = () => {
       setSubmitSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSubmitSuccess(false), 5000);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Main notification email failed to send:', err);
-      setSubmitError('Failed to send. Try WhatsApp below.');
-      setTimeout(() => setSubmitError(null), 5000);
+      // Display the actual EmailJS error if available, otherwise a generic fallback
+      const errorMsg = err?.text || err?.message || 'Failed to send. Try WhatsApp below.';
+      setSubmitError(errorMsg);
+      setTimeout(() => setSubmitError(null), 8000); // Increased timeout to read the error
     } finally {
       setIsSubmitting(false);
     }
@@ -242,7 +245,7 @@ const Contact: React.FC = () => {
             </div>
 
             {/* Form Fields */}
-            <div className="space-y-3.5">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
               {/* Row: Name + Email */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
@@ -311,8 +314,7 @@ const Contact: React.FC = () => {
 
               {/* Submit Button */}
               <button
-                type="button"
-                onClick={handleSubmit}
+                type="submit"
                 disabled={isSubmitting}
                 className={`group relative w-full overflow-hidden rounded-xl font-bold text-sm px-5 py-3 transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed cursor-pointer z-10
                   ${submitSuccess
@@ -377,7 +379,7 @@ const Contact: React.FC = () => {
                   WhatsApp
                 </a>
               </div>
-            </div>
+            </form>
           </div>
 
         </div>

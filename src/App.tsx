@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import { ThemeProvider } from './context/ThemeContext';
 import Chatbot from './components/Chatbot';
 import GithubStats from './components/GithubStats';
+import LeetCodeStats from './components/LeetCodeStats';
 import FeaturedProducts from './components/FeaturedProducts';
 import ScrollProgress from './components/ScrollProgress';
 import { useLenis } from './hooks/useLenis';
@@ -45,6 +46,7 @@ function HomePage() {
       <FeaturedProducts />
       <Education />
       <GithubStats />
+      <LeetCodeStats />
       <Contact />
       <Chatbot/>
     </>

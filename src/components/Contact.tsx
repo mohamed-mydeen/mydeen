@@ -1,22 +1,9 @@
 import React, { useState } from 'react';
-import emailjs from '@emailjs/browser';
 import {
   Send, Mail, Phone, Github, Linkedin,
   CheckCircle, Loader2, Sparkles, Globe, MessageCircle, ArrowUpRight, AlertCircle
 } from 'lucide-react';
 
-// ── EmailJS Configuration ──────────────────────────────────
-// 1. Create a free account at https://www.emailjs.com
-// 2. Add your Gmail as an Email Service  →  copy Service ID
-// 3. Create a template (use variables: {{from_name}}, {{from_email}}, {{subject}}, {{message}})
-//    →  copy Template ID
-// 4. Go to Account → copy Public Key
-// 5. Credentials with robust hardcoded fallbacks so it works out-of-the-box on both local and production
-const EJS_SERVICE_ID   = (import.meta.env.VITE_EJS_SERVICE_ID  as string) || 'service_aveslul';
-const EJS_TEMPLATE_ID  = (import.meta.env.VITE_EJS_TEMPLATE_ID as string) || 'template_rtifeix';
-const EJS_AUTOREPLY_ID = (import.meta.env.VITE_EJS_AUTOREPLY_ID as string) || 'template_62nz397';
-const EJS_PUBLIC_KEY   = (import.meta.env.VITE_EJS_PUBLIC_KEY  as string) || 'QCZofzW70x9iVLTjq';
-// ──────────────────────────────────────────────────────────
 
 interface FormState {
   name: string;
@@ -67,6 +54,7 @@ const Contact: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [needsActivation, setNeedsActivation] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -91,38 +79,53 @@ const Contact: React.FC = () => {
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!validateForm()) return;
+    
+    // Add confirmation dialog before sending
+    if (!window.confirm("Are you sure you want to send this message?")) return;
+
     setIsSubmitting(true);
     setSubmitError(null);
+    setNeedsActivation(false);
 
-    const templateParams = {
-      from_name:  formData.name,
-      from_email: formData.email,
-      subject:    formData.subject,
-      message:    formData.message,
-      reply_to:   formData.email,
-    };
     try {
-      const options = { publicKey: EJS_PUBLIC_KEY };
+      const response = await fetch("https://formsubmit.co/ajax/mohamedmydeen.sd@gmail.com", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          _autoresponse: "Thank you for reaching out! I have received your message and will get back to you within 24 hours. Best regards, Mohamed Mydeen",
+          _replyto: formData.email
+        })
+      });
 
-      // 1️⃣ Send the critical notification to YOU first
-      await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, templateParams, options);
-
-      // 2️⃣ Try sending the auto-reply to the visitor. If it fails, do NOT block the form success.
-      try {
-        await emailjs.send(EJS_SERVICE_ID, EJS_AUTOREPLY_ID, templateParams, options);
-      } catch (autoReplyErr) {
-        console.warn('Auto-reply failed to send, but notification was successful:', autoReplyErr);
+      const data = await response.json();
+      
+      // FormSubmit returns success: "false" (string) if it needs activation or fails
+      if (data.success === "false" || !response.ok) {
+        if (data.message && data.message.includes("Activation")) {
+           setNeedsActivation(true);
+           throw new Error("Action Required: Please check your email inbox to activate FormSubmit.");
+        }
+        throw new Error(data.message || "Failed to send message.");
       }
 
       setSubmitSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (err: any) {
-      console.error('Main notification email failed to send:', err);
-      // Display the actual EmailJS error if available, otherwise a generic fallback
-      const errorMsg = err?.text || err?.message || 'Failed to send. Try WhatsApp below.';
+      console.error('Form failed to send:', err);
+      const errorMsg = err?.message || 'Failed to send. Try WhatsApp below.';
       setSubmitError(errorMsg);
-      setTimeout(() => setSubmitError(null), 8000); // Increased timeout to read the error
+      setTimeout(() => {
+        setSubmitError(null);
+        setNeedsActivation(false);
+      }, 15000); 
     } finally {
       setIsSubmitting(false);
     }
@@ -360,9 +363,13 @@ const Contact: React.FC = () => {
 
               {/* Error Message */}
               {submitError && (
-                <div className="flex items-center gap-2 text-[11px] text-red-500 font-semibold bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 rounded-lg px-3 py-2">
-                  <AlertCircle size={13} />
-                  {submitError}
+                <div className={`flex items-center gap-2 text-[11px] font-semibold rounded-lg px-3 py-2 ${
+                  needsActivation 
+                    ? 'bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-600 dark:text-blue-400' 
+                    : 'bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 text-red-500'
+                }`}>
+                  <AlertCircle size={13} className={needsActivation ? "text-blue-500" : "text-red-500"} />
+                  <span>{submitError}</span>
                 </div>
               )}
 

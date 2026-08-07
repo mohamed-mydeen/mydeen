@@ -1,13 +1,15 @@
-﻿const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer');
 
 (async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const page = await browser.newPage();
   
   page.on('console', msg => console.log('BROWSER LOG:', msg.text()));
   page.on('pageerror', err => console.log('BROWSER ERROR:', err.toString()));
+  page.on('request', req => console.log('REQUEST:', req.method(), req.url()));
+  page.on('response', res => console.log('RESPONSE:', res.status(), res.url()));
   
-  await page.goto('http://127.0.0.1:5180/');
+  await page.goto('http://127.0.0.1:5180/'); // Make sure it hits 5180
   
   console.log('Navigated to page');
   

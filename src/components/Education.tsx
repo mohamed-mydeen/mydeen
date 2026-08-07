@@ -1,480 +1,378 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { GraduationCap, Briefcase, Award, BookOpen, ExternalLink, X, ArrowUpRight } from 'lucide-react';
+import { Briefcase, GraduationCap, Award, ExternalLink, X, ArrowUpRight, CheckCircle2, Building2 } from 'lucide-react';
 
 const Education: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const eduTimelineRef = useRef<HTMLDivElement>(null);
-  const internTimelineRef = useRef<HTMLDivElement>(null);
   const [showCerts, setShowCerts] = useState(false);
+  const workTimelineRef = useRef<HTMLDivElement>(null);
+  const eduTimelineRef = useRef<HTMLDivElement>(null);
+  
+  const [workScrollProgress, setWorkScrollProgress] = useState(0);
   const [eduScrollProgress, setEduScrollProgress] = useState(0);
-  const [internScrollProgress, setInternScrollProgress] = useState(0);
 
   useEffect(() => {
-    const lenis = (window as any).lenis;
-    if (showCerts) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-      if (lenis) lenis.stop();
-    } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      if (lenis) lenis.start();
-    }
-    return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      if (lenis) lenis.start();
-    };
-  }, [showCerts]);
-
-  useEffect(() => {
-    // Reveal animation observer
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.querySelectorAll('[data-animate]').forEach((el, i) => {
-              setTimeout(() => {
-                (el as HTMLElement).style.opacity = '1';
-                (el as HTMLElement).style.transform = 'translateY(0)';
-              }, i * 150);
-            });
-          }
-        });
-      },
-      { threshold: 0.05 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-
-    // Scroll progress logic for timelines
     const handleScroll = () => {
-      const calculateProgress = (ref: React.RefObject<HTMLDivElement>) => {
+      const calcProgress = (ref: React.RefObject<HTMLDivElement>) => {
         if (!ref.current) return 0;
         const rect = ref.current.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        // Start filling when top of timeline reaches 60% of viewport
-        const startTrigger = viewportHeight * 0.6;
-        
+        const startTrigger = viewportHeight * 0.65;
         const scrolledPast = startTrigger - rect.top;
         const totalHeight = rect.height;
-        
-        if (scrolledPast < 0) return 0;
-        if (scrolledPast > totalHeight) return 100;
+
+        if (scrolledPast <= 0) return 0;
+        if (scrolledPast >= totalHeight) return 100;
         return (scrolledPast / totalHeight) * 100;
       };
 
-      setEduScrollProgress(calculateProgress(eduTimelineRef));
-      setInternScrollProgress(calculateProgress(internTimelineRef));
+      setWorkScrollProgress(calcProgress(workTimelineRef));
+      setEduScrollProgress(calcProgress(eduTimelineRef));
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
 
-    return () => {
-      if (sectionRef.current) observer.unobserve(sectionRef.current);
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const education = [
-    {
-      period: '2023 – 2027',
-      title: 'BTech in Computer Science & Business Systems',
-      org: 'Francis Xavier Engineering College, Tamil Nadu',
-      grade: 'CGPA: 7.81',
-      desc: 'Pursuing a comprehensive CS degree with focus on software engineering, algorithms, AI, and database systems. Active in coding clubs and hackathons.',
-      
-    },
-    {
-      period: '2021 – 2023',
-      title: 'Higher Secondary Certificate (HSC)',
-      org: 'Time Matric Higher Secondary School',
-      grade: 'Percentage: 83.17%',
-      desc: 'Completed 12th grade with Computer Science major. Recognized as Best Student (2022–2023) for academic excellence.',
-    
-    },
-  ];
 
   const internships = [
     {
       period: 'Remote (1 Month)',
       title: 'Software Developer Intern',
-      org: 'Skill Software Inc, USA',
-      desc: 'Migrated legacy Selenium automation suites to Playwright (Python), improving test execution speed and reliability across internal project pipelines.',
+      company: 'Skill Software Inc',
+      location: 'USA',
+      desc: 'Migrated legacy Selenium automation suites to Playwright (Python), significantly improving test execution speed and reliability across project pipelines.',
       highlights: [
-        'Migrated Selenium → Playwright (Python)',
-        'Improved test execution speed & reliability',
-        'Managed AWS cloud deployment workflows',
-        'Handled cloud resource configuration',
+        'Migrated Selenium test suites to Playwright in Python',
+        'Enhanced automated test execution speed & pipeline reliability',
+        'Configured cloud deployment workflows and AWS infrastructure',
       ],
       tech: ['Python', 'Playwright', 'Selenium', 'AWS'],
     },
     {
-      period: 'Jun – Jul 2024 (2 Months)',
+      period: 'Jun 2024 – Jul 2024',
       title: 'Full Stack Developer Intern',
-      org: 'Asta Systech Pvt. Ltd, India',
-      desc: 'Completed a full-stack internship developing a CRUD-based application using Java Spring Boot and React.js with RESTful API integration.',
+      company: 'Asta Systech Pvt. Ltd',
+      location: 'India',
+      desc: 'Developed a full-stack CRUD web application with Java Spring Boot backend and React.js frontend, integrated with RESTful APIs.',
       highlights: [
-        'Built CRUD-based full-stack web application',
-        'Implemented RESTful APIs with Spring Boot',
-        'Integrated MySQL database with JPA/Hibernate',
-        'Collaborated with cross-functional teams',
+        'Architected CRUD application with Spring Boot & React.js',
+        'Designed REST API endpoints and JPA/Hibernate persistence layer',
+        'Optimized MySQL queries for efficient data retrieval',
       ],
       tech: ['Java', 'Spring Boot', 'React.js', 'MySQL', 'REST API'],
     },
     {
       period: '2024 (1 Month)',
       title: 'Full Stack Developer Intern',
-      org: 'IPCS Global TVL, India',
-      desc: 'Developed and deployed a web application using Python, Streamlit, and MySQL. Focused on data-driven features and responsive UI.',
+      company: 'IPCS Global',
+      location: 'India',
+      desc: 'Engineered a data-driven web application using Python, Streamlit, and MySQL with responsive custom interface design.',
       highlights: [
-        'Developed a software product from scratch',
-        'Built data-driven web application with Streamlit',
-        'Managed MySQL databases and queries',
+        'Built end-to-end data-driven web product from scratch',
+        'Managed database migrations and SQL schema design',
       ],
-      tech: ['Python', 'Streamlit', 'MySQL', 'HTML', 'CSS'],
+      tech: ['Python', 'Streamlit', 'MySQL', 'HTML/CSS'],
+    },
+    {
+      period: 'June 2025 – July 2025',
+      title: 'Full Stack Developer Intern',
+      company: 'Gateway Software Solutions',
+      location: 'Coimbatore, India',
+      desc: 'Completed a Full Stack Web Development internship developing modern web applications across frontend and backend technologies. Built responsive user interfaces, integrated APIs, and managed database layer components throughout the software development lifecycle.',
+      highlights: [
+        'Developed responsive web interfaces using modern frontend frameworks',
+        'Integrated REST APIs and engineered server-side database handling',
+        'Followed end-to-end Agile software development lifecycle practices',
+      ],
+      tech: ['React.js', 'JavaScript', 'REST API', 'MySQL', 'Node.js'],
+    },
+  ];
+
+  const education = [
+    {
+      period: '2023 – 2027',
+      degree: 'B.Tech in Computer Science & Business Systems',
+      institution: 'Francis Xavier Engineering College',
+      location: 'Tamil Nadu, India',
+      score: 'CGPA: 7.81',
+      desc: 'Rigorous coursework spanning Algorithms, Software Engineering, Database Architecture, Artificial Intelligence, and Systems Design.',
+    },
+    {
+      period: '2021 – 2023',
+      degree: 'Higher Secondary Certificate (HSC)',
+      institution: 'Time Matric Higher Secondary School',
+      location: 'Tamil Nadu, India',
+      score: 'Percentage: 83.17%',
+      desc: 'Computer Science major. Awarded Best Student (2022–2023) for outstanding overall academic performance.',
     },
   ];
 
   const certifications = [
-    { name: 'Internet of Things – IIT Kharagpur', platform: 'NPTEL', score: '80%' },
-    { name: 'Java Essentials', platform: 'LinkedIn Learning', score: null },
-    { name: 'Git Essential Training', platform: 'LinkedIn Learning', score: null },
-    { name: 'Web Development and C Programming', platform: 'Udemy', score: null },
-    { name: 'Python', platform: 'Cisco Networking Academy', score: null },
+    { name: 'Internet of Things – IIT Kharagpur', issuer: 'NPTEL', detail: '80% Score' },
+    { name: 'Java Essentials', issuer: 'LinkedIn Learning', detail: 'Verified' },
+    { name: 'Git Essential Training', issuer: 'LinkedIn Learning', detail: 'Verified' },
+    { name: 'Web Development & C Programming', issuer: 'Udemy', detail: 'Verified' },
+    { name: 'Python Programming', issuer: 'Cisco Networking Academy', detail: 'Verified' },
   ];
 
-  const getPlatformStyles = (platform: string) => {
-    switch (platform.toLowerCase()) {
-      case 'nptel':
-        return {
-          bg: 'bg-purple-500/10',
-          text: 'text-purple-400',
-          border: 'border-purple-500/20',
-          glow: 'from-purple-500/10 to-indigo-500/5',
-          indicator: 'bg-purple-400',
-        };
-      case 'linkedin learning':
-        return {
-          bg: 'bg-blue-500/10',
-          text: 'text-blue-400',
-          border: 'border-blue-500/20',
-          glow: 'from-blue-500/10 to-cyan-500/5',
-          indicator: 'bg-blue-400',
-        };
-      case 'udemy':
-        return {
-          bg: 'bg-rose-500/10',
-          text: 'text-rose-400',
-          border: 'border-rose-500/20',
-          glow: 'from-rose-500/10 to-orange-500/5',
-          indicator: 'bg-rose-400',
-        };
-      case 'cisco networking academy':
-      case 'cisco':
-        return {
-          bg: 'bg-emerald-500/10',
-          text: 'text-emerald-400',
-          border: 'border-emerald-500/20',
-          glow: 'from-emerald-500/10 to-teal-500/5',
-          indicator: 'bg-emerald-400',
-        };
-      default:
-        return {
-          bg: 'bg-slate-800/60',
-          text: 'text-slate-400',
-          border: 'border-slate-700/40',
-          glow: 'from-slate-500/10 to-indigo-500/5',
-          indicator: 'bg-slate-400',
-        };
-    }
-  };
-
   return (
-    <section
-      id="education"
-      ref={sectionRef}
-      className="pt-8 pb-8 sm:pb-12 bg-white dark:bg-[#0a0a0f] relative overflow-hidden"
-    >
-      {/* Decorative */}
-      <div className="absolute bottom-0 left-0 w-80 h-80 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.1), transparent 70%)' }} />
-
+    <section id="education" className="py-20 bg-slate-50/50 dark:bg-[#0b0c10] border-t border-slate-200/60 dark:border-slate-800/40 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-
-        {/* Header */}
-        <div
-          data-animate
-          className="mb-16 opacity-0 translate-y-8 transition-all duration-700"
-          style={{ transitionProperty: 'opacity, transform' }}
-        >
-          <div className="section-tag"><BookOpen size={12} /> Education & Experience</div>
-          <h2 className="section-title">My Journey</h2>
-          <div className="section-underline" />
-          <p className="text-slate-500 dark:text-slate-400 mt-4 max-w-2xl">
-            Academic background, internship experience, and certifications that have shaped my technical expertise.
+        
+        {/* Section Header */}
+        <div className="mb-16" data-reveal>
+          <div className="flex items-center gap-2 text-xs font-mono font-semibold tracking-widest text-indigo-600 dark:text-indigo-400 uppercase mb-2">
+            <span className="w-2 h-2 rounded-full bg-indigo-500" />
+            Background & Milestones
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk'] tracking-tight">
+            Experience & Education
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400 mt-2 text-sm sm:text-base max-w-2xl">
+            Proven track record across full-stack engineering internships, computer science education, and verified technical credentials.
           </p>
         </div>
 
-        {/* Education Timeline */}
-        <div className="mb-20">
-          <h3 className="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-10 font-['Space_Grotesk'] tracking-tight">
-            <div className="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-500/20 flex items-center justify-center text-violet-600 dark:text-violet-400">
-              <GraduationCap size={20} />
+        {/* 2-Column Minimalist Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          
+          {/* Column 1: Professional Experience */}
+          <div data-reveal>
+            <div className="flex items-center gap-2.5 mb-8 pb-3 border-b border-slate-200 dark:border-slate-800">
+              <Briefcase className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk']">
+                Work Experience
+              </h3>
             </div>
-            Education
-          </h3>
 
-          <div ref={eduTimelineRef} className="relative border-l-2 border-transparent ml-5 md:ml-6">
-            {/* Background Line */}
-            <div className="absolute left-[-2px] top-2 bottom-0 w-[2px] bg-violet-100 dark:bg-violet-500/20 rounded-full" />
-            
-            {/* Animated Fill Line */}
-            <div 
-              className="absolute left-[-2px] top-2 w-[2px] bg-violet-500 rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_rgba(139,92,246,0.8)] z-0" 
-              style={{ height: `${eduScrollProgress}%`, maxHeight: 'calc(100% - 8px)' }} 
-            />
+            <div ref={workTimelineRef} className="relative pl-6 space-y-10">
+              {/* Track Line */}
+              <div className="absolute left-0 top-2 bottom-2 w-[2px] bg-slate-200 dark:bg-slate-800/80 rounded-full" />
+              
+              {/* Progress Line */}
+              <div 
+                className="absolute left-0 top-2 w-[2px] bg-indigo-600 dark:bg-indigo-400 rounded-full transition-all duration-200 ease-out z-10"
+                style={{ height: `${workScrollProgress}%`, maxHeight: 'calc(100% - 16px)' }}
+              />
 
-            <div className="space-y-10">
-              {education.map((item, i) => (
-                <div
-                  key={i}
-                  data-animate
-                  className="relative pl-8 md:pl-12 opacity-0 translate-y-8 transition-all duration-700"
-                  style={{ transitionProperty: 'opacity, transform' }}
-                >
-                  {/* Timeline dot */}
-                  <div className="absolute left-[-21px] top-2 w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center shadow-[0_0_0_6px_white] dark:shadow-[0_0_0_6px_#0a0a0f] z-10">
-                    <GraduationCap size={18} className="text-white" />
-                  </div>
+              {internships.map((item, idx) => {
+                const itemThreshold = (idx / (internships.length - 1 || 1)) * 100;
+                const isActive = workScrollProgress >= itemThreshold;
 
-                  <div className="bg-white dark:bg-slate-900/50 rounded-3xl p-6 md:p-8 shadow-[0_2px_20px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] border border-slate-100 dark:border-slate-800/60 hover:shadow-lg transition-shadow duration-300">
-                    {/* Badge */}
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-50 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400 text-sm font-semibold mb-4 border border-violet-100 dark:border-violet-500/20">
-                      <GraduationCap size={14} />
-                      {item.period}
-                    </div>
-                    
-                    <h4 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white font-['Space_Grotesk'] leading-snug mb-2">
-                      {item.title}
-                    </h4>
-                    
-                    <p className="text-indigo-600 dark:text-indigo-400 font-medium text-base mb-4">
-                      {item.org}
-                    </p>
+                return (
+                  <div key={idx} className="relative group">
+                    <div 
+                      className={`absolute -left-[31px] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-slate-50 dark:border-[#0b0c10] transition-all duration-300 z-20 ${
+                        isActive 
+                          ? 'bg-indigo-600 dark:bg-indigo-400 scale-125 shadow-[0_0_10px_rgba(99,102,241,0.5)]' 
+                          : 'bg-slate-300 dark:bg-slate-700'
+                      }`}
+                    />
 
-                    <div className="inline-block bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-lg px-3 py-1.5 mb-5">
-                      <p className="text-emerald-700 dark:text-emerald-400 font-bold text-sm">{item.grade}</p>
-                    </div>
+                    <div className="bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <span className="text-xs font-mono font-semibold text-indigo-600 dark:text-indigo-400">
+                          {item.period}
+                        </span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                          {item.location}
+                        </span>
+                      </div>
 
-                    <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base leading-relaxed mb-6">
-                      {item.desc}
-                    </p>
+                      <h4 className="text-lg font-bold text-slate-900 dark:text-white leading-snug">
+                        {item.title}
+                      </h4>
+                      
+                      <div className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 dark:text-slate-300 mt-1 mb-3">
+                        <Building2 className="w-3.5 h-3.5 text-slate-400" />
+                        {item.company}
+                      </div>
 
-                    {item.highlights && (
-                      <div className="flex flex-wrap gap-2.5">
-                        {item.highlights.map((h) => (
-                          <span key={h} className="text-xs md:text-sm px-3 py-1.5 rounded-xl bg-violet-50 dark:bg-violet-500/10 text-violet-700 dark:text-violet-300 font-medium border border-violet-100 dark:border-violet-500/20">
-                            {h}
+                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+                        {item.desc}
+                      </p>
+
+                      <ul className="space-y-1.5 mb-4">
+                        {item.highlights.map((h, i) => (
+                          <li key={i} className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-400">
+                            <span className="w-1 h-1 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
+                            <span>{h}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-100 dark:border-slate-800/60">
+                        {item.tech.map((t, i) => (
+                          <span 
+                            key={i} 
+                            className="font-mono text-[11px] text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 px-2 py-0.5 rounded"
+                          >
+                            {t}
                           </span>
                         ))}
                       </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Internship Timeline */}
-        <div className="mb-20">
-          <h3 className="flex items-center gap-3 text-2xl font-bold text-slate-900 dark:text-white mb-10 font-['Space_Grotesk'] tracking-tight">
-            <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-              <Briefcase size={20} />
-            </div>
-            Internship Experience
-          </h3>
-
-          <div ref={internTimelineRef} className="relative border-l-2 border-transparent ml-5 md:ml-6">
-            {/* Background Line */}
-            <div className="absolute left-[-2px] top-2 bottom-0 w-[2px] bg-emerald-100 dark:bg-emerald-500/20 rounded-full" />
-            
-            {/* Animated Fill Line */}
-            <div 
-              className="absolute left-[-2px] top-2 w-[2px] bg-emerald-500 rounded-full transition-all duration-150 ease-out shadow-[0_0_10px_rgba(16,185,129,0.8)] z-0" 
-              style={{ height: `${internScrollProgress}%`, maxHeight: 'calc(100% - 8px)' }} 
-            />
-
-            <div className="space-y-10">
-              {internships.map((item, i) => (
-                <div
-                  key={i}
-                  data-animate
-                  className="relative pl-8 md:pl-12 opacity-0 translate-y-8 transition-all duration-700"
-                  style={{ transitionProperty: 'opacity, transform' }}
-                >
-                  {/* Timeline dot */}
-                  <div className="absolute left-[-21px] top-2 w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_0_0_6px_white] dark:shadow-[0_0_0_6px_#0a0a0f] z-10">
-                    <Briefcase size={18} className="text-white" />
-                  </div>
-
-                  <div className="bg-white dark:bg-slate-900/50 rounded-3xl p-6 md:p-8 shadow-[0_2px_20px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] border border-slate-100 dark:border-slate-800/60 hover:shadow-lg transition-shadow duration-300">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-semibold mb-4 border border-emerald-100 dark:border-emerald-500/20">
-                      <Briefcase size={14} />
-                      {item.period}
-                    </div>
-                    
-                    <h4 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white font-['Space_Grotesk'] leading-snug mb-2">
-                      {item.title}
-                    </h4>
-                    
-                    <p className="text-blue-600 dark:text-blue-400 font-medium text-base mb-5">
-                      {item.org}
-                    </p>
-
-                    <p className="text-slate-600 dark:text-slate-400 text-sm md:text-base leading-relaxed mb-6">
-                      {item.desc}
-                    </p>
-
-                    <ul className="space-y-2.5 mb-6">
-                      {item.highlights.map((h) => (
-                        <li key={h} className="flex items-start gap-3 text-sm md:text-base text-slate-600 dark:text-slate-400">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 flex-shrink-0" />
-                          <span>{h}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="flex flex-wrap gap-2.5">
-                      {item.tech.map((t) => (
-                        <span key={t} className="text-xs md:text-sm px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 font-medium border border-slate-200 dark:border-slate-700/50">
-                          {t}
-                        </span>
-                      ))}
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
-        </div>
 
-        {/* Certifications Centered Compact Section */}
-        <div className="mt-16 pt-12 border-t border-slate-100 dark:border-slate-800/40 text-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-semibold uppercase tracking-wider mb-4 border border-amber-100/50 dark:border-amber-500/20">
-            <Award size={12} />
-            Professional Credentials
-          </div>
-          <h3 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white font-['Space_Grotesk'] tracking-tight mb-3">
-            Certifications & Badges
-          </h3>
-          <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto text-sm mb-6 leading-relaxed">
-            Verified academic credentials, programming specializations, and professional course completions.
-          </p>
-          
-          {/* Centered Premium MNC Button */}
-          <button
-            onClick={() => setShowCerts(true)}
-            className="group/btn inline-flex items-center gap-1.5 px-4 py-2 bg-white dark:bg-slate-900/60 hover:bg-slate-50 dark:hover:bg-slate-800/80 border border-slate-200/80 dark:border-slate-800 rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-md transition-all duration-200 text-xs font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
-          >
-            <Award size={13} className="text-amber-500" />
-            <span>View Verified Credentials</span>
-            <ArrowUpRight size={13} className="text-slate-400 group-hover/btn:text-slate-600 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200" />
-          </button>
+          {/* Column 2: Academic Degree */}
+          <div data-reveal>
+            <div className="flex items-center gap-2.5 mb-8 pb-3 border-b border-slate-200 dark:border-slate-800">
+              <GraduationCap className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk']">
+                Academic Degree
+              </h3>
+            </div>
 
-          {/* Premium MNC-Standard Modal Popup */}
-          {showCerts && (
-            <div 
-              className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/65 backdrop-blur-xl animate-[fadeIn_0.25s_ease-out]" 
-              onClick={() => setShowCerts(false)}
-            >
-              <style>{`
-                @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-                @keyframes popupModal { 
-                  0% { opacity: 0; transform: scale(0.96) translateY(15px); } 
-                  100% { opacity: 1; transform: scale(1) translateY(0); } 
-                }
-              `}</style>
+            <div ref={eduTimelineRef} className="relative pl-6 space-y-10">
+              {/* Track Line */}
+              <div className="absolute left-0 top-2 bottom-2 w-[2px] bg-slate-200 dark:bg-slate-800/80 rounded-full" />
               
+              {/* Progress Line */}
               <div 
-                className="bg-[#090b11]/95 backdrop-blur-2xl w-full max-w-xl max-h-[85vh] rounded-3xl border border-slate-800/80 shadow-[0_24px_60px_rgba(0,0,0,0.85),_0_0_40px_rgba(139,92,246,0.15)] relative animate-[popupModal_0.4s_cubic-bezier(0.16,1,0.3,1)] flex flex-col overflow-hidden" 
-                onClick={e => e.stopPropagation()}
-              >
-                {/* Modal Header */}
-                <div className="px-6 py-5 border-b border-slate-800/60 flex items-center justify-between bg-slate-950/40">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 border border-amber-500/25">
-                      <Award size={18} />
-                    </div>
-                    <div className="text-left">
-                      <h3 className="text-lg font-bold text-white font-['Space_Grotesk'] leading-none">
-                        Verified Credentials
-                      </h3>
-                      <p className="text-[10px] text-slate-400 mt-1.5 font-medium tracking-wide">
-                        5 Qualifications Successfully Validated
+                className="absolute left-0 top-2 w-[2px] bg-indigo-600 dark:bg-indigo-400 rounded-full transition-all duration-200 ease-out z-10"
+                style={{ height: `${eduScrollProgress}%`, maxHeight: 'calc(100% - 16px)' }}
+              />
+
+              {education.map((item, idx) => {
+                const itemThreshold = (idx / (education.length - 1 || 1)) * 100;
+                const isActive = eduScrollProgress >= itemThreshold;
+
+                return (
+                  <div key={idx} className="relative group">
+                    <div 
+                      className={`absolute -left-[31px] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-slate-50 dark:border-[#0b0c10] transition-all duration-300 z-20 ${
+                        isActive 
+                          ? 'bg-indigo-600 dark:bg-indigo-400 scale-125 shadow-[0_0_10px_rgba(99,102,241,0.5)]' 
+                          : 'bg-slate-300 dark:bg-slate-700'
+                      }`}
+                    />
+
+                    <div className="bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <span className="text-xs font-mono font-semibold text-indigo-600 dark:text-indigo-400">
+                          {item.period}
+                        </span>
+                        <span className="font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200/50 dark:border-emerald-500/20 px-2 py-0.5 rounded">
+                          {item.score}
+                        </span>
+                      </div>
+
+                      <h4 className="text-lg font-bold text-slate-900 dark:text-white leading-snug">
+                        {item.degree}
+                      </h4>
+
+                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 mt-1 mb-3">
+                        {item.institution} <span className="text-xs font-normal text-slate-500">({item.location})</span>
+                      </p>
+
+                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                        {item.desc}
                       </p>
                     </div>
                   </div>
-                  <button 
-                    onClick={() => setShowCerts(false)}
-                    className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-all duration-200"
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
-                
-                {/* Scrollable Content */}
-                <div className="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-5 scrollbar-none space-y-2.5">
-                  {certifications.map((cert, i) => {
-                    const styles = getPlatformStyles(cert.platform);
-                    return (
-                      <div
-                        key={i}
-                        className="relative p-4 flex items-center justify-between gap-4 bg-slate-900/30 hover:bg-slate-900/70 border border-slate-800/40 hover:border-slate-700/60 rounded-2xl transition-all duration-300 group text-left overflow-hidden shadow-sm hover:shadow-md"
-                      >
-                        {/* Subtle hover gradient glow */}
-                        <div className={`absolute inset-0 bg-gradient-to-r ${styles.glow} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
-
-                        <div className="flex items-center gap-3.5 min-w-0 relative z-10">
-                          {/* Elegant brand award badge */}
-                          <div className={`w-9 h-9 rounded-xl ${styles.bg} ${styles.text} flex items-center justify-center flex-shrink-0 border ${styles.border} shadow-sm group-hover:scale-105 transition-transform duration-300`}>
-                            <Award size={16} className="group-hover:rotate-12 transition-transform duration-300" />
-                          </div>
-                          
-                          <div className="min-w-0">
-                            <h4 className="font-bold text-slate-100 text-xs sm:text-sm leading-snug group-hover:text-white transition-colors duration-200">
-                              {cert.name}
-                            </h4>
-                            <p className="text-[10px] text-slate-400 font-semibold mt-1 uppercase tracking-wider flex items-center gap-1.5">
-                              <span className={`w-1.5 h-1.5 rounded-full ${styles.indicator}`} />
-                              {cert.platform}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-2 flex-shrink-0 relative z-10">
-                          {cert.score && (
-                            <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-1 rounded-md">
-                              Score: {cert.score}
-                            </span>
-                          )}
-                          <span className="text-[9px] font-bold text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-1 rounded-md uppercase tracking-wider">
-                            Verified
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+                );
+              })}
             </div>
-          )}
+          </div>
+
+        </div>
+
+        {/* Dedicated Click-to-View Certifications Section */}
+        <div className="mt-16 pt-10 border-t border-slate-200/60 dark:border-slate-800/60 text-center" data-reveal>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-mono font-semibold uppercase tracking-wider mb-3 border border-amber-200/50 dark:border-amber-500/20">
+            <Award size={13} />
+            Professional Credentials
+          </div>
+          <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk'] tracking-tight mb-2">
+            Certifications & Badges
+          </h3>
+          <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto text-xs sm:text-sm mb-6 leading-relaxed">
+            Verified academic credentials, programming specializations, and professional course completions.
+          </p>
+          
+          <button
+            onClick={() => setShowCerts(true)}
+            className="group inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm hover:shadow transition-all duration-200 text-xs font-bold text-slate-800 dark:text-slate-200 cursor-pointer"
+          >
+            <Award size={15} className="text-amber-500" />
+            <span>View Verified Credentials</span>
+            <ArrowUpRight size={14} className="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+          </button>
         </div>
 
       </div>
+
+      {/* Clean Minimalist Modal */}
+      {showCerts && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md" 
+          onClick={() => setShowCerts(false)}
+        >
+          <div 
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full max-w-lg rounded-2xl shadow-2xl relative flex flex-col overflow-hidden" 
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20">
+                  <Award size={16} />
+                </div>
+                <div className="text-left">
+                  <h4 className="text-sm font-bold text-slate-900 dark:text-white font-['Space_Grotesk'] leading-none">
+                    Verified Technical Credentials
+                  </h4>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-1">
+                    5 Specializations Validated
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowCerts(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-white rounded-lg transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            
+            {/* Modal Body */}
+            <div className="p-5 space-y-3 max-h-[70vh] overflow-y-auto">
+              {certifications.map((cert, i) => (
+                <div 
+                  key={i}
+                  className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between gap-4 transition-all hover:border-slate-300 dark:hover:border-slate-600"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-100 dark:border-indigo-500/20">
+                      <Award size={15} />
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
+                        {cert.name}
+                      </p>
+                      <p className="text-[11px] font-mono text-slate-500 dark:text-slate-400 mt-0.5">
+                        {cert.issuer}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="font-mono text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 px-2 py-0.5 rounded shrink-0">
+                    {cert.detail}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
 
 export default Education;
+
+
+

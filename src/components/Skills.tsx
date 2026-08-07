@@ -1,181 +1,153 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
+import { FileCode, Copy, Check, Terminal } from 'lucide-react';
 
-const Skills = () => {
-  const skillsRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+const Skills: React.FC = () => {
+  const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
+  const skillsData = {
+    programming_languages: ["Java", "C", "Python", "JavaScript"],
+    web_technologies: ["React.js", "JavaScript", "HTML5", "CSS3", "Bootstrap"],
+    backend_and_frameworks: ["Spring Boot", "REST APIs", "Node.js"],
+    databases: ["PostgreSQL", "MongoDB", "MySQL", "TiDB"],
+    tools_and_platforms: ["Git", "Docker", "Postman", "VS Code", "MySQL Workbench"],
+    core_competencies: [
+      "Problem Solving & Analytical Thinking",
+      "Team Collaboration & Adaptability",
+      "Time Management & Technical Leadership"
+    ]
+  };
 
-    if (skillsRef.current) {
-      observer.observe(skillsRef.current);
-    }
+  const jsonString = JSON.stringify(skillsData, null, 2);
 
-    return () => {
-      if (skillsRef.current) {
-        observer.unobserve(skillsRef.current);
-      }
-    };
-  }, []);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(jsonString);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
-  const skillCategories = [
-    {
-      title: 'Programming Languages',
-      skills: ['Java', 'C', 'Python', 'JavaScript']
-    },
-    {
-      title: 'Web Technologies',
-      skills: ['HTML', 'CSS', 'JavaScript', 'React.js','Bootstrap']
-    },
-    {
-      title: 'Backend & Frameworks',
-      skills: ['Spring Boot', 'REST APIs', 'Node.js']
-    },
-    {
-      title: 'Databases',
-      skills: ['PostgreSQl', 'MongoDB', 'MySQL','TiDB']
-    },
-    {
-      title: 'Tools & Platforms',
-      skills: ['Git','Postman','vs code','Docker','mysql workbench  ']
-    },
-    {
-      title: 'Soft Skills',
-      descriptions: [
-        '> Problem Solving & Analytical Thinking',
-        '> Team Collaboration & Adaptability',
-        '> Time Management & Communication'
-      ]
-    }
+  const categories = [
+    { key: "programming_languages", title: "Programming Languages", values: skillsData.programming_languages },
+    { key: "web_technologies", title: "Web Technologies", values: skillsData.web_technologies },
+    { key: "backend_and_frameworks", title: "Backend & Frameworks", values: skillsData.backend_and_frameworks },
+    { key: "databases", title: "Databases", values: skillsData.databases },
+    { key: "tools_and_platforms", title: "Tools & Platforms", values: skillsData.tools_and_platforms },
+    { key: "core_competencies", title: "Core Competencies", values: skillsData.core_competencies }
   ];
 
   return (
-    <section 
-      ref={skillsRef} 
-      className="relative pt-8 pb-16 sm:pb-20 bg-black overflow-hidden"
-    >
-      {/* Hacker Screen Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: 'linear-gradient(0deg, rgba(0, 255, 150, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 150, 0.1) 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
-          }}
-        ></div>
+    <section id="skills" className="py-20 bg-white dark:bg-[#0a0a0f] border-t border-slate-100 dark:border-slate-800/40 transition-colors duration-300">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
         
-        {/* Scan Lines */}
-        <div className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: 'linear-gradient(180deg, rgba(0, 255, 150, 0.15) 1px, transparent 1px)',
-            backgroundSize: '100% 2px',
-            animation: 'scan 8s linear infinite'
-          }}
-        ></div>
-
-        {/* Glow effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
-      </div>
-
-      <style>{`
-        @keyframes scan {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(100%); }
-        }
-        @keyframes flicker {
-          0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.98; }
-          20%, 24%, 55% { opacity: 1; }
-        }
-        @keyframes glow-pulse {
-          0%, 100% { text-shadow: 0 0 10px #00ff96, 0 0 20px #00ff96; }
-          50% { text-shadow: 0 0 20px #00ff96, 0 0 30px #00ff96, 0 0 40px #00ff96; }
-        }
-        .hacker-text {
-          animation: flicker 2s infinite;
-          font-family: 'Courier New', monospace;
-        }
-        .glow-text {
-          animation: glow-pulse 2s ease-in-out infinite;
-        }
-      `}</style>
-
-      <div className="container mx-auto px-4 relative z-10 max-w-6xl">
-        {/* Header - Hacker Style */}
-        <div className="text-center mb-12">
-          <div data-reveal className={`transition-all duration-1000 transform ${
-            isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-          }`}>
-            <div className="inline-block mb-2">
-              <span className="text-green-400 text-sm sm:text-base font-mono hacker-text">{'> SKILLS.EXE'}</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-green-400 glow-text font-mono mb-3">
-              TECHNICAL ARSENAL
-            </h2>
-            <div className="h-0.5 w-24 bg-gradient-to-r from-green-400 to-cyan-400 mx-auto mb-4 opacity-70"></div>
-            <p className="text-green-300 text-sm sm:text-base font-mono max-w-2xl mx-auto opacity-80">
-              {'<'} Initializing skill database {'>'} 
-            </p>
+        {/* Section Header */}
+        <div className="mb-14 text-center" data-reveal>
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-semibold tracking-widest text-indigo-600 dark:text-indigo-400 uppercase mb-2">
+            <Terminal className="w-3.5 h-3.5" />
+            Technical Arsenal
           </div>
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk'] tracking-tight">
+            Skills & Expertise
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400 mt-2 text-sm sm:text-base max-w-xl mx-auto">
+            A clean, structured schema of programming languages, frameworks, database architectures, and software tools.
+          </p>
         </div>
 
-        {/* JSON Terminal Style */}
-        <div className={`transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} max-w-4xl mx-auto`}>
-          <div className="bg-black/80 backdrop-blur-xl border border-green-500/30 rounded-xl overflow-hidden shadow-[0_0_30px_rgba(0,255,150,0.15)] group hover:border-green-500/50 transition-all duration-500">
+        {/* Minimalist Professional JSON IDE Terminal */}
+        <div className="max-w-4xl mx-auto" data-reveal>
+          <div className="bg-[#0d1117] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300">
             
-            {/* Window Header */}
-            <div className="flex items-center gap-2 bg-green-500/10 px-4 py-3 border-b border-green-500/30">
-              <div className="w-3 h-3 rounded-full bg-red-500/80 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80 shadow-[0_0_5px_rgba(234,179,8,0.5)]"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500/80 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></div>
-              <span className="ml-4 text-xs font-mono text-green-400/70 tracking-wider">skills.json</span>
+            {/* IDE Window Bar */}
+            <div className="flex items-center justify-between px-4 py-3 bg-[#161b22] border-b border-slate-800">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+                <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                
+                <div className="ml-3 flex items-center gap-1.5 px-3 py-1 bg-[#0d1117] rounded-md border border-slate-800 text-xs font-mono text-slate-300">
+                  <FileCode className="w-3.5 h-3.5 text-indigo-400" />
+                  <span>skills.json</span>
+                </div>
+              </div>
+
+              {/* Copy Button */}
+              <button
+                onClick={handleCopy}
+                className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono text-slate-400 hover:text-slate-200 bg-slate-800/40 hover:bg-slate-800 border border-slate-700/50 rounded-md transition-all cursor-pointer"
+                title="Copy JSON string"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="text-emerald-400">Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy JSON</span>
+                  </>
+                )}
+              </button>
             </div>
 
-            {/* Editor Content */}
-            <div className="p-5 sm:p-8 overflow-x-auto">
-              <pre className="font-mono text-sm md:text-base leading-[2]">
-                <span className="text-purple-400 font-bold">const</span> <span className="text-blue-400 font-bold">mydeenSkills</span> <span className="text-slate-300">=</span> <span className="text-yellow-300">{'{'}</span>
-                {'\n'}
-                {skillCategories.map((cat, i) => (
-                  <React.Fragment key={i}>
-                    <span className="text-slate-500">{'  // '} {cat.title}</span>
-                    {'\n'}
-                    {'  '}<span className="text-cyan-400">"{cat.title.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}"</span><span className="text-slate-300">:</span> <span className="text-blue-300">{'['}</span>
-                    {'\n'}
-                    {'    '}
-                    <div className="inline-flex flex-wrap gap-x-2 pl-8 -ml-8">
-                      {(cat.skills || cat.descriptions || []).map((item, j, arr) => (
-                        <React.Fragment key={j}>
-                          <span className="text-green-400 transition-colors duration-300 hover:text-green-300 cursor-default">
-                            "{item.replace(/^>\s*/, '')}"
-                          </span>
-                          {j < arr.length - 1 && <span className="text-slate-400">, </span>}
-                        </React.Fragment>
+            {/* Code Body */}
+            <div className="p-6 sm:p-8 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto select-text">
+              <div className="flex">
+                {/* Line Numbers */}
+                <div className="pr-4 text-slate-600 text-right select-none font-mono text-xs sm:text-sm space-y-1">
+                  <div>1</div>
+                  {categories.map((_, i) => (
+                    <React.Fragment key={i}>
+                      <div>{i * 2 + 2}</div>
+                      <div>{i * 2 + 3}</div>
+                    </React.Fragment>
+                  ))}
+                  <div>{categories.length * 2 + 2}</div>
+                </div>
+
+                {/* Code Content */}
+                <div className="flex-1 space-y-1">
+                  <div>
+                    <span className="text-amber-300 font-bold">{'{'}</span>
+                  </div>
+
+                  {categories.map((cat, i) => (
+                    <div key={i} className="pl-4 sm:pl-6 hover:bg-slate-800/30 rounded transition-colors py-0.5">
+                      <span className="text-indigo-400 font-semibold">"{cat.key}"</span>
+                      <span className="text-slate-400">: </span>
+                      <span className="text-sky-300 font-semibold">[</span>
+                      {cat.values.map((val, j) => (
+                        <span key={j}>
+                          <span className="text-emerald-400">"{val}"</span>
+                          {j < cat.values.length - 1 && <span className="text-slate-400">, </span>}
+                        </span>
                       ))}
+                      <span className="text-sky-300 font-semibold">]</span>
+                      {i < categories.length - 1 && <span className="text-slate-400">,</span>}
                     </div>
-                    {'\n'}
-                    {'  '}<span className="text-blue-300">{']'}</span>{i < skillCategories.length - 1 ? <span className="text-slate-400">,</span> : ''}
-                    {'\n\n'}
-                  </React.Fragment>
-                ))}
-                <span className="text-yellow-300">{'}'}</span><span className="text-slate-300">;</span>
-              </pre>
+                  ))}
+
+                  <div>
+                    <span className="text-amber-300 font-bold">{'}'}</span>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* Terminal Footer Bar */}
+            <div className="px-4 py-2 bg-[#161b22] border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-500">
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  JSON Validated
+                </span>
+                <span>UTF-8</span>
+              </div>
+              <span>{Object.keys(skillsData).length} Schema Categories</span>
+            </div>
+
           </div>
         </div>
 
-        {/* Stats Section - Hacker Style */}
-       
-
-        {/* Footer Command */}
-        
       </div>
     </section>
   );

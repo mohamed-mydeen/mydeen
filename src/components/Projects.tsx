@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ExternalLink, Github, Folder } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import TiltCard from './TiltCard';
 
 interface ProjectsProps {
   limit?: number;
@@ -113,158 +114,108 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
   const displayedProjects = limit ? filteredProjects.slice(0, limit) : filteredProjects;
 
   return (
-    <section ref={projectsRef} className="relative pt-12 pb-12 bg-black overflow-hidden">
-      {/* Hacker Screen Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: 'linear-gradient(0deg, rgba(0, 255, 150, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 150, 0.1) 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
-          }}
-        ></div>
-        
-        {/* Scan Lines */}
-        <div className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: 'linear-gradient(180deg, rgba(0, 255, 150, 0.15) 1px, transparent 1px)',
-            backgroundSize: '100% 2px',
-            animation: 'scan 8s linear infinite'
-          }}
-        ></div>
+    <section ref={projectsRef} className="relative py-14 bg-white dark:bg-[#0a0a0f] overflow-hidden transition-colors duration-500">
+      
+      {/* Dynamic Animated Ambient Glowing Blobs */}
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/10 dark:bg-indigo-500/15 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3 pointer-events-none animate-pulse duration-[4000ms]" />
+      <div className="absolute bottom-0 left-0 w-[350px] h-[350px] bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3 pointer-events-none animate-pulse duration-[6000ms]" />
 
-        {/* Glow effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
-      </div>
-
-      <style>{`
-        @keyframes scan {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(100%); }
-        }
-        @keyframes flicker {
-          0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.98; }
-          20%, 24%, 55% { opacity: 1; }
-        }
-        @keyframes glow-pulse {
-          0%, 100% { text-shadow: 0 0 10px #00ff96, 0 0 20px #00ff96; }
-          50% { text-shadow: 0 0 20px #00ff96, 0 0 30px #00ff96, 0 0 40px #00ff96; }
-        }
-        .hacker-text {
-          animation: flicker 2s infinite;
-          font-family: 'Courier New', monospace;
-        }
-        .glow-text {
-          animation: glow-pulse 2s ease-in-out infinite;
-        }
-      `}</style>
-
-      <div className="container mx-auto px-4 relative z-10">
-        {/* PROJECTS SECTION */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className={`transition-all duration-1000 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
           {!limit && (
             <div className="mb-6 flex justify-start">
               <Link 
                 to="/" 
-                className="inline-flex items-center gap-2 px-4 py-2 bg-black/50 text-green-400 border border-green-500/30 hover:bg-green-500/10 hover:border-green-500/60 rounded font-mono transition-all duration-300"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl text-sm font-medium transition-all duration-300 hover:-translate-x-1"
               >
-                <span className="text-lg">{'<'}</span> EXIT TO MAINFRAME
+                <span>&larr;</span> Back to Home
               </Link>
             </div>
           )}
+          
           <div className="text-center mb-12">
-            <div className="inline-block mb-4">
-              <span className="text-green-400 text-lg font-mono hacker-text">{'> PROJECTS.DB'}</span>
-            </div>
-            <h3 className="text-4xl md:text-5xl font-bold text-green-400 glow-text font-mono mb-4">
-              PROJECT PORTFOLIO
-            </h3>
-            <div className="h-1 w-24 bg-gradient-to-r from-green-400 to-cyan-400 mx-auto opacity-70 mb-8"></div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk'] tracking-tight mb-4">
+              Project <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-emerald-500 bg-clip-text text-transparent">Portfolio</span>
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+              A collection of my recent work, showcasing full-stack applications, AI solutions, and software engineering projects.
+            </p>
             
-            {/* Category Filter */}
-            <div className="flex flex-wrap justify-center gap-3 mb-8">
+            {/* Category Filter Buttons */}
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mt-8">
               {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded font-mono text-sm transition-all duration-300 border ${
+                  className={`px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 transform active:scale-95 border ${
                     selectedCategory === category
-                      ? 'bg-green-500/20 text-green-400 border-green-500/70 shadow-[0_0_10px_rgba(0,255,150,0.3)]'
-                      : 'bg-black/60 text-green-300 border-green-500/30 hover:border-green-500/50'
+                      ? 'bg-indigo-500 text-white border-indigo-500 shadow-lg shadow-indigo-500/25 scale-105'
+                      : 'bg-white dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-102'
                   }`}
                 >
-                  {'>'} {category.toUpperCase()}
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Projects Grid with 3D Tilt Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
             {displayedProjects.map((project, index) => (
               <div
                 key={index}
-                className={`h-full relative transition-all duration-1000 transform ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                } card-3d`}
-                style={{ transitionDelay: `${index * 80}ms` }}
-                data-reveal
-                data-delay={String(index * 100)}
+                className={`h-full relative transition-all duration-700 transform ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+                }`}
+                style={{ transitionDelay: `${index * 90}ms` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-green-500/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none"></div>
-                
-                <div className="bg-black/60 backdrop-blur-xl border border-green-500/30 hover:border-green-500/70 rounded-lg overflow-hidden transition-all duration-500 hover:shadow-[0_0_20px_rgba(0,255,150,0.3)] h-full flex flex-col">
-                  {/* Terminal Header */}
-                  <div className="p-6 flex flex-col flex-grow">
-                    <div className="flex items-center gap-2 mb-4 pb-4 border-b border-green-500/20">
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                      <h4 className="text-lg font-bold text-green-400 font-mono flex-1">
-                        {project.title}
-                      </h4>
-                    </div>
-
-                    {/* Category Badge */}
-                    <div className="mb-3">
-                      <span className="inline-block bg-green-500/10 text-green-300 px-3 py-1 rounded text-xs font-mono border border-green-500/30">
-                        {'>'} {project.category}
-                      </span>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-green-300 text-sm mb-4 flex-grow leading-relaxed">
-                      {project.description}
-                    </p>
-
-                    {/* Tech Stack */}
-                    <div className="mb-4">
-                      <p className="text-xs text-green-500/60 font-mono mb-2">{'> TECH_STACK'}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.map((tech, techIndex) => (
-                          <span
-                            key={techIndex}
-                            className="bg-green-500/10 hover:bg-green-500/20 text-green-300 hover:text-green-400 px-2 py-1 rounded text-xs font-mono border border-green-500/20 hover:border-green-500/50 transition-all duration-300"
-                          >
-                            {tech}
+                <TiltCard maxTilt={6} glare={true} className="h-full rounded-2xl">
+                  <div className="bg-white dark:bg-slate-900/60 backdrop-blur-md border border-slate-100 dark:border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-indigo-500/30 dark:hover:border-indigo-500/30 hover:shadow-xl dark:hover:shadow-indigo-500/5 h-full flex flex-col relative z-10 group">
+                    <div className="p-6 sm:p-8 flex flex-col h-full justify-between flex-grow">
+                      <div>
+                        {/* Title & Category Badge */}
+                        <div className="flex items-start justify-between gap-4 mb-4 min-h-[3.25rem]">
+                          <h4 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk'] leading-snug group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors duration-300 line-clamp-2">
+                            {project.title}
+                          </h4>
+                          {/* Category Badge */}
+                          <span className="inline-block bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap group-hover:scale-105 transition-transform duration-300 shrink-0">
+                            {project.category}
                           </span>
-                        ))}
-                      </div>
-                    </div>
+                        </div>
 
-                    {/* Duration and Links */}
-                    <div className="space-y-3 pt-4 border-t border-green-500/20">
-                      
-                      <div className="flex gap-3">
+                        {/* Description */}
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-6 leading-relaxed line-clamp-3 min-h-[4.25rem]">
+                          {project.description}
+                        </p>
+
+                        {/* Tech Stack */}
+                        <div className="mb-6 h-[3.5rem] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-800 flex items-start">
+                          <div className="flex flex-wrap gap-2">
+                            {project.technologies.map((tech, techIndex) => (
+                              <span
+                                key={techIndex}
+                                className="bg-slate-50 dark:bg-white/5 text-slate-600 dark:text-slate-300 px-2.5 py-1 rounded-md text-[11px] font-medium border border-slate-100 dark:border-white/5 hover:border-indigo-500/30 hover:bg-indigo-50/50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-300 transition-all duration-200"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Links */}
+                      <div className="flex flex-wrap gap-4 pt-5 border-t border-slate-100 dark:border-white/5 mt-auto">
                         {project.github && (
                           <a
                             href={project.github}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-green-300 hover:text-green-400 text-sm font-mono transition-colors"
+                            className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors hover:translate-x-0.5 duration-200"
                           >
-                            <Github size={16} /> Code
+                            <Github size={15} /> Code
                           </a>
                         )}
                         {project.demo && (
@@ -272,16 +223,15 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
                             href={project.demo}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-green-300 hover:text-green-400 text-sm font-mono transition-colors"
+                            className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors hover:translate-x-0.5 duration-200"
                           >
-                            <ExternalLink size={16} /> Live
+                            <ExternalLink size={15} /> Live Demo
                           </a>
                         )}
-                      
                       </div>
                     </div>
                   </div>
-                </div>
+                </TiltCard>
               </div>
             ))}
           </div>
@@ -289,25 +239,16 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
 
         {/* View More Button */}
         {limit && filteredProjects.length > limit && (
-          <div className={`mt-16 text-center transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+           <div className={`mt-12 text-center transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <Link 
               to="/projects" 
-              className="inline-flex items-center gap-2 px-6 py-3 bg-green-500/10 text-green-400 border border-green-500/50 hover:bg-green-500/20 hover:border-green-400 hover:shadow-[0_0_15px_rgba(0,255,150,0.4)] rounded-full font-mono transition-all duration-300"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-900/50 text-slate-900 dark:text-white border border-slate-200 dark:border-white/10 hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 hover:shadow-lg hover:shadow-indigo-500/10 hover:-translate-y-0.5 rounded-xl font-semibold transition-all duration-300"
             >
               <Folder size={18} />
-              <span>VIEW MORE PROJECTS</span>
+              <span>View All Projects</span>
             </Link>
           </div>
         )}
-
-        {/* Footer Command */}
-        <div className={`text-center mt-12 transition-all duration-1000 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        }`}>
-          <p className="text-green-500/60 font-mono text-sm hacker-text">
-            {'> SYSTEM READY >'} <span className="animate-pulse">_</span>
-          </p>
-        </div>
       </div>
     </section>
   );

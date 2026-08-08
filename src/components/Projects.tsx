@@ -162,15 +162,16 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
           </div>
 
           {/* Projects Grid with 3D Tilt Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
-            {displayedProjects.map((project, index) => (
-              <div
-                key={index}
-                className={`h-full relative transition-all duration-700 transform ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-                }`}
-                style={{ transitionDelay: `${index * 90}ms` }}
-              >
+          <div className="min-h-[560px] transition-all duration-500 flex flex-col justify-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+              {displayedProjects.map((project, index) => (
+                <div
+                  key={project.title}
+                  className={`h-full relative transition-all duration-500 transform ${
+                    isVisible ? 'opacity-100 translate-y-0 animate-fadeIn' : 'opacity-0 translate-y-8'
+                  }`}
+                  style={{ transitionDelay: `${(index % 4) * 80}ms` }}
+                >
                 <TiltCard maxTilt={6} glare={true} className="h-full rounded-2xl">
                   <div className="bg-white dark:bg-slate-900/60 backdrop-blur-md border border-slate-100 dark:border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-indigo-500/30 dark:hover:border-indigo-500/30 hover:shadow-xl dark:hover:shadow-indigo-500/5 h-full flex flex-col relative z-10 group">
                     <div className="p-6 sm:p-8 flex flex-col h-full justify-between flex-grow">
@@ -236,6 +237,7 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
             ))}
           </div>
         </div>
+      </div>
 
         {/* View More Button */}
         {limit && filteredProjects.length > limit && (

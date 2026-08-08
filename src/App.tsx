@@ -41,7 +41,7 @@ function HomePage() {
     <>
       <Hero />
       <About />
-      <Projects limit={3} />
+      <Projects limit={4} />
       <Skills/>
       <FeaturedProducts />
       <Education />

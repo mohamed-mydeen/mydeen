@@ -95,8 +95,8 @@ const Hero: React.FC = () => {
             {/* Actions & Social Links */}
             <div className="flex flex-col items-center lg:items-start gap-8">
               <a
-                href="/mohamed%20mydeen%20Resume1.pdf"
-                download="mohamed mydeen Resume1.pdf"
+                href="/mohamedmydeensd.pdf"
+                download="mohamedmydeensd.pdf"
                 className="btn-secondary w-fit px-8 py-3 shadow-lg shadow-indigo-500/10"
               >
                 <Download size={18} />

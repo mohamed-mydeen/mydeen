@@ -176,7 +176,7 @@ const Chatbot: React.FC = () => {
       },
       {
         keywords: ["resume", "cv", "biodata", "download resume"],
-        answer: "You can download my resume directly here: \n\n📄 [Download Mohamed's Resume](/mohamed%20mydeen%20Resume1.pdf)\n\nIs there anything specific you'd like to know about my experience?"
+        answer: "You can download my resume directly here: \n\n📄 [Download Mohamed's Resume](/mohamedmydeensd.pdf)\n\nIs there anything specific you'd like to know about my experience?"
       },
       {
         keywords: ["contact", "email", "reach", "hire", "phone", "whatsapp", "message"],

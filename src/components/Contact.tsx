@@ -1,23 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Send, Mail, Phone, Github, Linkedin,
-  CheckCircle, Loader2, Sparkles, Globe, MessageCircle, ArrowUpRight, AlertCircle
+  Mail, Phone, Github, Linkedin,
+  Sparkles, Globe, ArrowUpRight
 } from 'lucide-react';
-
-
-interface FormState {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
-
-interface FormErrors {
-  name?: string;
-  email?: string;
-  subject?: string;
-  message?: string;
-}
 
 const CONTACT_INFO = [
   {
@@ -49,94 +34,6 @@ const SOCIAL = [
 ];
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState<FormState>({ name: '', email: '', subject: '', message: '' });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [needsActivation, setNeedsActivation] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({ ...prev, [name]: undefined }));
-    }
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Required';
-    if (!formData.email.trim()) newErrors.email = 'Required';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Invalid email';
-    if (!formData.subject.trim()) newErrors.subject = 'Required';
-    if (!formData.message.trim()) newErrors.message = 'Required';
-    else if (formData.message.length < 10) newErrors.message = 'Min 10 characters';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!validateForm()) return;
-    
-    // Add confirmation dialog before sending
-    if (!window.confirm("Are you sure you want to send this message?")) return;
-
-    setIsSubmitting(true);
-    setSubmitError(null);
-    setNeedsActivation(false);
-
-    try {
-      const response = await fetch("https://formsubmit.co/ajax/mohamedmydeen.sd@gmail.com", {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          _autoresponse: "Thank you for reaching out! I have received your message and will get back to you within 24 hours. Best regards, Mohamed Mydeen",
-          _replyto: formData.email
-        })
-      });
-
-      const data = await response.json();
-      
-      // FormSubmit returns success: "false" (string) if it needs activation or fails
-      if (data.success === "false" || !response.ok) {
-        if (data.message && data.message.includes("Activation")) {
-           setNeedsActivation(true);
-           throw new Error("Action Required: Please check your email inbox to activate FormSubmit.");
-        }
-        throw new Error(data.message || "Failed to send message.");
-      }
-
-      setSubmitSuccess(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      setTimeout(() => setSubmitSuccess(false), 5000);
-    } catch (err: any) {
-      console.error('Form failed to send:', err);
-      const errorMsg = err?.message || 'Failed to send. Try WhatsApp below.';
-      setSubmitError(errorMsg);
-      setTimeout(() => {
-        setSubmitError(null);
-        setNeedsActivation(false);
-      }, 15000); 
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const inputBase =
-    'w-full px-3 py-2.5 rounded-xl border text-sm font-medium bg-white dark:bg-slate-900/60 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 transition-all duration-200 outline-none focus:ring-2 focus:ring-indigo-500/25 focus:border-indigo-400 dark:focus:border-indigo-500/50';
-  const inputClass = (field: keyof FormErrors) =>
-    `${inputBase} ${errors[field]
-      ? 'border-red-400 ring-2 ring-red-400/20'
-      : 'border-slate-200 dark:border-white/8 hover:border-slate-300 dark:hover:border-white/15'}`;
 
   return (
     <section
@@ -163,13 +60,13 @@ const Contact: React.FC = () => {
           </p>
         </div>
 
-        {/* ── Content Grid ── */}
-        <div className="grid lg:grid-cols-5 gap-6 items-start">
+        {/* ── Content Container ── */}
+        <div className="max-w-xl mx-auto">
 
-          {/* Left: Contact Sidebar */}
+          {/* Contact Information */}
           <div
-            className="lg:col-span-2 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 rounded-2xl p-5 shadow-[0_2px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] transition-shadow duration-300 card-3d"
-            data-reveal data-reveal-left data-delay="100"
+            className="bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 rounded-2xl p-5 sm:p-8 shadow-[0_2px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] transition-shadow duration-300 card-3d"
+            data-reveal data-delay="100"
           >
             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4">
               Direct Contact
@@ -227,191 +124,8 @@ const Contact: React.FC = () => {
               <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400">Available · Responds within 24h</p>
             </div>
           </div>
-
-          {/* Right: Form */}
-          <div
-            className="lg:col-span-3 bg-white dark:bg-slate-900/50 border border-slate-100 dark:border-white/5 rounded-2xl p-5 sm:p-6 shadow-[0_2px_16px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)] transition-shadow duration-300 card-3d"
-            data-reveal data-reveal-right data-delay="200"
-          >
-            {/* Form header */}
-            <div className="flex items-center justify-between mb-5">
-              <div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-white font-['Space_Grotesk']">Send a Message</h3>
-                <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">Fill the form below — I'll get back ASAP.</p>
-              </div>
-              {submitSuccess && (
-                <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold rounded-full border border-emerald-100 dark:border-emerald-500/20 flex-shrink-0">
-                  <CheckCircle size={11} />
-                  <span>Sent!</span>
-                </div>
-              )}
-            </div>
-
-            {/* Form Fields */}
-            <form onSubmit={handleSubmit} className="space-y-3.5">
-              {/* Row: Name + Email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 ml-0.5">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className={inputClass('name')}
-                    placeholder="Your name"
-                    autoComplete="name"
-                  />
-                  {errors.name && <p className="text-[9px] text-red-500 font-bold mt-1 ml-0.5">{errors.name}</p>}
-                </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 ml-0.5">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={inputClass('email')}
-                    placeholder="you@example.com"
-                    autoComplete="email"
-                  />
-                  {errors.email && <p className="text-[9px] text-red-500 font-bold mt-1 ml-0.5">{errors.email}</p>}
-                </div>
-              </div>
-
-              {/* Subject */}
-              <div>
-                <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 ml-0.5">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className={inputClass('subject')}
-                  placeholder="What's this about?"
-                />
-                {errors.subject && <p className="text-[9px] text-red-500 font-bold mt-1 ml-0.5">{errors.subject}</p>}
-              </div>
-
-              {/* Message */}
-              <div>
-                <label className="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 ml-0.5">
-                  Message
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={3}
-                  className={`${inputClass('message')} resize-none`}
-                  placeholder="Share your project idea or opportunity..."
-                />
-                {errors.message && <p className="text-[9px] text-red-500 font-bold mt-1 ml-0.5">{errors.message}</p>}
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`group relative w-full overflow-hidden rounded-xl font-bold text-sm px-5 py-3 transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed cursor-pointer z-10
-                  ${submitSuccess
-                    ? 'bg-emerald-600 dark:bg-emerald-500 text-white shadow-[0_4px_12px_rgba(16,185,129,0.25)]'
-                    : submitError
-                    ? 'bg-rose-600 dark:bg-rose-500 text-white shadow-[0_4px_12px_rgba(244,63,94,0.25)]'
-                    : isSubmitting
-                    ? 'bg-slate-800 dark:bg-slate-700 text-white/80'
-                    : 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_20px_rgba(99,102,241,0.25)]'
-                  }
-                `}
-              >
-                {/* Gradient shimmer on hover (Only in default state) */}
-                {!isSubmitting && !submitSuccess && !submitError && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-[length:200%_auto] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient pointer-events-none" />
-                )}
-
-                <div className="relative flex items-center justify-center gap-2 pointer-events-none">
-                  {submitSuccess ? (
-                    <div className="flex items-center gap-2 animate-scaleUp">
-                      <CheckCircle size={15} />
-                      <span>Message Sent Successfully!</span>
-                    </div>
-                  ) : submitError ? (
-                    <div className="flex items-center gap-2 animate-shake">
-                      <AlertCircle size={15} />
-                      <span>Failed to Send. Retry?</span>
-                    </div>
-                  ) : isSubmitting ? (
-                    <>
-                      <Loader2 size={15} className="animate-spin" />
-                      <span>Sending Message...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Mail size={15} />
-                      <span>Send Message</span>
-                      <Send size={13} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </>
-                  )}
-                </div>
-              </button>
-
-              {/* Error Message */}
-              {submitError && (
-                <div className={`flex items-center gap-2 text-[11px] font-semibold rounded-lg px-3 py-2 ${
-                  needsActivation 
-                    ? 'bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-600 dark:text-blue-400' 
-                    : 'bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20 text-red-500'
-                }`}>
-                  <AlertCircle size={13} className={needsActivation ? "text-blue-500" : "text-red-500"} />
-                  <span>{submitError}</span>
-                </div>
-              )}
-
-              {/* Secondary WhatsApp fallback */}
-              <div className="flex items-center justify-center gap-2 mt-1">
-                <span className="text-[10px] text-slate-400">Or reach out directly via</span>
-                <a
-                  href={`https://wa.me/919344990461`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 transition-colors"
-                >
-                  <MessageCircle size={11} />
-                  WhatsApp
-                </a>
-              </div>
-            </form>
-          </div>
-
         </div>
       </div>
-
-      <style>{`
-        @keyframes gradient {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        @keyframes scaleUp {
-          0% { transform: scale(0.95); opacity: 0; }
-          70% { transform: scale(1.02); opacity: 0.9; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          20%, 60% { transform: translateX(-4px); }
-          40%, 80% { transform: translateX(4px); }
-        }
-        .animate-gradient { animation: gradient 3s linear infinite; }
-        .animate-scaleUp { animation: scaleUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-        .animate-shake { animation: shake 0.4s ease-in-out; }
-      `}</style>
     </section>
   );
 };

@@ -173,7 +173,7 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
                   style={{ transitionDelay: `${(index % 4) * 80}ms` }}
                 >
                 <TiltCard maxTilt={6} glare={true} className="h-full rounded-2xl">
-                  <div className="bg-white dark:bg-slate-900/60 backdrop-blur-md border border-slate-100 dark:border-white/5 rounded-2xl overflow-hidden transition-all duration-300 hover:border-indigo-500/30 dark:hover:border-indigo-500/30 hover:shadow-xl dark:hover:shadow-indigo-500/5 h-full flex flex-col relative z-10 group">
+                  <div className="bg-white dark:bg-slate-900/60 backdrop-blur-md border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden transition-all duration-300 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:shadow-xl dark:hover:shadow-indigo-500/10 h-full flex flex-col relative z-10 group shadow-sm">
                     <div className="p-6 sm:p-8 flex flex-col h-full justify-between flex-grow">
                       <div>
                         {/* Title & Category Badge */}

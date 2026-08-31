@@ -1,31 +1,51 @@
 import React from 'react';
-import { Heart, ArrowUp } from 'lucide-react';
+import { Mail, Linkedin } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <footer className="bg-[#07070d] border-t border-white/5 py-8 relative overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-slate-500 flex items-center gap-1.5 flex-wrap justify-center">
-            &copy; {currentYear} Mohamed Mydeen Shahabudeen M.
-            
+    <footer id="contact" className="bg-[#111111] text-white py-12 md:py-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <div className="mb-12">
+          <p className="text-[#e26d45] text-xs font-bold uppercase tracking-widest mb-3">
+            Contact
           </p>
-
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-slate-600">v3.12.02</span>
-            <button
-              onClick={scrollToTop}
-              className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-indigo-500 hover:border-indigo-500 transition-all duration-200 hover:-translate-y-1"
-              title="Back to top"
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            Want to build something useful?
+          </h2>
+          <p className="text-slate-400 text-sm md:text-base max-w-2xl mb-8 leading-relaxed">
+            Tamil Nadu, India &bull; Open to software, AI automation, systems, and cloud engineering opportunities.
+          </p>
+          
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href="mailto:mohamedmydeen.sd@gmail.com"
+              className="flex items-center gap-2 bg-[#d85d38] hover:bg-[#c25332] text-white px-5 py-2.5 rounded-md font-semibold transition-colors duration-200"
             >
-              <ArrowUp size={14} />
-            </button>
+              <Mail size={18} />
+              <span>Email me</span>
+            </a>
+            <a
+              href="https://linkedin.com/in/mohamed-mydeen4262"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-transparent border border-white/20 hover:bg-white/5 text-white px-5 py-2.5 rounded-md font-semibold transition-colors duration-200"
+            >
+              <Linkedin size={18} />
+              <span>LinkedIn</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="space-y-1">
+            <p className="text-slate-400 text-sm">
+              &copy; {currentYear} Mohamed Mydeen Shahabudeen M.
+            </p>
+            <p className="text-slate-500 text-xs">
+              Software &bull; AI Automation &bull; Systems
+            </p>
           </div>
         </div>
       </div>

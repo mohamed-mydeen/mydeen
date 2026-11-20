@@ -15,6 +15,31 @@ interface Product {
 
 const PRODUCTS: Product[] = [
   {
+    id: 'pbuh-app',
+    name: 'Peace Be Upon Him',
+    initial: 'P',
+    gradient: 'from-emerald-700 to-amber-600',
+    liveUrl: 'https://pbuh.vercel.app/',
+    iconSources: [
+      '/pbuh-logo.png',
+      'https://pbuh.vercel.app/apple-touch-icon.png',
+      'https://pbuh.vercel.app/favicon.ico',
+    ],
+  },
+  {
+    id: 'mydeen-blog',
+    name: 'Mydeen Dev Blog',
+    initial: 'B',
+    gradient: 'from-blue-600 to-indigo-600',
+    liveUrl: 'https://mydeenblog.vercel.app/about',
+    iconSources: [
+      '/my%20photo.png',
+      '/blog-icon.svg',
+      'https://mydeenblog.vercel.app/favicon.svg',
+      'https://mydeenblog.vercel.app/apple-touch-icon.png',
+    ],
+  },
+  {
     id: 'mydeen-ai',
     name: 'Mydeen AI',
     initial: 'M',
@@ -83,9 +108,9 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
     target="_blank"
     rel="noopener noreferrer"
     className="flex-shrink-0 flex items-center gap-4 p-4 w-[240px] sm:w-[260px] rounded-2xl
-               bg-white/95 dark:bg-slate-900/95 border border-slate-200/60 dark:border-slate-800/80
-               shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:border-slate-350 dark:hover:border-slate-700
-               hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5
+               bg-[#dedbd2]/90 dark:bg-[#1c1c1c]/95 border border-black/10 dark:border-white/10
+               shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:border-black/20 dark:hover:border-white/20
+               hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] hover:-translate-y-0.5
                transition-all duration-300 group select-none"
   >
     {/* High-res App Icon */}
@@ -107,7 +132,7 @@ const FeaturedProducts: React.FC = () => {
   return (
     <section 
       id="products" 
-      className="bg-slate-50 dark:bg-[#0d0d14] border-t border-slate-200/40 dark:border-slate-850/30 py-12 sm:py-16 overflow-hidden relative"
+      className="bg-[#e6e3da] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] border-t border-black/10 dark:border-white/10 py-12 sm:py-16 overflow-hidden relative transition-colors duration-500"
     >
       
       {/* Styles for hardware-accelerated continuous scrolling */}
@@ -131,8 +156,8 @@ const FeaturedProducts: React.FC = () => {
       `}</style>
 
       {/* Decorative Blur Vignette Layers */}
-      <div className="absolute top-0 bottom-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-slate-50 dark:from-[#0d0d14] to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 bottom-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-slate-50 dark:from-[#0d0d14] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 bottom-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-[#e6e3da] dark:from-[#141414] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 bottom-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-[#e6e3da] dark:from-[#141414] to-transparent z-10 pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Compact Section Header */}

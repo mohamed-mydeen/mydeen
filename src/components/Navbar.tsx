@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ExternalLink } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  const navLinks = [
+  const desktopNavLinks = [
     { name: 'Home', href: '#home', id: 'home' },
     { name: 'About', href: '#about', id: 'about' },
     { name: 'Education', href: '#education', id: 'education' },
     { name: 'Contact', href: '#contact', id: 'contact' },
   ];
+
+  const mobileNavLinks = [
+    { name: 'Home', href: '#home', id: 'home' },
+    { name: 'About', href: '#about', id: 'about' },
+    { name: 'Projects', href: '#projects', id: 'projects' },
+    { name: 'Skills', href: '#skills', id: 'skills' },
+    { name: 'Education', href: '#education', id: 'education' },
+    { name: 'Contact', href: '#contact', id: 'contact' },
+  ];
+
+  const navLinks = desktopNavLinks;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,8 +54,8 @@ const Navbar: React.FC = () => {
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-slate-200/50 dark:border-white/5 py-3'
-          : 'bg-transparent py-5'
+          ? 'translate-y-0 opacity-100 bg-[#e6e3da]/90 dark:bg-[#141414]/90 backdrop-blur-md shadow-sm border-b border-black/10 dark:border-white/10 py-3'
+          : 'translate-y-0 opacity-100 bg-[#e6e3da]/80 dark:bg-[#141414]/80 backdrop-blur-md py-3 lg:-translate-y-full lg:opacity-0 lg:pointer-events-none'
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,6 +88,15 @@ const Navbar: React.FC = () => {
                 {link.name}
               </button>
             ))}
+            <a
+              href="https://mydeenblog.vercel.app/about"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 inline-flex items-center gap-1.5 group"
+            >
+              <span>Blog</span>
+              <ExternalLink size={13} className="opacity-70 group-hover:opacity-100 transition-opacity" />
+            </a>
           </div>
 
           {/* Mobile Sliding Nav (Horizontal within navbar) */}
@@ -89,7 +109,7 @@ const Navbar: React.FC = () => {
             <style>{`
               .scrollbar-none::-webkit-scrollbar { display: none; }
             `}</style>
-            {navLinks.map((link, idx) => (
+            {mobileNavLinks.map((link, idx) => (
               <button
                 key={link.name}
                 onClick={() => scrollToSection(link.href)}

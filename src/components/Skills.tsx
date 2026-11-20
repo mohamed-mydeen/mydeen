@@ -35,7 +35,7 @@ const Skills: React.FC = () => {
   ];
 
   return (
-    <section id="skills" className="py-20 bg-white dark:bg-[#0a0a0f] border-t border-slate-100 dark:border-slate-800/40 transition-colors duration-300">
+    <section id="skills" className="py-20 bg-[#e6e3da] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] border-t border-black/10 dark:border-white/10 transition-colors duration-500">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
         
         {/* Section Header */}

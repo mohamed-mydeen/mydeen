@@ -41,23 +41,25 @@ function HomePage() {
     <>
       <Hero />
       <About />
-      <Projects limit={4} />
-      <Skills/>
-      <FeaturedProducts />
+
+      {/* ─── MOBILE VIEW ESSENTIAL SECTIONS (VISIBLE ON MOBILE; DESKTOP USES HERO OS DOCK) ─── */}
+      <div className="lg:hidden">
+        <Projects limit={4} />
+      </div>
+      <div className="lg:hidden">
+        <Skills />
+      </div>
+      <div className="lg:hidden">
+        <FeaturedProducts />
+      </div>
+
+      {/* ─── SECTIONS VISIBLE ON ALL SCREENS ─── */}
       <Education />
       <GithubStats />
       <LeetCodeStats />
 
       <Chatbot/>
     </>
-  );
-}
-
-function AllProjectsPage() {
-  return (
-    <div className="pt-20 min-h-screen">
-      <Projects />
-    </div>
   );
 }
 
@@ -79,13 +81,12 @@ function AppInner() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 flex flex-col">
+    <div className="min-h-screen bg-[#e6e3da] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] transition-colors duration-500 flex flex-col">
       <ScrollProgress />
       <Navbar />
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/projects" element={<AllProjectsPage />} />
         </Routes>
       </div>
       <Footer />

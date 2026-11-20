@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#1e1e2e"/>
+  <circle cx="64" cy="60" r="26" fill="none" stroke="#6366f1" stroke-width="5" stroke-dasharray="4 4"/>
+  <circle cx="64" cy="34" r="10" fill="#10b981"/>
+  <circle cx="36" cy="76" r="10" fill="#3b82f6"/>
+  <circle cx="92" cy="76" r="10" fill="#f59e0b"/>
+  <circle cx="64" cy="60" r="6" fill="#818cf8"/>
+  <line x1="64" y1="44" x2="64" y2="54" stroke="#818cf8" stroke-width="3"/>
+  <line x1="43" y1="70" x2="59" y2="62" stroke="#818cf8" stroke-width="3"/>
+  <line x1="85" y1="70" x2="69" y2="62" stroke="#818cf8" stroke-width="3"/>
+  <text x="64" y="112" fill="#a5b4fc" font-size="14" font-family="system-ui, -apple-system, sans-serif" font-weight="800" text-anchor="middle" letter-spacing="2">REST API</text>
+</svg>

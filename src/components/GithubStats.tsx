@@ -121,8 +121,8 @@ const GithubStats: React.FC = () => {
 
   return (
     <>
-      {/* Sleek Minimalist Banner (Light Green Theme) */}
-      <section id="insights" className="py-6 bg-emerald-50/60 dark:bg-emerald-950/20 border-y border-emerald-100 dark:border-emerald-900/30 transition-colors duration-300">
+      {/* Sleek Minimalist Banner */}
+      <section id="insights" className="py-6 bg-[#dedbd2]/60 dark:bg-[#181818] text-[#181818] dark:text-[#f2efe9] border-y border-black/10 dark:border-white/10 transition-colors duration-500">
         <div className="container mx-auto px-4 max-w-4xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 text-left">
             <div className="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 flex items-center justify-center border border-emerald-200/60 dark:border-emerald-800/40 flex-shrink-0">

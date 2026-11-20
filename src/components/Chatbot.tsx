@@ -1,5 +1,6 @@
-import React, { useMemo, useState, useEffect, useRef, useCallback } from "react";
-import { Send, X, MessageCircle, Trash2 } from "lucide-react";
+import React, { useMemo, useState, useEffect, useRef, useCallback, useContext } from "react";
+import { Send, X, Trash2, Sparkles } from "lucide-react";
+import { ThemeContext } from "../context/ThemeContext";
 
 type Sender = "user" | "bot";
 
@@ -13,19 +14,32 @@ type FAQ = {
   answer: string;
 };
 
-const QUICK_ACTIONS = ["Skills", "Projects", "Education", "Contact"];
+const QUICK_ACTIONS = [
+  "About Me",
+  "Skills & Stack",
+  "Projects",
+  "Role Models",
+  "Future Visions",
+  "Education",
+  "Blog",
+  "Contact"
+];
 
-// ── Optimized Memoized Sub-components to Prevent Key-stroke Render Thrashing ──
-
+// ── Clean Message Item ──
 const MessageItem = React.memo<{ msg: Message; isDark: boolean }>(({ msg, isDark }) => {
-  const userMsgBg = "bg-indigo-500 text-white shadow-md shadow-indigo-500/20";
-  const botMsgBg = isDark ? "bg-slate-800 text-slate-200" : "bg-slate-100 text-slate-700";
+  const isUser = msg.sender === "user";
 
   return (
-    <div className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} will-change-transform`}>
-      <div className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-[13px] leading-relaxed whitespace-pre-wrap ${
-        msg.sender === "user" ? `${userMsgBg} rounded-br-sm` : `${botMsgBg} rounded-bl-sm`
-      }`}>
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} will-change-transform`}>
+      <div
+        className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-[13px] leading-relaxed whitespace-pre-wrap select-text transition-all ${
+          isUser
+            ? "bg-[#e95420] text-white rounded-br-xs shadow-sm font-normal"
+            : isDark
+            ? "bg-[#272727] text-[#f2efe9] border border-white/5 rounded-tl-xs shadow-xs"
+            : "bg-[#dedbd2] text-[#181818] border border-black/5 rounded-tl-xs shadow-xs"
+        }`}
+      >
         {msg.text}
       </div>
     </div>
@@ -33,154 +47,156 @@ const MessageItem = React.memo<{ msg: Message; isDark: boolean }>(({ msg, isDark
 });
 MessageItem.displayName = "MessageItem";
 
+// ── Typing Indicator ──
 const LoadingIndicator = React.memo<{ isDark: boolean }>(({ isDark }) => {
-  const botMsgBg = isDark ? "bg-slate-800 text-slate-200" : "bg-slate-100 text-slate-700";
   return (
     <div className="flex justify-start will-change-transform">
-      <div className={`${botMsgBg} rounded-2xl rounded-bl-sm px-4 py-3 flex gap-1.5 shadow-sm`}>
-        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
-        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
-        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }} />
+      <div
+        className={`rounded-2xl rounded-tl-xs px-3.5 py-2.5 flex items-center gap-1.5 shadow-xs ${
+          isDark ? "bg-[#272727] border border-white/5" : "bg-[#dedbd2] border border-black/5"
+        }`}
+      >
+        <span className="w-1.5 h-1.5 bg-[#e95420] rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
+        <span className="w-1.5 h-1.5 bg-[#e95420] rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
+        <span className="w-1.5 h-1.5 bg-[#e95420] rounded-full animate-bounce" style={{ animationDelay: "0.4s" }} />
       </div>
     </div>
   );
 });
 LoadingIndicator.displayName = "LoadingIndicator";
 
+// ── Clean Horizontal Scrollable FAQ Chips ──
 const QuickActions = React.memo<{
   isDark: boolean;
   onActionClick: (action: string) => void;
 }>(({ isDark, onActionClick }) => {
   return (
-    <div className="px-4 pb-2 flex flex-wrap gap-2 will-change-transform">
-      {QUICK_ACTIONS.map((action) => (
-        <button
-          key={action}
-          onClick={() => onActionClick(action)}
-          className={`text-[11px] font-medium px-3 py-1.5 rounded-full border transition-colors cursor-pointer ${
-            isDark 
-              ? 'border-indigo-500/30 text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20' 
-              : 'border-indigo-200 text-indigo-600 bg-indigo-50 hover:bg-indigo-100'
-          }`}
-        >
-          {action}
-        </button>
-      ))}
+    <div className="px-4 pb-2 pt-1">
+      <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none items-center">
+        {QUICK_ACTIONS.map((action) => (
+          <button
+            key={action}
+            onClick={() => onActionClick(action)}
+            className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+              isDark
+                ? "border-white/10 text-white/80 bg-white/5 hover:bg-[#e95420]/20 hover:border-[#e95420]/50 hover:text-white"
+                : "border-black/10 text-black/80 bg-black/5 hover:bg-[#e95420]/10 hover:border-[#e95420]/50 hover:text-[#d34717]"
+            }`}
+          >
+            {action}
+          </button>
+        ))}
+      </div>
     </div>
   );
 });
 QuickActions.displayName = "QuickActions";
 
-// ─────────────────────────────────────────────────────────────────────────────
-
+// ── Main Chatbot Component ──
 const Chatbot: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [darkMode, setDarkMode] = useState<boolean>(false); // Default to light mode to match the portfolio lock
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
+
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: "bot",
-      text: "Hi I'm Mydeen! 👋 Welcome to my portfolio. Ask me anything, or choose a quick topic below!"
+      text: "Hi! I'm Mydeen FAQs 👋 Feel free to ask anything about Mohamed's projects, background, role models, or choose a topic below."
     }
   ]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Freeze background scrolling when chat is opened
   useEffect(() => {
     const lenis = (window as any).lenis;
     if (open) {
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
       if (lenis) lenis.stop();
     } else {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
       if (lenis) lenis.start();
     }
     return () => {
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
       if (lenis) lenis.start();
     };
   }, [open]);
 
+  // Comprehensive FAQs curated from https://mydeenblog.vercel.app/about and portfolio
   const faqs: FAQ[] = useMemo(
     () => [
       {
-        keywords: ["hi", "hello", "hey", "hii", "hlo", "hai", "vanakkam"],
-        answer: "Hello! Welcome to my portfolio! How can I help you today? You can ask me about my skills, projects, education, or internship experience."
+        keywords: ["hi", "hello", "hey", "hii", "hlo", "hai", "vanakkam", "start"],
+        answer: "Hello! Welcome to Mydeen FAQs! 🚀 How can I help you today? You can ask me about Mohamed's engineering path, role models, future goals, or projects."
       },
       {
         keywords: ["assalamu alaikum", "assalamualaikum", "salam", "salaam"],
-        answer: "Wa alaikum assalam 🤍😊 Welcome to my portfolio! Feel free to ask about my skills or projects."
+        answer: "Wa alaikum assalam wa rahmatullahi wa barakatuh 🤍 Welcome to Mydeen's portfolio! Feel free to ask anything."
       },
       {
-        keywords: ["who are you", "about you", "introduce", "yourself", "name", "profile", "summary"],
-        answer: "I'm Mohamed Mydeen Shahabudeen M, an aspiring software developer currently pursuing my B.Tech in Computer Science and Business Systems. I'm passionate about building scalable, real-world full-stack web applications and continuously improving my skills!"
+        keywords: ["who are you", "about me", "about you", "introduce", "biography", "background", "profile", "summary"],
+        answer: "Mohamed Mydeen Shahabudeen M was born in 2005 in Melapalayam, Tirunelveli, Tamil Nadu.\n\nHe is a Full Stack Developer & Aspiring AI Engineer currently pursuing a B.Tech in Computer Science & Business Systems at Francis Xavier Engineering College. He specializes in React, TypeScript, Python, FastAPI, Spring Boot, and AI architectures."
       },
       {
-        keywords: ["objective", "career", "goal", "aim", "future"],
-        answer: "My career objective is to contribute to innovative and scalable software solutions in a dynamic organization while continuously learning and adapting to new technologies."
+        keywords: ["turning point", "childhood", "7th standard", "struggle", "teacher", "story", "transformation", "early life"],
+        answer: "The Turning Point:\nDuring early school years, studies were a challenge for Mohamed. Everything changed in 7th standard when a caring teacher gave him personal encouragement and direction.\n\nHer guidance ignited his self-belief: by the very next exam, he went from failing to 2nd rank, and soon became a consistent top student!\n\nCore lesson: 'Your circumstances do not define your future. Your faith, mindset, discipline, and determination do.'"
+      },
+      {
+        keywords: ["role model", "role models", "inspiration", "who inspires you", "hero", "idols"],
+        answer: "Mohamed's Role Models:\n\n1. Life Role Model: Prophet Muhammad (peace be upon him)\nUltimate guide for character, morality, social justice, and leadership.\n\n2. Career Role Model: Sundar Pichai (CEO of Google)\nHumble origins, product leadership, and global impact on the software landscape inspire Mohamed's engineering path."
+      },
+      {
+        keywords: ["future vision", "future visions", "future", "aim", "goals", "dream", "career goal", "ambition", "politics", "business"],
+        answer: "Mohamed's Future Visions & Aspirations:\n\n1. Technology & Business: Build and lead dynamic IT software enterprises and premium restaurant networks (e.g. Feast At Night).\n2. Public Service: Aspire to be an honest, dedicated politician and public servant working directly on the ground to bring positive social welfare to the people.\n3. Eternal Equation: 'To achieve meaningful success in this temporary world, while ensuring ultimate success in the hereafter (Aakhirah).'"
+      },
+      {
+        keywords: ["best student", "award", "recognition", "honors", "school award", "best student of the year"],
+        answer: "Best Student of the Year (2022–2023):\nMohamed was recognized as Best Student of the Year at Time Matric Higher Secondary School. This prestigious honor was awarded through teacher nominations and school-wide voting for consistent character, discipline, responsibility, respectful conduct, and academic excellence."
+      },
+      {
+        keywords: ["education", "college", "degree", "btech", "university", "cgpa", "school"],
+        answer: "Academic Background:\n\n• College (2023 – 2027): B.Tech in Computer Science & Business Systems @ Francis Xavier Engineering College (CGPA: 7.81)\n• High School (2021 – 2023): Higher Secondary Certificate (HSC) in Maths & Computer Science @ Time Matric Higher Secondary School (Score: 83.17%, Awarded Best Student)"
       },
       {
         keywords: ["skills", "tech stack", "technologies", "languages", "tools", "mern"],
-        answer: "My Technical Skills:\n• MERN Stack: MongoDB, Express.js, React.js, Node.js\n• Backend: Java, Spring Boot, REST APIs\n• Languages: Java, Python, C, JavaScript\n• Databases: SQL, MongoDB\n• Tools: Git, AWS, Streamlit"
+        answer: "Technical Arsenal:\n• Frontend: React.js, TypeScript, Tailwind CSS, HTML5/CSS3, PWA engineering\n• Backend: Java, Spring Boot, Python, FastAPI, Node.js, Express.js\n• Databases: PostgreSQL, MongoDB, MySQL, Supabase\n• AI & ML: LLMs, RAG pipelines, OpenCV Biometrics, Streamlit heuristic scanners\n• Cloud & Tools: AWS, Docker, Git, Playwright test automation"
       },
       {
-        keywords: ["frontend", "ui", "design"],
-        answer: "For Frontend development, I use HTML, CSS, and React.js to build clean, responsive, and modern user interfaces."
+        keywords: ["projects", "what projects", "apps", "work", "portfolio projects"],
+        answer: "Key Applications Built by Mohamed:\n\n1. Mydeen AI: Conversational artificial intelligence suite\n2. SafeCheck ML: Seasonal phishing & deceptive website detection system\n3. Feast At Night: Night food ordering & delivery PWA\n4. Peace Be Upon Him (PBUH): Islamic spiritual companion APK & web app\n5. Business Card OCR Manager & Face Biometric Authentication\n\nYou can launch and inspect all of them directly in the desktop Ubuntu Dock & File Manager!"
       },
       {
-        keywords: ["backend", "server", "api"],
-        answer: "For Backend development, I specialize in Java, Spring Boot, and building robust REST APIs."
+        keywords: ["blog", "article", "articles", "writing", "news", "mydeenblog"],
+        answer: "Mohamed publishes in-depth engineering journals and articles on AI, full-stack systems, modern architectures, and tutorials at:\n\n🌐 [Mydeen Dev Blog & About](https://mydeenblog.vercel.app/about)"
       },
       {
-        keywords: ["strengths", "core", "soft skills", "personal"],
-        answer: "My Core Strengths include:\n• Problem Solving\n• Team Collaboration\n• Time Management\n• Adaptability"
-      },
-      {
-        keywords: ["education", "college", "study", "btech", "degree", "university", "cgpa"],
-        answer: "I am pursuing a B.Tech in Computer Science and Business Systems at Francis Xavier Engineering College (2023 – 2027) with a CGPA of 7.81."
-      },
-      {
-        keywords: ["school", "higher secondary", "12th", "hsc", "percentage", "schooling"],
-        answer: "I completed my Higher Secondary (Maths & Computer Science) at Time Matric Higher Secondary School with a percentage of 83.2%."
-      },
-      {
-        keywords: ["projects", "what projects", "your projects", "portfolio projects", "work"],
-        answer: "Here are some of my key projects:\n1. Seasonal Deceptive Website Detection System (Cybersecurity)\n2. YouTube Data Analytics and Warehousing (Data Pipeline)\n3. Food Ordering Progressive Web Application (Full-Stack PWA)\n\nAsk me about a specific project if you want to know more!"
-      },
-      {
-        keywords: ["deceptive", "website", "detection", "cybersecurity", "fraudulent", "seasonal", "fraud"],
-        answer: "My 'Seasonal Deceptive Website Detection System' is a cybersecurity solution that detects fraudulent websites during public events using URL analysis, SSL validation, and domain age verification. It features an explainable risk scoring system built with Streamlit."
-      },
-      {
-        keywords: ["youtube", "data", "analytics", "warehousing", "pipeline"],
-        answer: "My 'YouTube Data Analytics' project is a data pipeline built using APIs and SQL. I used Streamlit to analyze and visualize the YouTube data effectively."
-      },
-      {
-        keywords: ["food", "ordering", "pwa", "progressive web app", "restaurant"],
-        answer: "My 'Food Ordering PWA' is a full-stack Progressive Web Application featuring AI recommendations, Firebase notifications, JWT authentication, payment integration, and an admin dashboard."
-      },
-      {
-        keywords: ["internship", "experience", "intern", "company", "worked"],
-        answer: "I have two main internship experiences:\n1. Software Developer Intern: Worked on automation testing using Playwright (Python) and AWS deployments.\n2. Full Stack Developer Intern: Built CRUD applications using Java, Spring Boot, React.js, and SQL."
-      },
-      {
-        keywords: ["certifications", "certificates", "courses", "achievements", "certified"],
-        answer: "My Certifications:\n• NPTEL – Internet of Things (IIT Kharagpur) – 80%\n• LinkedIn Learning – Java Essentials & Git Essential Training\n• Cisco – Python\n• Udemy – Web Development & C Programming"
-      },
-      {
-        keywords: ["where are you from", "hometown", "native", "place"],
-        answer: "I'm from Melapalayam, Tirunelveli, Tamil Nadu."
+        keywords: ["philosophy", "quote", "values", "faith", "motto"],
+        answer: "'Your circumstances do not define your future. Your faith, mindset, discipline, and determination do.'\n\n'And that there is not for man except that [good] for which he strives.' — Qur'an 53:39"
       },
       {
         keywords: ["resume", "cv", "biodata", "download resume"],
-        answer: "You can download my resume directly here: \n\n📄 [Download Mohamed's Resume](/mohamedmydeensd.pdf)\n\nIs there anything specific you'd like to know about my experience?"
+        answer: "You can download Mohamed's verified technical resume directly here:\n\n📄 [Download Mohamed's Resume](/mohamedmydeensd.pdf)"
       },
       {
-        keywords: ["contact", "email", "reach", "hire", "phone", "whatsapp", "message"],
-        answer: "You can reach out to me via the Contact section, or email me directly at mohamedmydeen.sd@gmail.com! I'm always open to new opportunities."
+        keywords: ["contact", "email", "phone", "whatsapp", "hire", "reach", "instagram", "linkedin", "github"],
+        answer: "Get in touch directly with Mohamed:\n\n• Email: mohamedmydeen.sd@gmail.com\n• WhatsApp / Phone: +91 9344990461\n• Instagram: @mohamed_ukasha\n• LinkedIn: linkedin.com/in/mohamed-mydeen4262\n• GitHub: github.com/mohamed-mydeen"
+      },
+      {
+        keywords: ["internship", "experience", "intern", "company"],
+        answer: "Professional Experience:\n1. Software Developer Intern @ Skill Software Inc (Remote USA): Migrated Selenium suites to Playwright in Python; automated AWS deployment workflows.\n2. Full Stack Developer Intern @ Asta Systech Pvt. Ltd: Architected Java Spring Boot REST APIs with React.js & MySQL.\n3. Internships @ Gateway Software Solutions & IPCS Global."
+      },
+      {
+        keywords: ["certifications", "certificates", "credentials"],
+        answer: "Verified Credentials:\n• IIT Kharagpur (NPTEL) – Internet of Things (80% Elite Score)\n• LinkedIn Learning – Java Essentials & Git Essential Training\n• Cisco Networking Academy – Python Programming\n• Udemy – Web Development & C Systems Programming"
+      },
+      {
+        keywords: ["where are you from", "hometown", "native", "melapalayam", "tirunelveli"],
+        answer: "Mohamed is from Melapalayam, Tirunelveli, Tamil Nadu, India — the hometown where his childhood memories, friendships, and early resilience were nurtured."
       }
     ],
     []
@@ -188,7 +204,7 @@ const Chatbot: React.FC = () => {
 
   const getBotReply = useCallback((text: string): string => {
     const query = text.toLowerCase().trim();
-    
+
     const sortedFaqs = [...faqs].sort((a, b) => {
       const maxA = Math.max(...a.keywords.map(k => k.length));
       const maxB = Math.max(...b.keywords.map(k => k.length));
@@ -200,24 +216,19 @@ const Chatbot: React.FC = () => {
         if (query.includes(key)) return faq.answer;
       }
     }
-    
+
     const fallbacks = [
-      "That's an interesting question! I mostly know about Mohamed's Skills, Projects, and Experience. Want to hear about those?",
-      "Good question! I'm still learning, but I can definitely tell you all about Mohamed's tech stack and education.",
-      "I love that you asked that! While I don't have the exact answer, I'd be happy to share details about Mohamed's recent projects or internships.",
-      "Mohamed is always exploring new ideas like that! If you want to know more about his professional background, just ask about his Skills or Education."
+      "That's a thoughtful question! I know all about Mohamed's childhood turning point, role models (Prophet Muhammad ﷺ & Sundar Pichai), future visions, tech stack, and projects. Ask me about any of these!",
+      "I'm here to share Mohamed's story and technical milestones! Would you like to know about his Best Student recognition, college education, or future aspirations?",
+      "Feel free to ask about Mohamed's projects like Mydeen AI, SafeCheck ML, Feast At Night, or his technical writing on mydeenblog.vercel.app!"
     ];
     return fallbacks[Math.floor(Math.random() * fallbacks.length)];
   }, [faqs]);
 
-  // Auto scroll to bottom optimized with requestAnimationFrame and instant jump on mobile
+  // Auto scroll to bottom
   useEffect(() => {
     const timer = requestAnimationFrame(() => {
-      const isMobile = window.innerWidth < 640;
-      messagesEndRef.current?.scrollIntoView({ 
-        behavior: isMobile ? "auto" : "smooth",
-        block: "nearest"
-      });
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
     return () => cancelAnimationFrame(timer);
   }, [messages, loading]);
@@ -233,80 +244,114 @@ const Chatbot: React.FC = () => {
     setTimeout(() => {
       setMessages(prev => [...prev, { sender: "bot", text: getBotReply(trimmed) }]);
       setLoading(false);
-    }, 800);
+    }, 550);
   }, [loading, getBotReply]);
 
   const clearChat = useCallback((): void => {
     setMessages([
       {
         sender: "bot",
-        text: "Hi there! 👋 Welcome back. Ask me about my skills, projects, or education."
+        text: "Hi! I'm Mydeen FAQs 👋 Feel free to ask anything about Mohamed's projects, background, role models, or choose a topic below."
       }
     ]);
     setInput("");
   }, []);
 
-  // Theme styling based on internal dark mode state
-  const isDark = darkMode;
-  const containerBg = isDark 
-    ? "bg-slate-900 border-white/10 sm:bg-slate-900/95 sm:backdrop-blur-xl" 
-    : "bg-white border-slate-200/50 sm:bg-white/95 sm:backdrop-blur-xl";
-  const headerBg = isDark ? "bg-slate-800" : "bg-slate-100";
-  const textPrimary = isDark ? "text-white" : "text-slate-900";
-  const textSecondary = isDark ? "text-slate-400" : "text-slate-500";
-  const inputContainerBg = isDark ? "bg-slate-800/50 border-white/5" : "bg-white border-slate-200";
-
   return (
     <>
-      {/* Floating button */}
+      {/* ─── FLOATING LAUNCHER BUTTON ─────────────────────────────────────────── */}
       <button
         onClick={() => setOpen(true)}
-        style={{ transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)' }}
-        className={`fixed bottom-6 right-6 w-12 h-12 rounded-full bg-indigo-500 text-white shadow-lg shadow-indigo-500/30 flex items-center justify-center hover:bg-indigo-600 hover:scale-105 z-50 animate-bounce-slow will-change-transform ${
-          open 
-            ? "opacity-0 scale-75 pointer-events-none translate-y-4" 
-            : "opacity-100 scale-100 pointer-events-auto translate-y-0"
+        className={`fixed bottom-6 right-6 z-50 flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-2 rounded-full border shadow-xl transition-all duration-300 select-none cursor-pointer ${
+          isDark
+            ? "bg-[#181818] border-white/10 text-white hover:border-[#e95420]"
+            : "bg-[#dedbd2] border-black/10 text-[#181818] hover:border-[#e95420]"
+        } ${
+          open
+            ? "opacity-0 scale-75 pointer-events-none translate-y-4"
+            : "opacity-100 scale-100 pointer-events-auto translate-y-0 hover:scale-105 active:scale-95"
         }`}
-        aria-label="Open Chatbot"
+        aria-label="Open Mydeen FAQs Assistant"
       >
-        <MessageCircle size={20} />
+        <div className="relative w-9 h-9 rounded-full overflow-hidden shrink-0 border border-[#e95420]">
+          <img
+            src="/my%20photo.png"
+            alt="Mohamed Mydeen"
+            className="w-full h-full object-cover"
+          />
+          <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white dark:border-black" />
+        </div>
+
+        <div className="hidden sm:flex flex-col items-start pr-1 text-left">
+          <div className="flex items-center gap-1 text-xs font-semibold">
+            <Sparkles size={11} className="text-[#e95420]" />
+            <span>Mydeen FAQs</span>
+          </div>
+          <span className="text-[10px] opacity-60">Ask Anything</span>
+        </div>
       </button>
 
-      {/* Chat Window */}
-      <div 
-        style={{ transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}
-        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-[calc(100vw-32px)] sm:w-[350px] h-[500px] sm:h-[550px] ${containerBg} border rounded-2xl shadow-2xl overflow-hidden z-50 flex flex-col will-change-transform ${
-          open 
-            ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" 
+      {/* ─── CLEAN, NATURAL CHAT WINDOW ───────────────────────────────────────── */}
+      <div
+        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-[calc(100vw-32px)] sm:w-[380px] h-[520px] sm:h-[560px] rounded-2xl shadow-2xl border overflow-hidden z-[100] flex flex-col transition-all duration-300 select-none font-sans ${
+          isDark
+            ? "bg-[#1a1a1a] border-white/10 text-[#f2efe9]"
+            : "bg-[#f4f2ec] border-black/10 text-[#181818]"
+        } ${
+          open
+            ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
             : "opacity-0 scale-95 translate-y-8 pointer-events-none"
         }`}
       >
-        {/* Header */}
-        <div className={`${headerBg} px-4 py-3 flex justify-between items-center border-b border-white/5`}>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-md">
-              <span className="text-white text-xs font-bold">MM</span>
+        {/* Header Bar */}
+        <div
+          className={`h-14 px-4 flex items-center justify-between border-b shrink-0 ${
+            isDark ? "bg-[#222222] border-white/5" : "bg-[#ebe8df] border-black/5"
+          }`}
+        >
+          {/* Avatar & Title */}
+          <div className="flex items-center gap-3">
+            <div className="relative w-9 h-9 rounded-full overflow-hidden border border-[#e95420]/60 shrink-0">
+              <img
+                src="/my%20photo.png"
+                alt="Mydeen FAQs Logo"
+                className="w-full h-full object-cover"
+              />
+              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white dark:border-black" />
             </div>
-            <div className="min-w-0">
-              <h2 className={`text-sm font-semibold ${textPrimary}`}>MydeenBot</h2>
-              <div className="flex items-center gap-1">
+
+            <div className="text-left leading-tight">
+              <h3 className="text-sm font-semibold text-[#181818] dark:text-[#f2efe9]">
+                Mydeen FAQs
+              </h3>
+              <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 mt-0.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <p className={`text-[10px] ${textSecondary}`}>Online</p>
-              </div>
+                <span>Online &bull; Full Stack &amp; AI</span>
+              </p>
             </div>
           </div>
-          <div className="flex gap-1">
-            <button onClick={clearChat} className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-200'}`} title="Clear Chat">
-              <Trash2 size={14} className={isDark ? "text-slate-300" : "text-slate-600"} />
+
+          {/* Actions */}
+          <div className="flex items-center gap-1 text-black/60 dark:text-white/60">
+            <button
+              onClick={clearChat}
+              className="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
+              title="Clear Conversation"
+            >
+              <Trash2 size={15} />
             </button>
-            <button onClick={() => setOpen(false)} className={`p-1.5 rounded-lg transition-colors ${isDark ? 'hover:bg-slate-700' : 'hover:bg-slate-200'}`}>
-              <X size={16} className={isDark ? "text-slate-300" : "text-slate-600"} />
+            <button
+              onClick={() => setOpen(false)}
+              className="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors cursor-pointer"
+              title="Close"
+            >
+              <X size={17} />
             </button>
           </div>
         </div>
 
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4 scrollbar-thin">
+        {/* Messages Body */}
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-3 scrollbar-thin">
           {messages.map((msg, idx) => (
             <MessageItem key={idx} msg={msg} isDark={isDark} />
           ))}
@@ -314,31 +359,42 @@ const Chatbot: React.FC = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Quick Actions / FAQs */}
-        {messages.length < 3 && !loading && (
+        {/* Quick Action FAQ Chips (Horizontal Scrollable) */}
+        {messages.length < 5 && !loading && (
           <QuickActions isDark={isDark} onActionClick={handleSend} />
         )}
 
-        {/* Input Area */}
-        <div className={`p-3 border-t ${inputContainerBg}`}>
-          <div className={`flex items-center gap-2 px-3 py-2 rounded-xl ${isDark ? 'bg-slate-900' : 'bg-slate-100'}`}>
+        {/* Clean Input Bar */}
+        <div
+          className={`p-3 border-t shrink-0 ${
+            isDark ? "bg-[#202020] border-white/5" : "bg-[#ebe8df]/70 border-black/5"
+          }`}
+        >
+          <div
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full border transition-all ${
+              isDark
+                ? "bg-[#161616] border-white/10 focus-within:border-[#e95420]"
+                : "bg-white border-black/10 focus-within:border-[#e95420]"
+            }`}
+          >
             <input
               value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && handleSend(input)}
-              placeholder="Type a message..."
-              className={`flex-1 outline-none text-base sm:text-sm bg-transparent ${textPrimary} placeholder-slate-400`}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSend(input)}
+              placeholder="Ask a question..."
+              className="flex-1 outline-none text-xs sm:text-[13px] bg-transparent text-[#181818] dark:text-[#f2efe9] placeholder:text-black/40 dark:placeholder:text-white/40 font-normal"
             />
             <button
               onClick={() => handleSend(input)}
               disabled={!input.trim() || loading}
-              className={`p-1.5 rounded-lg transition-colors ${
-                !input.trim() || loading 
-                  ? 'opacity-40 cursor-not-allowed text-slate-400' 
-                  : 'text-indigo-500 hover:bg-indigo-500/10'
+              className={`w-7 h-7 rounded-full flex items-center justify-center transition-all cursor-pointer ${
+                !input.trim() || loading
+                  ? "opacity-30 cursor-not-allowed bg-black/10 dark:bg-white/10 text-black/50 dark:text-white/50"
+                  : "bg-[#e95420] text-white hover:bg-[#d4481a] shadow-xs active:scale-95"
               }`}
+              title="Send Message"
             >
-              <Send size={16} />
+              <Send size={12} className="ml-0.5" />
             </button>
           </div>
         </div>

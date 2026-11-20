@@ -10,6 +10,24 @@ export interface ProjectType {
 
 export const projectsData: ProjectType[] = [
   {
+    title: "Peace Be Upon Him (PBUH) — Islamic Mobile App & Platform",
+    description: "Android APK application and interactive web platform featuring Islamic educational resources, prophetic guidance, and modern responsive design.",
+    image: "/pbuh-logo.png",
+    category: "Mobile",
+    technologies: ["React", "Android APK", "Tailwind CSS", "Vercel"],
+    github: "https://github.com/mohamed-mydeen",
+    demo: "https://pbuh.vercel.app/"
+  },
+  {
+    title: "Mydeen Dev — Technical Blog & Publications",
+    description: "Official tech blog and engineering platform featuring in-depth articles on AI engineering, full-stack systems, modern architectures, and tutorials.",
+    image: "https://images.pexels.com/photos/262508/pexels-photo-262508.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    category: "web",
+    technologies: ["React", "FastAPI", "TypeScript", "Tailwind CSS"],
+    github: "https://github.com/mohamed-mydeen/mydeenblog",
+    demo: "https://mydeenblog.vercel.app/about"
+  },
+  {
     title: "Intelligent Business Card Data Extracter and Manager",
     description: "A comprehensive learning management system with course creation, enrollment, and progress tracking.",
     image: "https://images.pexels.com/photos/4050315/pexels-photo-4050315.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -34,7 +52,7 @@ export const projectsData: ProjectType[] = [
     image: "https://images.pexels.com/photos/3183183/pexels-photo-3183183.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     category: "web",
     technologies: ["Reactjs", "TypeScript", "CSS", "JavaScript", "MySQL"],
-    
+    github: "https://github.com/mohamed-mydeen",
   },
   {
     title: "Music Player Using Data Structures",

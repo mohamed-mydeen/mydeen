@@ -171,6 +171,11 @@ const Contact: React.FC = () => {
       setSubmitSuccess(true);
       setForm(INITIAL_FORM);
       setFieldErrors({});
+
+      // Reset button state back after 4 seconds
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 4000);
     } catch (err) {
       setSubmitError(
         err instanceof Error
@@ -226,19 +231,6 @@ const Contact: React.FC = () => {
             </div>
 
             <form onSubmit={handleSubmit} noValidate className="p-5 sm:p-7 space-y-5">
-              {/* Success Confirmation */}
-              {submitSuccess && (
-                <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/35 text-xs sm:text-sm text-[#181818] dark:text-[#f2efe9] flex items-start gap-3">
-                  <CheckCircle2 size={18} className="text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-bold">Message sent successfully!</p>
-                    <p className="opacity-80 mt-0.5">
-                      Thank you for reaching out. Your enquiry has been saved and I&apos;ll respond to you shortly.
-                    </p>
-                  </div>
-                </div>
-              )}
-
               {/* Error Banner */}
               {submitError && (
                 <div className="p-4 rounded-xl bg-red-500/15 border border-red-500/35 text-xs sm:text-sm text-red-900 dark:text-red-300 flex items-start gap-3">
@@ -439,13 +431,24 @@ const Contact: React.FC = () => {
                 </span>
                 <button
                   type="submit"
-                  disabled={submitting}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#181818] text-[#E8D2B5] dark:bg-[#E8D2B5] dark:text-[#181818] text-sm font-semibold hover:opacity-90 active:scale-[0.99] transition-all shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={submitting || submitSuccess}
+                  className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 shadow-md cursor-pointer disabled:cursor-not-allowed ${
+                    submitSuccess
+                      ? 'bg-emerald-600 text-white shadow-emerald-600/30 ring-2 ring-emerald-500/50 scale-[1.02]'
+                      : submitting
+                      ? 'bg-[#181818] text-[#E8D2B5] dark:bg-[#E8D2B5] dark:text-[#181818] opacity-60'
+                      : 'bg-[#181818] text-[#E8D2B5] dark:bg-[#E8D2B5] dark:text-[#181818] hover:opacity-90 active:scale-[0.99]'
+                  }`}
                 >
                   {submitting ? (
                     <>
                       <span className="w-4 h-4 rounded-full border-2 border-current border-t-transparent animate-spin" />
                       <span>Sending...</span>
+                    </>
+                  ) : submitSuccess ? (
+                    <>
+                      <CheckCircle2 size={16} className="text-white" />
+                      <span>Message Sent!</span>
                     </>
                   ) : (
                     <>

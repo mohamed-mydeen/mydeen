@@ -303,7 +303,7 @@ const TOOLS_DATA: ToolItem[] = [
     experience: 'Primary development OS environment for programming, container orchestration, and server administration.',
     relatedProjects: ['Ubuntu Developer Desktop', 'System Administration'],
     docUrl: 'https://ubuntu.com/',
-    color: '#e95420',
+    color: '#A5A79B',
     iconPath: '/tech-icons/linux.svg'
   },
   {
@@ -359,7 +359,7 @@ const OfficialToolLogo: React.FC<{ tool: ToolItem; size?: 'sm' | 'md' | 'lg' }> 
   // Default 'md' for Grid View
   return (
     <div 
-      className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#282828] border border-white/10 group-hover:border-[#e95420]/60 p-2.5 sm:p-3 flex items-center justify-center shadow-md group-hover:scale-110 group-hover:shadow-[0_8px_20px_rgba(233,84,32,0.25)] transition-all duration-200 relative overflow-hidden"
+      className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#282828] border border-white/10 group-hover:border-[#A5A79B]/60 p-2.5 sm:p-3 flex items-center justify-center shadow-md group-hover:scale-110 group-hover:shadow-[0_8px_20px_rgba(233,84,32,0.25)] transition-all duration-200 relative overflow-hidden"
     >
       <div 
         className="absolute inset-0 opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-300 pointer-events-none" 
@@ -481,7 +481,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                 <span>Home</span>
               </span>
               <ChevronRight size={12} className="text-white/30" />
-              <span className="text-[#e95420] font-semibold">Tools &amp; Arsenal</span>
+              <span className="text-[#A5A79B] font-semibold">Tools &amp; Arsenal</span>
               {activeTool && (
                 <>
                   <ChevronRight size={12} className="text-white/30" />
@@ -493,7 +493,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
 
           {/* Center Title (Desktop) */}
           <div className="hidden md:flex items-center gap-2 text-xs font-mono text-white/70">
-            <Terminal size={14} className="text-[#e95420]" />
+            <Terminal size={14} className="text-[#A5A79B]" />
             <span>Development Tools &bull; ~/Portfolio/Tools</span>
           </div>
 
@@ -507,7 +507,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                 placeholder="Search tools, stack..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-[#202020] border border-white/10 rounded-md pl-8 pr-3 py-1 text-xs text-white placeholder:text-white/40 focus:outline-none focus:border-[#e95420] w-36 lg:w-48 transition-all"
+                className="bg-[#202020] border border-white/10 rounded-md pl-8 pr-3 py-1 text-xs text-white placeholder:text-white/40 focus:outline-none focus:border-[#A5A79B] w-36 lg:w-48 transition-all"
               />
             </div>
 
@@ -549,7 +549,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
               </button>
               <button
                 onClick={onClose}
-                className="w-4 h-4 rounded-full bg-[#e95420] hover:bg-[#d04212] text-white flex items-center justify-center transition-colors cursor-pointer shadow-sm"
+                className="w-4 h-4 rounded-full bg-[#A5A79B] hover:bg-[#96988c] text-white flex items-center justify-center transition-colors cursor-pointer shadow-sm"
                 title="Close"
               >
                 <X size={10} strokeWidth={2.5} />
@@ -575,7 +575,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                     onClick={() => { setSelectedCategory('all'); setActiveTool(null); }}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                       selectedCategory === 'all'
-                        ? 'bg-[#e95420] text-white font-semibold'
+                        ? 'bg-[#A5A79B] text-white font-semibold'
                         : 'text-white/70 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -590,7 +590,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                     onClick={() => { setSelectedCategory('languages'); setActiveTool(null); }}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                       selectedCategory === 'languages'
-                        ? 'bg-[#e95420] text-white font-semibold'
+                        ? 'bg-[#A5A79B] text-white font-semibold'
                         : 'text-white/70 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -607,7 +607,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                     onClick={() => { setSelectedCategory('frontend'); setActiveTool(null); }}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                       selectedCategory === 'frontend'
-                        ? 'bg-[#e95420] text-white font-semibold'
+                        ? 'bg-[#A5A79B] text-white font-semibold'
                         : 'text-white/70 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -624,7 +624,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                     onClick={() => { setSelectedCategory('backend'); setActiveTool(null); }}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                       selectedCategory === 'backend'
-                        ? 'bg-[#e95420] text-white font-semibold'
+                        ? 'bg-[#A5A79B] text-white font-semibold'
                         : 'text-white/70 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -641,7 +641,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                     onClick={() => { setSelectedCategory('databases'); setActiveTool(null); }}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                       selectedCategory === 'databases'
-                        ? 'bg-[#e95420] text-white font-semibold'
+                        ? 'bg-[#A5A79B] text-white font-semibold'
                         : 'text-white/70 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -658,7 +658,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                     onClick={() => { setSelectedCategory('devops'); setActiveTool(null); }}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                       selectedCategory === 'devops'
-                        ? 'bg-[#e95420] text-white font-semibold'
+                        ? 'bg-[#A5A79B] text-white font-semibold'
                         : 'text-white/70 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -712,10 +712,10 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                       <div
                         key={tool.id}
                         onClick={() => setActiveTool(tool)}
-                        className="group flex flex-col items-center p-3.5 rounded-xl border border-transparent hover:border-[#e95420]/40 hover:bg-[#e95420]/10 cursor-pointer transition-all duration-200 text-center"
+                        className="group flex flex-col items-center p-3.5 rounded-xl border border-transparent hover:border-[#A5A79B]/40 hover:bg-[#A5A79B]/10 cursor-pointer transition-all duration-200 text-center"
                       >
                         <OfficialToolLogo tool={tool} size="md" />
-                        <span className="text-xs font-bold text-white/95 group-hover:text-[#e95420] transition-colors mt-2.5 truncate max-w-[130px]">
+                        <span className="text-xs font-bold text-white/95 group-hover:text-[#A5A79B] transition-colors mt-2.5 truncate max-w-[130px]">
                           {tool.name}
                         </span>
                         <span className="text-[10px] text-white/40 font-mono mt-0.5 truncate max-w-[130px]">
@@ -736,7 +736,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                       <div
                         key={tool.id}
                         onClick={() => setActiveTool(tool)}
-                        className="grid grid-cols-12 items-center px-3 py-2.5 rounded-lg hover:bg-[#e95420]/15 hover:border-[#e95420]/30 border border-transparent cursor-pointer transition-all text-xs"
+                        className="grid grid-cols-12 items-center px-3 py-2.5 rounded-lg hover:bg-[#A5A79B]/15 hover:border-[#A5A79B]/30 border border-transparent cursor-pointer transition-all text-xs"
                       >
                         <div className="col-span-5 sm:col-span-4 flex items-center gap-3 truncate">
                           <OfficialToolLogo tool={tool} size="sm" />
@@ -790,7 +790,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                     href={activeTool.docUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#e95420] hover:bg-[#d04212] text-white text-xs font-semibold shadow-md transition-colors shrink-0"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#A5A79B] hover:bg-[#96988c] text-white text-xs font-semibold shadow-md transition-colors shrink-0"
                   >
                     <span>Official Docs</span>
                     <ExternalLink size={12} className="opacity-70" />
@@ -829,7 +829,7 @@ export const UbuntuToolsManager: React.FC<UbuntuToolsManagerProps> = ({
                             key={i}
                             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-mono text-white/80"
                           >
-                            <CheckCircle2 size={12} className="text-[#e95420]" />
+                            <CheckCircle2 size={12} className="text-[#A5A79B]" />
                             <span>{proj}</span>
                           </span>
                         ))}

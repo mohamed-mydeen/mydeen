@@ -9,6 +9,8 @@ export default {
         display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
       },
       colors: {
+        sage: '#A5A79B',
+        cream: '#E8D2B5',
         primary: {
           50:  '#eef2ff',
           100: '#e0e7ff',

@@ -152,7 +152,7 @@ const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen w-full overflow-hidden bg-[#e6e3da] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] transition-colors duration-500 flex flex-col justify-between select-none"
+      className="relative min-h-screen w-full overflow-hidden bg-[#E8D2B5] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] transition-colors duration-500 flex flex-col justify-between select-none"
     >
       
       {/* =========================================================================
@@ -296,7 +296,7 @@ const Hero: React.FC = () => {
               </span>
               <button
                 onClick={() => scrollTo('#about')}
-                className="w-10 h-10 rounded-full bg-[#181818] text-[#e6e3da] dark:bg-[#f2efe9] dark:text-[#181818] flex items-center justify-center font-['Space_Grotesk'] font-bold text-sm hover:scale-105 transition-transform cursor-pointer shadow-sm"
+                className="w-10 h-10 rounded-full bg-[#181818] text-[#E8D2B5] dark:bg-[#E8D2B5] dark:text-[#181818] flex items-center justify-center font-['Space_Grotesk'] font-bold text-sm hover:scale-105 transition-transform cursor-pointer shadow-sm border border-[#A5A79B]/40"
                 title="Learn About Mohamed Mydeen"
               >
                 /m

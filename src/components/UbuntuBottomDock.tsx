@@ -46,7 +46,7 @@ export const UbuntuBottomDock: React.FC<UbuntuBottomDockProps> = ({
       type: 'action',
       onClick: onOpenProjects,
       customIcon: (
-        <div className="w-full h-full bg-[#353535] rounded-xl flex items-center justify-center text-[#e95420] border border-white/10 shadow-sm">
+        <div className="w-full h-full bg-[#353535] rounded-xl flex items-center justify-center text-[#A5A79B] border border-white/10 shadow-sm">
           <svg viewBox="0 0 48 38" fill="currentColor" className="w-7 h-6">
             <path d="M 0 4.5 C 0 2 2 0 4.5 0 L 16 0 C 18.2 0 20.2 1.2 21.2 3.1 L 23 6.5 L 43.5 6.5 C 46 6.5 48 8.5 48 11 L 48 33.5 C 48 36 46 38 43.5 38 L 4.5 38 C 2 38 0 36 0 33.5 Z" />
           </svg>
@@ -60,8 +60,8 @@ export const UbuntuBottomDock: React.FC<UbuntuBottomDockProps> = ({
       type: 'action',
       onClick: onOpenTools,
       customIcon: (
-        <div className="w-full h-full bg-[#2d1b2d] rounded-xl flex items-center justify-center text-[#e95420] border border-white/10 shadow-sm">
-          <Terminal size={22} className="text-[#e95420]" />
+        <div className="w-full h-full bg-[#242624] rounded-xl flex items-center justify-center text-[#A5A79B] border border-white/10 shadow-sm">
+          <Terminal size={22} className="text-[#A5A79B]" />
         </div>
       ),
       isRunning: true
@@ -191,8 +191,8 @@ export const UbuntuBottomDock: React.FC<UbuntuBottomDockProps> = ({
                 {((app.id === 'projects' && isProjectsOpen) || (app.id === 'tools' && isToolsOpen) || app.isRunning) && (
                   <span className={`w-1.5 h-1.5 rounded-full transition-colors ${
                     (app.id === 'projects' && isProjectsOpen) || (app.id === 'tools' && isToolsOpen)
-                      ? 'bg-[#e95420]'
-                      : 'bg-white/70 group-hover:bg-[#e95420]'
+                      ? 'bg-[#A5A79B]'
+                      : 'bg-white/70 group-hover:bg-[#A5A79B]'
                   }`} />
                 )}
               </div>

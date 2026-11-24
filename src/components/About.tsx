@@ -15,31 +15,31 @@ const About: React.FC = () => {
   return (
     <section
       id="about"
-      className="relative w-full bg-[#e6e3da] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] transition-colors duration-200 border-t border-black/10 dark:border-white/10 lg:min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden flex flex-col justify-center py-16 lg:py-0 px-4 sm:px-6 lg:px-8 xl:px-12 scroll-mt-0"
+      className="relative w-full bg-[#A5A79B] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] transition-colors duration-200 border-t border-black/10 dark:border-white/10 lg:min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden flex flex-col justify-center py-16 lg:py-0 px-4 sm:px-6 lg:px-8 xl:px-12 scroll-mt-0"
     >
       <div className="container mx-auto max-w-6xl xl:max-w-7xl w-full flex flex-col justify-center lg:h-full lg:pt-16 lg:pb-6 relative z-10">
         
         {/* Section Header — Clean Left-Aligned Hierarchy */}
         <div className="mb-3.5 lg:mb-4 text-left shrink-0" data-reveal>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono font-semibold uppercase tracking-wider mb-1.5">
-            <Terminal size={12} className="text-[#e95420]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8D2B5]/40 dark:bg-white/5 border border-[#181818]/15 dark:border-white/10 text-xs font-mono font-semibold uppercase tracking-wider mb-1.5">
+            <Terminal size={12} className="text-[#181818] dark:text-[#E8D2B5]" />
             <span>Profile &amp; Biography</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold font-['Space_Grotesk'] tracking-tight text-[#181818] dark:text-[#f2efe9]">
             About Mohamed
           </h2>
-          <p className="text-xs sm:text-sm opacity-75 mt-1 max-w-2xl font-normal text-left">
+          <p className="text-xs sm:text-sm opacity-80 mt-1 max-w-2xl font-normal text-left">
             A software developer focused on crafting resilient full-stack systems, modern architectures, and smart automation.
           </p>
         </div>
 
         {/* ─── OS DEVELOPER WINDOW INSPECTOR ────────────────────────────────────── */}
         <div 
-          className="rounded-2xl bg-[#dedbd2]/85 dark:bg-[#1a1a1a] border border-black/15 dark:border-white/10 shadow-2xl overflow-hidden backdrop-blur-md flex flex-col shrink min-h-0"
+          className="rounded-2xl bg-[#E8D2B5]/95 dark:bg-[#1a1a1a] border border-black/15 dark:border-white/10 shadow-2xl overflow-hidden backdrop-blur-md flex flex-col shrink min-h-0"
           data-reveal
         >
           {/* Window Header Bar */}
-          <div className="h-9 sm:h-10 bg-[#d4d0c7] dark:bg-[#252525] border-b border-black/10 dark:border-white/10 px-4 sm:px-5 flex items-center justify-between shrink-0">
+          <div className="h-9 sm:h-10 bg-[#dbc3a4] dark:bg-[#252525] border-b border-black/10 dark:border-white/10 px-4 sm:px-5 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-[#ff5f56] inline-block shadow-xs" />
               <span className="w-3 h-3 rounded-full bg-[#ffbd2e] inline-block shadow-xs" />
@@ -63,7 +63,7 @@ const About: React.FC = () => {
               
               {/* Profile Image with subtle framing */}
               <div className="relative group w-44 sm:w-52 lg:w-48 xl:w-56 shrink-0 mx-auto">
-                <div className="absolute -inset-1 bg-gradient-to-tr from-[#e95420]/30 to-black/10 dark:to-white/10 rounded-2xl blur-xs opacity-50 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute -inset-1 bg-gradient-to-tr from-[#A5A79B]/40 to-black/10 dark:to-white/10 rounded-2xl blur-xs opacity-50 group-hover:opacity-100 transition-opacity" />
                 <img
                   src="/my%20photo.png"
                   alt="Mohamed Mydeen Shahabudeen"
@@ -77,7 +77,7 @@ const About: React.FC = () => {
                 <a
                   href="/mohamedmydeensd.pdf"
                   download="mohamedmydeensd.pdf"
-                  className="flex-1 inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#181818] text-[#e6e3da] dark:bg-[#f2efe9] dark:text-[#181818] text-xs font-semibold hover:opacity-90 transition-all shadow-sm cursor-pointer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#181818] text-[#E8D2B5] dark:bg-[#E8D2B5] dark:text-[#181818] text-xs font-semibold hover:opacity-90 transition-all shadow-sm cursor-pointer"
                 >
                   <Download size={14} />
                   <span>Resume</span>
@@ -116,7 +116,7 @@ const About: React.FC = () => {
             <div className="lg:col-span-8 xl:col-span-8 flex flex-col justify-between space-y-4 text-left">
               
               <div>
-                <p className="text-xs font-mono font-bold tracking-widest text-[#e95420] uppercase mb-1">
+                <p className="text-xs font-mono font-bold tracking-widest text-[#A5A79B] dark:text-[#E8D2B5] uppercase mb-1">
                   // THE DEVELOPER JOURNEY
                 </p>
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold font-['Space_Grotesk'] tracking-tight leading-snug text-[#181818] dark:text-[#f2efe9]">
@@ -127,7 +127,7 @@ const About: React.FC = () => {
               {/* Bio Paragraphs — Clean Left-Aligned Typography */}
               <div className="space-y-3 text-xs sm:text-sm lg:text-[14px] leading-relaxed opacity-90 text-left font-normal">
                 <p>
-                  Hi! I'm <strong className="font-bold underline decoration-[#e95420] underline-offset-4">Mohamed Mydeen Shahabudeen M</strong>, 
+                  Hi! I'm <strong className="font-bold underline decoration-[#A5A79B] underline-offset-4">Mohamed Mydeen Shahabudeen M</strong>, 
                   a full-stack developer dedicated to building scalable and efficient web applications. 
                   With a strong foundation in <span className="font-semibold">MERN Stack</span> (MongoDB, Express, React, Node.js) and <span className="font-semibold">Java Spring Boot</span>, 
                   I specialize in turning complex problems into elegant, user-friendly digital systems.
@@ -142,7 +142,7 @@ const About: React.FC = () => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs font-mono">
                 <div className="p-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 flex flex-col gap-0.5">
                   <span className="opacity-60 text-[10px] uppercase font-semibold flex items-center gap-1.5">
-                    <GraduationCap size={12} className="text-[#e95420]" />
+                    <GraduationCap size={12} className="text-[#A5A79B]" />
                     <span>Education</span>
                   </span>
                   <span className="font-bold truncate text-[11px] sm:text-xs">B.Tech CSBS @ FXEC</span>
@@ -158,7 +158,7 @@ const About: React.FC = () => {
 
                 <div className="p-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 flex flex-col gap-0.5">
                   <span className="opacity-60 text-[10px] uppercase font-semibold flex items-center gap-1.5">
-                    <Code2 size={12} className="text-blue-500" />
+                    <Code2 size={12} className="text-[#A5A79B]" />
                     <span>Core Stack</span>
                   </span>
                   <span className="font-bold truncate text-[11px] sm:text-xs">MERN &bull; Spring Boot</span>
@@ -166,14 +166,14 @@ const About: React.FC = () => {
 
                 <div className="p-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 flex flex-col gap-0.5">
                   <span className="opacity-60 text-[10px] uppercase font-semibold flex items-center gap-1.5">
-                    <BookOpen size={12} className="text-purple-500" />
+                    <BookOpen size={12} className="text-[#A5A79B]" />
                     <span>Publications</span>
                   </span>
                   <a 
                     href="https://mydeenblog.vercel.app/about" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="font-bold truncate text-[11px] sm:text-xs text-[#e95420] hover:underline"
+                    className="font-bold truncate text-[11px] sm:text-xs text-[#A5A79B] dark:text-[#E8D2B5] hover:underline"
                   >
                     mydeenblog
                   </a>
@@ -185,7 +185,7 @@ const About: React.FC = () => {
                 {/* Socials Box */}
                 <div className="p-3.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-left space-y-2">
                   <p className="text-[10px] font-mono font-bold tracking-widest uppercase opacity-60 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#e95420]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#A5A79B]" />
                     <span>Socials</span>
                   </p>
                   <div className="flex flex-wrap items-center gap-3 font-mono text-xs font-semibold">

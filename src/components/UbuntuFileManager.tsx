@@ -40,7 +40,7 @@ const UbuntuFolderIcon: React.FC<{ className?: string; category?: string }> = ({
         <stop offset="100%" stopColor="#d94411" />
       </linearGradient>
       <linearGradient id="ubBody" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stopColor="#e95420" />
+        <stop offset="0%" stopColor="#A5A79B" />
         <stop offset="100%" stopColor="#c33d0e" />
       </linearGradient>
       <linearGradient id="ubBack" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -166,10 +166,10 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
 
             {/* Breadcrumb Path Pill */}
             <div className="flex items-center gap-1.5 px-3 py-1 bg-[#202020] rounded-md text-xs font-medium border border-white/5">
-              <HomeIcon size={13} className="text-[#e95420]" />
+              <HomeIcon size={13} className="text-[#A5A79B]" />
               <span>Home</span>
               <ChevronRight size={12} className="opacity-40" />
-              <span className="text-[#e95420] font-semibold">Projects</span>
+              <span className="text-[#A5A79B] font-semibold">Projects</span>
               {activeProject && (
                 <>
                   <ChevronRight size={12} className="opacity-40" />
@@ -198,7 +198,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                 placeholder="Search projects..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-[#202020] border border-white/10 rounded-md pl-8 pr-3 py-1 text-xs text-white placeholder:text-white/40 focus:outline-none focus:border-[#e95420] w-36 lg:w-48 transition-all"
+                className="bg-[#202020] border border-white/10 rounded-md pl-8 pr-3 py-1 text-xs text-white placeholder:text-white/40 focus:outline-none focus:border-[#A5A79B] w-36 lg:w-48 transition-all"
               />
             </div>
 
@@ -240,7 +240,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
               </button>
               <button
                 onClick={onClose}
-                className="w-4 h-4 rounded-full bg-[#e95420] hover:bg-[#d04212] text-white flex items-center justify-center transition-colors cursor-pointer shadow-sm"
+                className="w-4 h-4 rounded-full bg-[#A5A79B] hover:bg-[#96988c] text-white flex items-center justify-center transition-colors cursor-pointer shadow-sm"
                 title="Close"
               >
                 <X size={10} strokeWidth={2.5} />
@@ -267,7 +267,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                     onClick={() => { setSelectedCategory('all'); setActiveProject(null); }}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                       selectedCategory === 'all'
-                        ? 'bg-[#e95420] text-white font-semibold'
+                        ? 'bg-[#A5A79B] text-white font-semibold'
                         : 'text-white/70 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -282,7 +282,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                     onClick={() => { setSelectedCategory('web'); setActiveProject(null); }}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                       selectedCategory === 'web'
-                        ? 'bg-[#e95420] text-white font-semibold'
+                        ? 'bg-[#A5A79B] text-white font-semibold'
                         : 'text-white/70 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -299,7 +299,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                     onClick={() => { setSelectedCategory('ai'); setActiveProject(null); }}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                       selectedCategory === 'ai'
-                        ? 'bg-[#e95420] text-white font-semibold'
+                        ? 'bg-[#A5A79B] text-white font-semibold'
                         : 'text-white/70 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -316,7 +316,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                     onClick={() => { setSelectedCategory('software'); setActiveProject(null); }}
                     className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                       selectedCategory === 'software'
-                        ? 'bg-[#e95420] text-white font-semibold'
+                        ? 'bg-[#A5A79B] text-white font-semibold'
                         : 'text-white/70 hover:bg-white/5 hover:text-white'
                     }`}
                   >
@@ -372,10 +372,10 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                       <div
                         key={idx}
                         onClick={() => setActiveProject(project)}
-                        className="group flex flex-col items-center p-3 rounded-xl border border-transparent hover:border-[#e95420]/40 hover:bg-[#e95420]/10 cursor-pointer transition-all duration-200 text-center"
+                        className="group flex flex-col items-center p-3 rounded-xl border border-transparent hover:border-[#A5A79B]/40 hover:bg-[#A5A79B]/10 cursor-pointer transition-all duration-200 text-center"
                       >
                         <UbuntuFolderIcon className="w-16 h-14 mb-2" />
-                        <span className="text-xs font-semibold text-white/90 group-hover:text-[#e95420] transition-colors line-clamp-2 max-w-[140px] leading-snug">
+                        <span className="text-xs font-semibold text-white/90 group-hover:text-[#A5A79B] transition-colors line-clamp-2 max-w-[140px] leading-snug">
                           {project.title}
                         </span>
                         <span className="text-[10px] text-white/40 mt-1 font-mono uppercase tracking-wide">
@@ -396,7 +396,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                       <div
                         key={idx}
                         onClick={() => setActiveProject(project)}
-                        className="grid grid-cols-12 items-center px-3 py-2.5 rounded-lg hover:bg-[#e95420]/15 hover:border-[#e95420]/30 border border-transparent cursor-pointer transition-all text-xs"
+                        className="grid grid-cols-12 items-center px-3 py-2.5 rounded-lg hover:bg-[#A5A79B]/15 hover:border-[#A5A79B]/30 border border-transparent cursor-pointer transition-all text-xs"
                       >
                         <div className="col-span-6 sm:col-span-5 flex items-center gap-2.5">
                           <UbuntuFolderIcon className="w-6 h-5 shrink-0" />
@@ -429,7 +429,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                     <UbuntuFolderIcon className="w-14 h-12 shrink-0" />
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-[#e95420]/20 text-[#e95420] border border-[#e95420]/30">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-[#A5A79B]/20 text-[#A5A79B] border border-[#A5A79B]/30">
                           {activeProject.category}
                         </span>
                         <span className="text-xs text-white/40 font-mono">Directory opened</span>
@@ -447,7 +447,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                         href={activeProject.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#e95420] hover:bg-[#d04212] text-white text-xs font-semibold shadow-md transition-colors"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#A5A79B] hover:bg-[#96988c] text-white text-xs font-semibold shadow-md transition-colors"
                       >
                         <Globe size={14} />
                         <span>Open Live Demo</span>
@@ -487,13 +487,13 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                       href={activeProject.github || 'https://github.com/mohamed-mydeen'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 p-2.5 rounded-lg bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 hover:border-[#e95420]/50 transition-all cursor-pointer group/code shadow-xs"
+                      className="flex items-center gap-2 p-2.5 rounded-lg bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 hover:border-[#A5A79B]/50 transition-all cursor-pointer group/code shadow-xs"
                       title="Open GitHub Source Code Repository"
                     >
                       <FileCode size={18} className="text-emerald-400 group-hover/code:scale-110 transition-transform" />
                       <div className="text-xs truncate flex-1 min-w-0">
                         <div className="flex items-center gap-1">
-                          <p className="font-semibold text-white/90 group-hover/code:text-[#e95420] transition-colors truncate">
+                          <p className="font-semibold text-white/90 group-hover/code:text-[#A5A79B] transition-colors truncate">
                             source_code/
                           </p>
                           <ExternalLink size={10} className="text-white/40 group-hover/code:text-white shrink-0" />
@@ -515,13 +515,13 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                         href={activeProject.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 p-2.5 rounded-lg bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 hover:border-[#e95420]/50 transition-all cursor-pointer group/run shadow-xs"
+                        className="flex items-center gap-2 p-2.5 rounded-lg bg-[#242424] hover:bg-[#2c2c2c] border border-white/5 hover:border-[#A5A79B]/50 transition-all cursor-pointer group/run shadow-xs"
                         title="Run Executable Demo"
                       >
                         <Terminal size={18} className="text-purple-400 group-hover/run:scale-110 transition-transform" />
                         <div className="text-xs truncate flex-1 min-w-0">
                           <div className="flex items-center gap-1">
-                            <p className="font-semibold text-white/90 group-hover/run:text-[#e95420] transition-colors truncate">run.sh</p>
+                            <p className="font-semibold text-white/90 group-hover/run:text-[#A5A79B] transition-colors truncate">run.sh</p>
                             <ExternalLink size={10} className="text-white/40 group-hover/run:text-white shrink-0" />
                           </div>
                           <p className="text-[10px] text-purple-400/80 font-mono">Live Demo &bull; Run &rarr;</p>
@@ -543,7 +543,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                 <div className="p-5 rounded-xl bg-[#242424] border border-white/10 space-y-4">
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
                     <div className="flex items-center gap-2 text-xs font-mono font-semibold text-white/70">
-                      <FileText size={14} className="text-[#e95420]" />
+                      <FileText size={14} className="text-[#A5A79B]" />
                       <span>README.md — Project Documentation</span>
                     </div>
                   </div>
@@ -560,7 +560,7 @@ export const UbuntuFileManager: React.FC<UbuntuFileManagerProps> = ({
                       {activeProject.technologies.map((tech, i) => (
                         <span
                           key={i}
-                          className="px-3 py-1 rounded-md bg-[#1a1a1a] text-xs font-mono text-[#e95420] border border-[#e95420]/30"
+                          className="px-3 py-1 rounded-md bg-[#1a1a1a] text-xs font-mono text-[#A5A79B] border border-[#A5A79B]/30"
                         >
                           {tech}
                         </span>

@@ -54,8 +54,8 @@ const Navbar: React.FC = () => {
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'translate-y-0 opacity-100 bg-[#e6e3da]/90 dark:bg-[#141414]/90 backdrop-blur-md shadow-sm border-b border-black/10 dark:border-white/10 py-3'
-          : 'translate-y-0 opacity-100 bg-[#e6e3da]/80 dark:bg-[#141414]/80 backdrop-blur-md py-3 lg:-translate-y-full lg:opacity-0 lg:pointer-events-none'
+          ? 'translate-y-0 opacity-100 bg-[#E8D2B5]/90 dark:bg-[#141414]/90 backdrop-blur-md shadow-sm border-b border-[#A5A79B]/20 dark:border-white/10 py-3'
+          : 'translate-y-0 opacity-100 bg-[#E8D2B5]/80 dark:bg-[#141414]/80 backdrop-blur-md py-3 lg:-translate-y-full lg:opacity-0 lg:pointer-events-none'
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,14 +63,16 @@ const Navbar: React.FC = () => {
           {/* Clean Logo - Hides on mobile when menu opens */}
           <button 
             onClick={() => scrollToSection('#home')}
-            className={`flex items-center gap-1 group transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            className={`flex items-center gap-2 group transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
               isOpen ? 'max-w-0 opacity-0 overflow-hidden' : 'max-w-[200px] opacity-100'
             } md:max-w-none md:w-auto md:opacity-100 md:overflow-visible`}
           >
-            <span className="font-bold text-xl text-slate-900 dark:text-white tracking-tight">
+            <span className="w-7 h-7 rounded-full bg-[#181818] text-[#E8D2B5] dark:bg-[#E8D2B5] dark:text-[#181818] flex items-center justify-center font-['Space_Grotesk'] font-bold text-xs border border-[#A5A79B]/40 shrink-0">
+              /m
+            </span>
+            <span className="font-bold text-xl text-[#181818] dark:text-white tracking-tight">
               Mydeen
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 group-hover:bg-emerald-500 transition-colors" />
           </button>
 
           {/* Desktop Nav */}
@@ -79,10 +81,10 @@ const Navbar: React.FC = () => {
               <button
                 key={link.name}
                 onClick={() => scrollToSection(link.href)}
-                className={`text-sm font-medium transition-colors hover:text-indigo-600 dark:hover:text-indigo-400 ${
+                className={`text-sm font-medium transition-colors hover:text-[#A5A79B] dark:hover:text-[#E8D2B5] ${
                   activeSection === link.id 
-                    ? 'text-indigo-600 dark:text-indigo-400' 
-                    : 'text-slate-600 dark:text-slate-300'
+                    ? 'text-[#181818] dark:text-[#E8D2B5] font-semibold underline decoration-[#A5A79B] underline-offset-4' 
+                    : 'text-[#181818]/70 dark:text-slate-300'
                 }`}
               >
                 {link.name}
@@ -92,7 +94,7 @@ const Navbar: React.FC = () => {
               href="https://mydeenblog.vercel.app/about"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 inline-flex items-center gap-1.5 group"
+              className="text-sm font-medium transition-colors text-[#181818]/70 dark:text-slate-300 hover:text-[#A5A79B] dark:hover:text-[#E8D2B5] inline-flex items-center gap-1.5 group"
             >
               <span>Blog</span>
               <ExternalLink size={13} className="opacity-70 group-hover:opacity-100 transition-opacity" />
@@ -117,8 +119,8 @@ const Navbar: React.FC = () => {
                   isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
                 } ${
                   activeSection === link.id
-                    ? 'text-indigo-600 dark:text-indigo-400'
-                    : 'text-slate-700 dark:text-slate-300 hover:text-indigo-500'
+                    ? 'text-[#181818] dark:text-[#E8D2B5] font-semibold'
+                    : 'text-[#181818]/75 dark:text-slate-300 hover:text-[#A5A79B]'
                 }`}
                 style={{ transitionDelay: isOpen ? `${idx * 150}ms` : '0ms' }}
               >

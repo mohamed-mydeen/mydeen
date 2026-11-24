@@ -108,8 +108,8 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
     target="_blank"
     rel="noopener noreferrer"
     className="flex-shrink-0 flex items-center gap-4 p-4 w-[240px] sm:w-[260px] rounded-2xl
-               bg-[#dedbd2]/90 dark:bg-[#1c1c1c]/95 border border-black/10 dark:border-white/10
-               shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:border-black/20 dark:hover:border-white/20
+               bg-[#A5A79B]/20 dark:bg-[#1c1c1c]/95 border border-[#A5A79B]/30 dark:border-white/10
+               shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:border-[#A5A79B]/50 dark:hover:border-white/20
                hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] hover:-translate-y-0.5
                transition-all duration-300 group select-none"
   >
@@ -132,7 +132,7 @@ const FeaturedProducts: React.FC = () => {
   return (
     <section 
       id="products" 
-      className="bg-[#e6e3da] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] border-t border-black/10 dark:border-white/10 py-12 sm:py-16 overflow-hidden relative transition-colors duration-500"
+      className="bg-[#E8D2B5] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] border-t border-[#A5A79B]/20 dark:border-white/10 py-12 sm:py-16 overflow-hidden relative transition-colors duration-500"
     >
       
       {/* Styles for hardware-accelerated continuous scrolling */}
@@ -156,13 +156,13 @@ const FeaturedProducts: React.FC = () => {
       `}</style>
 
       {/* Decorative Blur Vignette Layers */}
-      <div className="absolute top-0 bottom-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-[#e6e3da] dark:from-[#141414] to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 bottom-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-[#e6e3da] dark:from-[#141414] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 bottom-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-[#E8D2B5] dark:from-[#141414] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 bottom-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-[#E8D2B5] dark:from-[#141414] to-transparent z-10 pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Compact Section Header */}
         <div className="mb-6 text-center" data-reveal>
-          <p className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.25em] mb-1">
+          <p className="text-[10px] font-bold text-[#A5A79B] dark:text-[#E8D2B5] uppercase tracking-[0.25em] mb-1">
             Featured Products
           </p>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-white font-['Space_Grotesk'] tracking-tight">

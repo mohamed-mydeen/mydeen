@@ -131,15 +131,15 @@ export const Education: React.FC = () => {
   return (
     <section
       id="education"
-      className="relative w-full bg-[#e6e3da] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] transition-colors duration-200 border-t border-black/10 dark:border-white/10 lg:min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden flex flex-col justify-center py-16 lg:py-0 px-4 sm:px-6 lg:px-8 xl:px-12 scroll-mt-0 select-none"
+      className="relative w-full bg-[#E8D2B5] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] transition-colors duration-200 border-t border-[#A5A79B]/20 dark:border-white/10 lg:min-h-screen lg:h-screen lg:max-h-screen lg:overflow-hidden flex flex-col justify-center py-16 lg:py-0 px-4 sm:px-6 lg:px-8 xl:px-12 scroll-mt-0 select-none"
     >
       <div className="container mx-auto max-w-6xl xl:max-w-7xl w-full flex flex-col justify-center lg:h-full lg:pt-14 lg:pb-6 relative z-10">
         
         {/* Section Header — Clean Left-Aligned Hierarchy Matching About Section */}
         <div className="mb-3 lg:mb-4 text-left shrink-0 flex flex-col sm:flex-row sm:items-end justify-between gap-3" data-reveal>
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono font-semibold uppercase tracking-wider mb-1.5">
-              <BookOpen size={12} className="text-[#e95420]" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#A5A79B]/20 dark:bg-white/5 border border-[#A5A79B]/40 dark:border-white/10 text-xs font-mono font-semibold uppercase tracking-wider mb-1.5">
+              <BookOpen size={12} className="text-[#A5A79B]" />
               <span>Developer Chronicle &bull; Milestones</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold font-['Space_Grotesk'] tracking-tight text-[#181818] dark:text-[#f2efe9]">
@@ -156,7 +156,7 @@ export const Education: React.FC = () => {
               onClick={() => setActiveTab('all')}
               className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
                 activeTab === 'all'
-                  ? 'bg-[#e95420] text-white border-[#e95420] font-semibold shadow-xs'
+                  ? 'bg-[#A5A79B] text-[#181818] border-[#A5A79B] font-semibold shadow-xs'
                   : 'bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 opacity-70 hover:opacity-100'
               }`}
             >
@@ -164,9 +164,9 @@ export const Education: React.FC = () => {
             </button>
             <button
               onClick={() => setShowCertsModal(true)}
-              className="px-3 py-1.5 rounded-lg border border-amber-500/30 text-amber-600 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 font-semibold cursor-pointer flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-lg border border-[#A5A79B]/40 text-[#181818] dark:text-[#E8D2B5] bg-[#A5A79B]/20 hover:bg-[#A5A79B]/30 font-semibold cursor-pointer flex items-center gap-1.5"
             >
-              <Award size={12} />
+              <Award size={12} className="text-[#A5A79B]" />
               <span>5 Verified Credentials</span>
             </button>
           </div>
@@ -174,20 +174,20 @@ export const Education: React.FC = () => {
 
         {/* ─── REALISTIC EXPANSIVE HARDCOVER BOOK SPREAD ─────────────────────────── */}
         <div 
-          className="relative rounded-3xl bg-[#d6d0c2] dark:bg-[#161616] p-3 sm:p-4 border border-black/15 dark:border-white/15 shadow-2xl overflow-hidden flex flex-col shrink min-h-0 lg:h-[580px] xl:h-[630px]"
+          className="relative rounded-3xl bg-[#A5A79B]/30 dark:bg-[#161616] p-3 sm:p-4 border border-[#A5A79B]/40 dark:border-white/15 shadow-2xl overflow-hidden flex flex-col shrink min-h-0 lg:h-[580px] xl:h-[630px]"
           data-reveal
         >
           {/* Hanging Ribbon Bookmark (Top Right Edge) */}
           <div 
             onClick={() => setShowCertsModal(true)}
-            className="absolute top-0 right-14 sm:right-20 w-7 h-12 sm:h-14 bg-[#e95420] shadow-md z-30 cursor-pointer hover:h-16 transition-all duration-200 flex flex-col items-center justify-end pb-1"
+            className="absolute top-0 right-14 sm:right-20 w-7 h-12 sm:h-14 bg-[#A5A79B] shadow-md z-30 cursor-pointer hover:h-16 transition-all duration-200 flex flex-col items-center justify-end pb-1"
             title="Click ribbon to view verified credentials"
           >
-            <div className="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-b-[8px] border-b-[#d6d0c2] dark:border-b-[#161616]" />
+            <div className="w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-b-[8px] border-b-[#A5A79B]/30 dark:border-b-[#161616]" />
           </div>
 
           {/* Inner Pages Spread (Two Facing Parchment Pages) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 relative rounded-2xl bg-[#f5f3ec] dark:bg-[#1c1c1c] border border-black/10 dark:border-white/10 shadow-inner overflow-hidden flex-1 min-h-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 relative rounded-2xl bg-[#fdfcf9] dark:bg-[#1c1c1c] border border-black/10 dark:border-white/10 shadow-inner overflow-hidden flex-1 min-h-0">
             
             {/* Center Book Spine Binding Line & Shadow (Desktop) */}
             <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-10 -translate-x-1/2 pointer-events-none z-20 shadow-[inset_0_0_18px_rgba(0,0,0,0.14)] dark:shadow-[inset_0_0_24px_rgba(0,0,0,0.5)] border-x border-black/5 dark:border-white/5" />
@@ -200,12 +200,12 @@ export const Education: React.FC = () => {
               {/* Running Page Header */}
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-black/10 dark:border-white/10 shrink-0">
                 <div className="flex items-center gap-2">
-                  <Briefcase size={16} className="text-[#e95420]" />
+                  <Briefcase size={16} className="text-[#A5A79B]" />
                   <span className="text-xs font-mono uppercase font-bold tracking-wider text-black/70 dark:text-white/70">
                     Chapter I &bull; Professional Experience (4 Roles)
                   </span>
                 </div>
-                <span className="text-xs font-mono font-bold text-[#e95420] px-2 py-0.5 rounded bg-black/5 dark:bg-white/5">
+                <span className="text-xs font-mono font-bold text-[#A5A79B] dark:text-[#E8D2B5] px-2 py-0.5 rounded bg-black/5 dark:bg-white/5">
                   p. 01
                 </span>
               </div>
@@ -215,11 +215,11 @@ export const Education: React.FC = () => {
                 {INTERNSHIPS.map((item, idx) => (
                   <div 
                     key={idx}
-                    className="p-3.5 sm:p-4 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 hover:border-[#e95420]/40 transition-colors"
+                    className="p-3.5 sm:p-4 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 hover:border-[#A5A79B]/50 transition-colors"
                   >
                     {/* Period & Tech Highlights */}
                     <div className="flex flex-wrap items-center justify-between gap-1.5 mb-1.5">
-                      <span className="text-[11px] font-mono font-bold text-[#e95420] dark:text-[#ff7844]">
+                      <span className="text-[11px] font-mono font-bold text-[#A5A79B] dark:text-[#E8D2B5]">
                         {item.period}
                       </span>
                       <span className="text-[10px] font-mono opacity-60">
@@ -232,7 +232,7 @@ export const Education: React.FC = () => {
                       {item.title}
                     </h4>
                     <p className="text-xs font-semibold text-black/80 dark:text-white/80 mt-0.5 flex items-center gap-1.5">
-                      <Building2 size={13} className="text-[#e95420] shrink-0" />
+                      <Building2 size={13} className="text-[#A5A79B]" />
                       <span>{item.company}</span>
                     </p>
 
@@ -245,7 +245,7 @@ export const Education: React.FC = () => {
                     <ul className="mt-2.5 space-y-1 pt-2 border-t border-black/5 dark:border-white/5">
                       {item.highlights.map((h, i) => (
                         <li key={i} className="flex items-start gap-2 text-[11px] text-black/70 dark:text-white/70 leading-snug">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#e95420] mt-1 shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#A5A79B] mt-1 shrink-0" />
                           <span>{h}</span>
                         </li>
                       ))}
@@ -281,12 +281,12 @@ export const Education: React.FC = () => {
               {/* Running Page Header */}
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-black/10 dark:border-white/10 shrink-0">
                 <div className="flex items-center gap-2">
-                  <GraduationCap size={16} className="text-[#e95420]" />
+                  <GraduationCap size={16} className="text-[#A5A79B]" />
                   <span className="text-xs font-mono uppercase font-bold tracking-wider text-black/70 dark:text-white/70">
                     Chapter II &bull; Academics &amp; Verified Credentials
                   </span>
                 </div>
-                <span className="text-xs font-mono font-bold text-[#e95420] px-2 py-0.5 rounded bg-black/5 dark:bg-white/5">
+                <span className="text-xs font-mono font-bold text-[#A5A79B] dark:text-[#E8D2B5] px-2 py-0.5 rounded bg-black/5 dark:bg-white/5">
                   p. 02
                 </span>
               </div>
@@ -298,10 +298,10 @@ export const Education: React.FC = () => {
                 {EDUCATION.map((item, idx) => (
                   <div 
                     key={idx}
-                    className="p-3.5 sm:p-4 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 hover:border-[#e95420]/40 transition-colors"
+                    className="p-3.5 sm:p-4 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 hover:border-[#A5A79B]/50 transition-colors"
                   >
                     <div className="flex items-center justify-between gap-2 mb-1.5">
-                      <span className="text-[11px] font-mono font-bold text-[#e95420] dark:text-[#ff7844]">
+                      <span className="text-[11px] font-mono font-bold text-[#A5A79B] dark:text-[#E8D2B5]">
                         {item.period}
                       </span>
                       <span className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
@@ -330,15 +330,15 @@ export const Education: React.FC = () => {
                 ))}
 
                 {/* 2. Verified Technical Credentials Box */}
-                <div className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-br from-amber-500/[0.06] to-transparent border border-amber-500/25">
+                <div className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-br from-[#A5A79B]/10 to-transparent border border-[#A5A79B]/30">
                   <div className="flex items-center justify-between mb-2.5">
-                    <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wide">
-                      <Award size={14} className="text-amber-500" />
+                    <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#181818] dark:text-[#E8D2B5] uppercase tracking-wide">
+                      <Award size={14} className="text-[#A5A79B]" />
                       <span>Verified Technical Credentials (5)</span>
                     </div>
                     <button
                       onClick={() => setShowCertsModal(true)}
-                      className="text-[11px] font-mono font-bold text-[#e95420] hover:underline flex items-center gap-1 cursor-pointer"
+                      className="text-[11px] font-mono font-bold text-[#A5A79B] dark:text-[#E8D2B5] hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <span>Expand All</span>
                       <ArrowUpRight size={12} />
@@ -374,7 +374,7 @@ export const Education: React.FC = () => {
                 <span className="opacity-60">Academic &amp; Skill Validations</span>
                 <button
                   onClick={() => setShowCertsModal(true)}
-                  className="font-bold text-[#e95420] hover:underline flex items-center gap-1 cursor-pointer"
+                  className="font-bold text-[#A5A79B] dark:text-[#E8D2B5] hover:underline flex items-center gap-1 cursor-pointer"
                 >
                   <span>View Verified Badges Modal</span>
                   <ExternalLink size={12} />
@@ -388,7 +388,7 @@ export const Education: React.FC = () => {
           {/* Book Bottom Outer Rim Bar */}
           <div className="h-9 px-4 flex items-center justify-between text-xs font-mono opacity-75 shrink-0 pt-2">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#e95420]" />
+              <span className="w-2 h-2 rounded-full bg-[#A5A79B]" />
               <span>Developer Chronicle &bull; 4 Engineering Internships &amp; 2 Degrees</span>
             </div>
             <span className="hidden sm:inline">Hardbound Interactive Spread &bull; All Milestones Preserved</span>
@@ -404,13 +404,13 @@ export const Education: React.FC = () => {
           onClick={() => setShowCertsModal(false)}
         >
           <div 
-            className="bg-[#e6e3da] dark:bg-[#1a1a1a] border border-black/15 dark:border-white/15 w-full max-w-lg rounded-2xl shadow-2xl relative flex flex-col overflow-hidden" 
+            className="bg-[#E8D2B5] dark:bg-[#1a1a1a] border border-[#A5A79B]/30 dark:border-white/15 w-full max-w-lg rounded-2xl shadow-2xl relative flex flex-col overflow-hidden" 
             onClick={e => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="px-6 py-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between">
+            <div className="px-6 py-4 border-b border-[#A5A79B]/20 dark:border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20">
+                <div className="w-8 h-8 rounded-lg bg-[#A5A79B]/20 flex items-center justify-center text-[#181818] dark:text-[#E8D2B5] border border-[#A5A79B]/30">
                   <Award size={16} />
                 </div>
                 <div className="text-left">
@@ -435,10 +435,10 @@ export const Education: React.FC = () => {
               {CERTIFICATIONS.map((cert, i) => (
                 <div 
                   key={i}
-                  className="p-4 rounded-xl bg-[#dedbd2]/70 dark:bg-[#252525] border border-black/10 dark:border-white/10 flex items-center justify-between gap-4 transition-all hover:border-black/20 dark:hover:border-white/20"
+                  className="p-4 rounded-xl bg-[#A5A79B]/20 dark:bg-[#252525] border border-[#A5A79B]/30 dark:border-white/10 flex items-center justify-between gap-4 transition-all hover:border-[#A5A79B]/60 dark:hover:border-white/20"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#e95420]/10 text-[#e95420] dark:text-[#ff7844] flex items-center justify-center shrink-0 border border-[#e95420]/20">
+                    <div className="w-8 h-8 rounded-lg bg-[#A5A79B]/20 text-[#181818] dark:text-[#E8D2B5] flex items-center justify-center shrink-0 border border-[#A5A79B]/30">
                       <Award size={15} />
                     </div>
                     <div>

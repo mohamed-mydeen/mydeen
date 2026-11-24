@@ -203,7 +203,7 @@ export const UbuntuAppsManager: React.FC<UbuntuAppsManagerProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={onClose}
-              className="w-3.5 h-3.5 rounded-full bg-[#e95420] hover:brightness-110 flex items-center justify-center text-black/70 hover:text-black cursor-pointer shadow-sm transition-transform active:scale-95"
+              className="w-3.5 h-3.5 rounded-full bg-[#A5A79B] hover:brightness-110 flex items-center justify-center text-black/70 hover:text-black cursor-pointer shadow-sm transition-transform active:scale-95"
               title="Close"
             >
               <X size={10} strokeWidth={2.5} />
@@ -223,7 +223,7 @@ export const UbuntuAppsManager: React.FC<UbuntuAppsManagerProps> = ({
             </button>
             
             <span className="ml-3 text-xs font-semibold text-white/80 font-mono flex items-center gap-2">
-              <Layers size={14} className="text-[#e95420]" />
+              <Layers size={14} className="text-[#A5A79B]" />
               <span>Applications</span>
             </span>
           </div>
@@ -245,7 +245,7 @@ export const UbuntuAppsManager: React.FC<UbuntuAppsManagerProps> = ({
               placeholder="Search apps or stack..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#1e1e1e] border border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-[#e95420] transition-colors"
+              className="w-full bg-[#1e1e1e] border border-white/10 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-white/40 focus:outline-none focus:border-[#A5A79B] transition-colors"
             />
             {searchQuery && (
               <button 
@@ -273,7 +273,7 @@ export const UbuntuAppsManager: React.FC<UbuntuAppsManagerProps> = ({
                 }}
                 className={`px-3 py-1 rounded-md transition-colors whitespace-nowrap cursor-pointer ${
                   activeCategory === tab.id
-                    ? 'bg-[#e95420] text-white font-semibold'
+                    ? 'bg-[#A5A79B] text-white font-semibold'
                     : 'text-white/60 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -300,7 +300,7 @@ export const UbuntuAppsManager: React.FC<UbuntuAppsManagerProps> = ({
                   onClick={() => setSelectedApp(isSelected ? null : app)}
                   className={`group relative p-3.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-start gap-3.5 ${
                     isSelected
-                      ? 'bg-[#333333] border-[#e95420] shadow-md ring-1 ring-[#e95420]/50'
+                      ? 'bg-[#333333] border-[#A5A79B] shadow-md ring-1 ring-[#A5A79B]/50'
                       : 'bg-[#2b2b2b] hover:bg-[#323232] border-white/5 hover:border-white/15'
                   }`}
                 >
@@ -323,7 +323,7 @@ export const UbuntuAppsManager: React.FC<UbuntuAppsManagerProps> = ({
                   {/* App Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1">
-                      <h4 className="text-sm font-bold text-white group-hover:text-[#e95420] transition-colors truncate">
+                      <h4 className="text-sm font-bold text-white group-hover:text-[#A5A79B] transition-colors truncate">
                         {app.name}
                       </h4>
                       <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-white/60 shrink-0">
@@ -365,11 +365,11 @@ export const UbuntuAppsManager: React.FC<UbuntuAppsManagerProps> = ({
 
           {/* Detailed Inspector Drawer for Selected App */}
           {selectedApp && (
-            <div className="mt-4 p-4 rounded-xl bg-[#1e1e1e] border border-[#e95420]/40 shadow-lg animate-fadeIn flex flex-col gap-3">
+            <div className="mt-4 p-4 rounded-xl bg-[#1e1e1e] border border-[#A5A79B]/40 shadow-lg animate-fadeIn flex flex-col gap-3">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono text-[#e95420] uppercase font-semibold">
+                    <span className="text-xs font-mono text-[#A5A79B] uppercase font-semibold">
                       {selectedApp.categoryLabel}
                     </span>
                     <span className="text-white/30">&bull;</span>
@@ -413,7 +413,7 @@ export const UbuntuAppsManager: React.FC<UbuntuAppsManagerProps> = ({
                     href={selectedApp.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#e95420] hover:bg-[#d4481a] text-white text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#A5A79B] hover:bg-[#d4481a] text-white text-xs font-semibold shadow-sm transition-colors cursor-pointer"
                   >
                     <ExternalLink size={13} />
                     <span>Launch App</span>

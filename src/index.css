@@ -9,19 +9,19 @@
    CSS VARIABLES & DESIGN TOKENS
    ============================================ */
 :root {
-  --color-primary: 99 102 241;       /* indigo-500 */
-  --color-secondary: 139 92 246;     /* violet-500 */
-  --color-accent: 16 185 129;        /* emerald-500 */
-  --color-glow-1: #6366f1;
-  --color-glow-2: #8b5cf6;
-  --color-glow-3: #10b981;
-  --gradient-primary: linear-gradient(135deg, #6366f1, #8b5cf6);
-  --gradient-accent: linear-gradient(135deg, #10b981, #3b82f6);
+  --color-primary: 165 167 155;       /* sage #A5A79B */
+  --color-secondary: 232 210 181;     /* cream #E8D2B5 */
+  --color-accent: 165 167 155;        /* sage #A5A79B */
+  --color-glow-1: #A5A79B;
+  --color-glow-2: #E8D2B5;
+  --color-glow-3: #94968a;
+  --gradient-primary: linear-gradient(135deg, #A5A79B, #8e9083);
+  --gradient-accent: linear-gradient(135deg, #E8D2B5, #A5A79B);
   --glass-bg: rgba(255,255,255,0.05);
   --glass-border: rgba(255,255,255,0.12);
-  --glass-bg-light: rgba(255,255,255,0.8);
-  --glass-border-light: rgba(0,0,0,0.08);
-  --shadow-glow: 0 0 40px rgba(99,102,241,0.35);
+  --glass-bg-light: rgba(232, 210, 181, 0.85);
+  --glass-border-light: rgba(165, 167, 155, 0.25);
+  --shadow-glow: 0 0 40px rgba(165, 167, 155, 0.35);
   --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
 }
 
@@ -46,7 +46,7 @@ html {
 
   body {
     font-family: 'Inter', sans-serif;
-    @apply text-slate-800 dark:text-white bg-white dark:bg-[#0a0a0f] select-none;
+    @apply text-[#181818] dark:text-[#f2efe9] bg-[#E8D2B5] dark:bg-[#141414] select-none;
     font-feature-settings: "ss01", "ss02";
     user-select: none;
     -webkit-user-select: none;

@@ -114,11 +114,11 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
   const displayedProjects = limit ? filteredProjects.slice(0, limit) : filteredProjects;
 
   return (
-    <section ref={projectsRef} className="relative py-14 bg-white dark:bg-[#0a0a0f] overflow-hidden transition-colors duration-500">
+    <section ref={projectsRef} className="relative py-14 bg-[#E8D2B5] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] overflow-hidden transition-colors duration-500">
       
       {/* Dynamic Animated Ambient Glowing Blobs */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/10 dark:bg-indigo-500/15 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3 pointer-events-none animate-pulse duration-[4000ms]" />
-      <div className="absolute bottom-0 left-0 w-[350px] h-[350px] bg-emerald-500/10 dark:bg-emerald-500/15 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3 pointer-events-none animate-pulse duration-[6000ms]" />
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#A5A79B]/10 dark:bg-indigo-500/15 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3 pointer-events-none animate-pulse duration-[4000ms]" />
+      <div className="absolute bottom-0 left-0 w-[350px] h-[350px] bg-[#E8D2B5]/20 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/3 pointer-events-none animate-pulse duration-[6000ms]" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className={`transition-all duration-1000 ${
@@ -137,7 +137,7 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
           
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk'] tracking-tight mb-4">
-              Project <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-emerald-500 bg-clip-text text-transparent">Portfolio</span>
+              Project <span className="text-[#A5A79B] dark:text-[#E8D2B5]">Portfolio</span>
             </h2>
             <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
               A collection of my recent work, showcasing full-stack applications, AI solutions, and software engineering projects.
@@ -151,8 +151,8 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 transform active:scale-95 border ${
                     selectedCategory === category
-                      ? 'bg-indigo-500 text-white border-indigo-500 shadow-lg shadow-indigo-500/25 scale-105'
-                      : 'bg-white dark:bg-slate-900/50 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:text-indigo-600 dark:hover:text-indigo-400 hover:scale-102'
+                      ? 'bg-[#A5A79B] text-[#181818] border-[#A5A79B] shadow-xs scale-105 font-bold'
+                      : 'bg-[#A5A79B]/15 dark:bg-slate-900/50 text-[#181818] dark:text-slate-300 border-[#A5A79B]/30 dark:border-white/10 hover:border-[#A5A79B] dark:hover:border-[#A5A79B]/50 hover:scale-102'
                   }`}
                 >
                   {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -173,7 +173,7 @@ const Projects: React.FC<ProjectsProps> = ({ limit }) => {
                   style={{ transitionDelay: `${(index % 4) * 80}ms` }}
                 >
                 <TiltCard maxTilt={6} glare={true} className="h-full rounded-2xl">
-                  <div className="bg-white dark:bg-slate-900/60 backdrop-blur-md border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden transition-all duration-300 hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:shadow-xl dark:hover:shadow-indigo-500/10 h-full flex flex-col relative z-10 group shadow-sm">
+                  <div className="bg-[#A5A79B]/20 dark:bg-slate-900/60 backdrop-blur-md border border-[#A5A79B]/30 dark:border-slate-700 rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#A5A79B]/60 dark:hover:border-[#A5A79B]/50 hover:shadow-xl h-full flex flex-col relative z-10 group shadow-sm">
                     <div className="p-6 sm:p-8 flex flex-col h-full justify-between flex-grow">
                       <div>
                         {/* Title & Category Badge */}

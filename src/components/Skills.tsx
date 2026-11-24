@@ -35,19 +35,19 @@ const Skills: React.FC = () => {
   ];
 
   return (
-    <section id="skills" className="py-20 bg-[#e6e3da] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] border-t border-black/10 dark:border-white/10 transition-colors duration-500">
+    <section id="skills" className="py-20 bg-[#A5A79B] dark:bg-[#141414] text-[#181818] dark:text-[#f2efe9] border-t border-black/10 dark:border-white/10 transition-colors duration-500">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
         
         {/* Section Header */}
         <div className="mb-14 text-center" data-reveal>
-          <div className="inline-flex items-center gap-2 text-xs font-mono font-semibold tracking-widest text-indigo-600 dark:text-indigo-400 uppercase mb-2">
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-semibold tracking-widest text-[#181818] dark:text-[#E8D2B5] uppercase mb-2 px-3 py-1 rounded-full bg-[#E8D2B5]/40 dark:bg-white/5 border border-black/10 dark:border-white/10">
             <Terminal className="w-3.5 h-3.5" />
             Technical Arsenal
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white font-['Space_Grotesk'] tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#181818] dark:text-white font-['Space_Grotesk'] tracking-tight">
             Skills & Expertise
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 mt-2 text-sm sm:text-base max-w-xl mx-auto">
+          <p className="text-[#181818]/75 dark:text-slate-400 mt-2 text-sm sm:text-base max-w-xl mx-auto">
             A clean, structured schema of programming languages, frameworks, database architectures, and software tools.
           </p>
         </div>

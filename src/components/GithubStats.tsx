@@ -122,17 +122,17 @@ const GithubStats: React.FC = () => {
   return (
     <>
       {/* Sleek Minimalist Banner */}
-      <section id="insights" className="py-6 bg-[#dedbd2]/60 dark:bg-[#181818] text-[#181818] dark:text-[#f2efe9] border-y border-black/10 dark:border-white/10 transition-colors duration-500">
+      <section id="insights" className="py-6 bg-[#A5A79B] dark:bg-[#181818] text-[#181818] dark:text-[#f2efe9] border-y border-black/10 dark:border-white/10 transition-colors duration-500">
         <div className="container mx-auto px-4 max-w-4xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 text-left">
-            <div className="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 flex items-center justify-center border border-emerald-200/60 dark:border-emerald-800/40 flex-shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[#E8D2B5]/70 dark:bg-white/10 text-[#181818] dark:text-[#E8D2B5] flex items-center justify-center border border-black/10 dark:border-white/10 flex-shrink-0">
               <Github size={18} />
             </div>
             <div>
-              <h4 className="font-bold text-emerald-950 dark:text-emerald-100 text-sm sm:text-base font-['Space_Grotesk'] leading-none">
+              <h4 className="font-bold text-[#181818] dark:text-[#E8D2B5] text-sm sm:text-base font-['Space_Grotesk'] leading-none">
                 Open Source Coding Insights
               </h4>
-              <p className="text-[11px] text-emerald-700/80 dark:text-emerald-300/70 mt-1 font-medium">
+              <p className="text-[11px] text-[#181818]/75 dark:text-[#E8D2B5]/70 mt-1 font-medium">
                 Live GitHub repository statistics and language distributions.
               </p>
             </div>
@@ -140,7 +140,7 @@ const GithubStats: React.FC = () => {
           
           <button 
             onClick={() => setShowModal(true)}
-            className="group/btn px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-600 dark:border-emerald-500 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-1.5 text-xs font-bold whitespace-nowrap cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
+            className="group/btn px-4 py-2 bg-[#E8D2B5] hover:bg-[#dec5a4] text-[#181818] border border-black/15 rounded-xl shadow-xs transition-all duration-200 flex items-center gap-1.5 text-xs font-bold whitespace-nowrap cursor-pointer hover:-translate-y-0.5 active:translate-y-0"
           >
             <span>View Live Stats</span>
             <ArrowUpRight size={13} className="text-emerald-100 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200" />

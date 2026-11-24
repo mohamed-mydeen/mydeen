@@ -34,10 +34,10 @@ const MessageItem = React.memo<{ msg: Message; isDark: boolean }>(({ msg, isDark
       <div
         className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-[13px] leading-relaxed whitespace-pre-wrap select-text transition-all ${
           isUser
-            ? "bg-[#e95420] text-white rounded-br-xs shadow-sm font-normal"
+            ? "bg-[#A5A79B] text-[#181818] rounded-br-xs shadow-sm font-medium"
             : isDark
             ? "bg-[#272727] text-[#f2efe9] border border-white/5 rounded-tl-xs shadow-xs"
-            : "bg-[#dedbd2] text-[#181818] border border-black/5 rounded-tl-xs shadow-xs"
+            : "bg-[#f5ebd9] text-[#181818] border border-[#A5A79B]/30 rounded-tl-xs shadow-xs"
         }`}
       >
         {msg.text}
@@ -53,12 +53,12 @@ const LoadingIndicator = React.memo<{ isDark: boolean }>(({ isDark }) => {
     <div className="flex justify-start will-change-transform">
       <div
         className={`rounded-2xl rounded-tl-xs px-3.5 py-2.5 flex items-center gap-1.5 shadow-xs ${
-          isDark ? "bg-[#272727] border border-white/5" : "bg-[#dedbd2] border border-black/5"
+          isDark ? "bg-[#272727] border border-white/5" : "bg-[#f5ebd9] border border-[#A5A79B]/30"
         }`}
       >
-        <span className="w-1.5 h-1.5 bg-[#e95420] rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
-        <span className="w-1.5 h-1.5 bg-[#e95420] rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
-        <span className="w-1.5 h-1.5 bg-[#e95420] rounded-full animate-bounce" style={{ animationDelay: "0.4s" }} />
+        <span className="w-1.5 h-1.5 bg-[#A5A79B] rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
+        <span className="w-1.5 h-1.5 bg-[#A5A79B] rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
+        <span className="w-1.5 h-1.5 bg-[#A5A79B] rounded-full animate-bounce" style={{ animationDelay: "0.4s" }} />
       </div>
     </div>
   );
@@ -79,8 +79,8 @@ const QuickActions = React.memo<{
             onClick={() => onActionClick(action)}
             className={`text-xs font-medium px-3 py-1.5 rounded-full border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
               isDark
-                ? "border-white/10 text-white/80 bg-white/5 hover:bg-[#e95420]/20 hover:border-[#e95420]/50 hover:text-white"
-                : "border-black/10 text-black/80 bg-black/5 hover:bg-[#e95420]/10 hover:border-[#e95420]/50 hover:text-[#d34717]"
+                ? "border-white/10 text-white/80 bg-white/5 hover:bg-[#A5A79B]/20 hover:border-[#A5A79B]/50 hover:text-white"
+                : "border-[#A5A79B]/40 text-[#181818] bg-[#A5A79B]/15 hover:bg-[#A5A79B]/30 hover:border-[#A5A79B]"
             }`}
           >
             {action}
@@ -264,8 +264,8 @@ const Chatbot: React.FC = () => {
         onClick={() => setOpen(true)}
         className={`fixed bottom-6 right-6 z-50 flex items-center gap-2.5 p-1.5 sm:px-3 sm:py-2 rounded-full border shadow-xl transition-all duration-300 select-none cursor-pointer ${
           isDark
-            ? "bg-[#181818] border-white/10 text-white hover:border-[#e95420]"
-            : "bg-[#dedbd2] border-black/10 text-[#181818] hover:border-[#e95420]"
+            ? "bg-[#181818] border-white/10 text-white hover:border-[#A5A79B]"
+            : "bg-[#E8D2B5] border-[#A5A79B]/40 text-[#181818] hover:border-[#A5A79B]"
         } ${
           open
             ? "opacity-0 scale-75 pointer-events-none translate-y-4"
@@ -273,7 +273,7 @@ const Chatbot: React.FC = () => {
         }`}
         aria-label="Open Mydeen FAQs Assistant"
       >
-        <div className="relative w-9 h-9 rounded-full overflow-hidden shrink-0 border border-[#e95420]">
+        <div className="relative w-9 h-9 rounded-full overflow-hidden shrink-0 border border-[#A5A79B]">
           <img
             src="/my%20photo.png"
             alt="Mohamed Mydeen"
@@ -284,7 +284,7 @@ const Chatbot: React.FC = () => {
 
         <div className="hidden sm:flex flex-col items-start pr-1 text-left">
           <div className="flex items-center gap-1 text-xs font-semibold">
-            <Sparkles size={11} className="text-[#e95420]" />
+            <Sparkles size={11} className="text-[#A5A79B]" />
             <span>Mydeen FAQs</span>
           </div>
           <span className="text-[10px] opacity-60">Ask Anything</span>
@@ -296,7 +296,7 @@ const Chatbot: React.FC = () => {
         className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-[calc(100vw-32px)] sm:w-[380px] h-[520px] sm:h-[560px] rounded-2xl shadow-2xl border overflow-hidden z-[100] flex flex-col transition-all duration-300 select-none font-sans ${
           isDark
             ? "bg-[#1a1a1a] border-white/10 text-[#f2efe9]"
-            : "bg-[#f4f2ec] border-black/10 text-[#181818]"
+            : "bg-[#E8D2B5] border-[#A5A79B]/40 text-[#181818]"
         } ${
           open
             ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
@@ -306,12 +306,12 @@ const Chatbot: React.FC = () => {
         {/* Header Bar */}
         <div
           className={`h-14 px-4 flex items-center justify-between border-b shrink-0 ${
-            isDark ? "bg-[#222222] border-white/5" : "bg-[#ebe8df] border-black/5"
+            isDark ? "bg-[#222222] border-white/5" : "bg-[#A5A79B]/30 border-[#A5A79B]/30"
           }`}
         >
           {/* Avatar & Title */}
           <div className="flex items-center gap-3">
-            <div className="relative w-9 h-9 rounded-full overflow-hidden border border-[#e95420]/60 shrink-0">
+            <div className="relative w-9 h-9 rounded-full overflow-hidden border border-[#A5A79B] shrink-0">
               <img
                 src="/my%20photo.png"
                 alt="Mydeen FAQs Logo"
@@ -367,14 +367,14 @@ const Chatbot: React.FC = () => {
         {/* Clean Input Bar */}
         <div
           className={`p-3 border-t shrink-0 ${
-            isDark ? "bg-[#202020] border-white/5" : "bg-[#ebe8df]/70 border-black/5"
+            isDark ? "bg-[#202020] border-white/5" : "bg-[#A5A79B]/20 border-[#A5A79B]/25"
           }`}
         >
           <div
             className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full border transition-all ${
               isDark
-                ? "bg-[#161616] border-white/10 focus-within:border-[#e95420]"
-                : "bg-white border-black/10 focus-within:border-[#e95420]"
+                ? "bg-[#161616] border-white/10 focus-within:border-[#A5A79B]"
+                : "bg-white border-[#A5A79B]/40 focus-within:border-[#A5A79B]"
             }`}
           >
             <input
@@ -390,7 +390,7 @@ const Chatbot: React.FC = () => {
               className={`w-7 h-7 rounded-full flex items-center justify-center transition-all cursor-pointer ${
                 !input.trim() || loading
                   ? "opacity-30 cursor-not-allowed bg-black/10 dark:bg-white/10 text-black/50 dark:text-white/50"
-                  : "bg-[#e95420] text-white hover:bg-[#d4481a] shadow-xs active:scale-95"
+                  : "bg-[#A5A79B] text-[#181818] hover:bg-[#96988c] shadow-xs active:scale-95"
               }`}
               title="Send Message"
             >

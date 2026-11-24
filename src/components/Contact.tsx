@@ -87,8 +87,12 @@ const Contact: React.FC = () => {
     };
   }, []);
 
+  const isMobileViewport = (): boolean =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 639px)').matches;
+
   const validate = (): boolean => {
     const errors: Partial<Record<keyof FormState, string>> = {};
+    const isMobile = isMobileViewport();
 
     if (!form.full_name.trim() || form.full_name.trim().length < 2) {
       errors.full_name = 'Please enter your full name (at least 2 characters).';
@@ -96,7 +100,7 @@ const Contact: React.FC = () => {
     if (!form.email.trim() || !EMAIL_REGEX.test(form.email.trim())) {
       errors.email = 'Please enter a valid email address.';
     }
-    if (!form.subject.trim() || form.subject.trim().length < 2) {
+    if (!isMobile && (!form.subject.trim() || form.subject.trim().length < 2)) {
       errors.subject = 'Please enter a subject for your enquiry.';
     }
     if (!form.message.trim() || form.message.trim().length < 5) {
@@ -128,6 +132,14 @@ const Contact: React.FC = () => {
     inFlightRef.current = true;
     setSubmitting(true);
 
+    const isMobile = isMobileViewport();
+    const trimmedMessage = form.message.trim();
+    const preview = trimmedMessage.replace(/\s+/g, ' ').slice(0, 60);
+    const effectiveSubject = isMobile
+      ? `Mobile Enquiry: ${preview}${trimmedMessage.length > 60 ? '...' : ''}`
+      : form.subject.trim();
+    const effectiveCategory = isMobile ? 'General Enquiry' : form.enquiry_category;
+
     try {
       const response = await fetch(getContactEndpoint(), {
         method: 'POST',
@@ -135,11 +147,11 @@ const Contact: React.FC = () => {
         body: JSON.stringify({
           full_name: form.full_name.trim(),
           email: form.email.trim(),
-          phone: form.phone.trim() || undefined,
-          company: form.company.trim() || undefined,
-          enquiry_category: form.enquiry_category,
-          subject: form.subject.trim(),
-          message: form.message.trim(),
+          phone: isMobile ? undefined : form.phone.trim() || undefined,
+          company: isMobile ? undefined : form.company.trim() || undefined,
+          enquiry_category: effectiveCategory,
+          subject: effectiveSubject,
+          message: trimmedMessage,
         }),
       });
 
@@ -152,7 +164,7 @@ const Contact: React.FC = () => {
       }
 
       trackEvent('contact_clicked', {
-        category: form.enquiry_category,
+        category: effectiveCategory,
         method: 'contact_form',
       });
 
@@ -282,8 +294,8 @@ const Contact: React.FC = () => {
                 </div>
               </div>
 
-              {/* Row 2: Phone / WhatsApp & Company (Optional) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Row 2: Phone / WhatsApp & Company (Optional, hidden on mobile) */}
+              <div className="hidden sm:grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider mb-1.5 opacity-80">
                     Phone / WhatsApp <span className="opacity-50 font-normal">(Optional)</span>
@@ -317,8 +329,8 @@ const Contact: React.FC = () => {
                 </div>
               </div>
 
-              {/* Row 3: Enquiry Type & Subject */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Row 3: Enquiry Type & Subject (Hidden on mobile for quick messaging) */}
+              <div className="hidden sm:grid sm:grid-cols-2 gap-4">
                 <div ref={dropdownRef} className="relative">
                   <label className="block text-[11px] font-mono font-semibold uppercase tracking-wider mb-1.5 opacity-80">
                     Type of Enquiry

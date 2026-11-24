@@ -174,7 +174,7 @@ export const Education: React.FC = () => {
 
         {/* ─── REALISTIC EXPANSIVE HARDCOVER BOOK SPREAD ─────────────────────────── */}
         <div 
-          className="relative rounded-3xl bg-[#A5A79B]/30 dark:bg-[#161616] p-3 sm:p-4 border border-[#A5A79B]/40 dark:border-white/15 shadow-2xl overflow-hidden flex flex-col shrink min-h-0 lg:h-[580px] xl:h-[630px]"
+          className="relative rounded-3xl bg-[#A5A79B]/30 dark:bg-[#161616] p-3 sm:p-4 border border-[#A5A79B]/40 dark:border-white/15 shadow-2xl lg:overflow-hidden flex flex-col shrink lg:min-h-0 lg:h-[580px] xl:h-[630px]"
           data-reveal
         >
           {/* Hanging Ribbon Bookmark (Top Right Edge) */}
@@ -187,7 +187,7 @@ export const Education: React.FC = () => {
           </div>
 
           {/* Inner Pages Spread (Two Facing Parchment Pages) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 relative rounded-2xl bg-[#fdfcf9] dark:bg-[#1c1c1c] border border-black/10 dark:border-white/10 shadow-inner overflow-hidden flex-1 min-h-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 relative rounded-2xl bg-[#fdfcf9] dark:bg-[#1c1c1c] border border-black/10 dark:border-white/10 shadow-inner lg:overflow-hidden flex-1 lg:min-h-0">
             
             {/* Center Book Spine Binding Line & Shadow (Desktop) */}
             <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-10 -translate-x-1/2 pointer-events-none z-20 shadow-[inset_0_0_18px_rgba(0,0,0,0.14)] dark:shadow-[inset_0_0_24px_rgba(0,0,0,0.5)] border-x border-black/5 dark:border-white/5" />
@@ -195,7 +195,7 @@ export const Education: React.FC = () => {
             {/* =========================================================================
                 LEFT PAGE: COMPLETE PROFESSIONAL EXPERIENCE (ALL 4 INTERNSHIPS)
                 ========================================================================= */}
-            <div className="p-5 sm:p-6 lg:p-7 xl:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-black/10 dark:border-white/10 relative overflow-hidden flex-1 min-h-0">
+            <div className="p-5 sm:p-6 lg:p-7 xl:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-black/10 dark:border-white/10 relative lg:overflow-hidden flex-1 lg:min-h-0">
               
               {/* Running Page Header */}
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-black/10 dark:border-white/10 shrink-0">
@@ -210,8 +210,11 @@ export const Education: React.FC = () => {
                 </span>
               </div>
 
-              {/* Scrollable Internships Parchment Content */}
-              <div className="flex-1 overflow-y-auto overscroll-contain pr-2 space-y-3.5 scrollbar-thin">
+              {/* Scrollable Internships Parchment Content (Scrolls only on desktop split view; expands naturally on mobile) */}
+              <div
+                data-lenis-prevent-wheel
+                className="lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:pr-2 space-y-3.5 lg:scrollbar-thin"
+              >
                 {INTERNSHIPS.map((item, idx) => (
                   <div 
                     key={idx}
@@ -276,7 +279,7 @@ export const Education: React.FC = () => {
             {/* =========================================================================
                 RIGHT PAGE: ACADEMIC DEGREES + VERIFIED CREDENTIALS
                 ========================================================================= */}
-            <div className="p-5 sm:p-6 lg:p-7 xl:p-8 flex flex-col justify-between relative overflow-hidden flex-1 min-h-0">
+            <div className="p-5 sm:p-6 lg:p-7 xl:p-8 flex flex-col justify-between relative lg:overflow-hidden flex-1 lg:min-h-0">
               
               {/* Running Page Header */}
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-black/10 dark:border-white/10 shrink-0">
@@ -291,8 +294,11 @@ export const Education: React.FC = () => {
                 </span>
               </div>
 
-              {/* Scrollable Academics & Credentials Content */}
-              <div className="flex-1 overflow-y-auto overscroll-contain pr-2 space-y-3.5 scrollbar-thin">
+              {/* Scrollable Academics & Credentials Content (Scrolls only on desktop split view; expands naturally on mobile) */}
+              <div
+                data-lenis-prevent-wheel
+                className="lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:pr-2 space-y-3.5 lg:scrollbar-thin"
+              >
                 
                 {/* 1. Academic Degrees */}
                 {EDUCATION.map((item, idx) => (

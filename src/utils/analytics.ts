@@ -16,7 +16,7 @@ function getHeartbeatEndpoint(): string {
   if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
     return 'http://localhost:5174/api/heartbeat';
   }
-  return 'https://mydeen-analytics.vercel.app/api/heartbeat';
+  return 'https://mydeenlabs.vercel.app/api/heartbeat';
 }
 
 let initialized = false;

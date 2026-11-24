@@ -57,7 +57,7 @@ function getContactEndpoint(): string {
   if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
     return 'http://localhost:5174/api/contact';
   }
-  return 'https://mydeen-analytics.vercel.app/api/contact';
+  return 'https://mydeenlabs.vercel.app/api/contact';
 }
 
 const Contact: React.FC = () => {
